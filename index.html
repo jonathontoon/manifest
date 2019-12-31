@@ -39,11 +39,18 @@
 		<link rel="icon" type="image/png" sizes="96x96" href="images/icon-96x96.png" />
 		<link rel="icon" type="image/png" sizes="32x32" href="images/icon-32x32.png" />
 		<link rel="icon" type="image/png" sizes="16x16" href="images/icon-16x16.png" /> -->
-		<link rel="stylesheet" href="reset.css">
-		<style>
-			@import url("https://rsms.me/inter/inter.css");
-		</style>
 	</head>
+	<style type="text/css">
+		@import url('https://rsms.me/inter/inter.css');
+		html {
+			font-family: 'Inter', sans-serif;
+		}
+		
+		@supports (font-variation-settings: normal) {
+		html {
+			font-family: 'Inter var', sans-serif; }
+		}
+	</style>
 	<body>
 		<script type="text/javascript">
 			if ("serviceWorker" in navigator) {

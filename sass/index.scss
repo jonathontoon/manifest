@@ -1,0 +1,72 @@
+@use "reset";
+
+body {
+    min-width: 100%;
+    min-height: 100%;
+    overflow: hidden;
+
+    main {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        overflow: hidden;
+
+        canvas {
+            position: absolute;
+        }
+
+
+        section#container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            
+            .card {
+                background-color: white;
+                position: absolute;
+                min-width: 128px;
+                min-height: 128px;
+                border: 1px solid black;
+
+                &.active {
+                    user-select: none;
+                    box-shadow: 10px 10px rgba(0, 0, 0, 0.25);
+                }
+
+                .dragHandle {
+                    cursor: grab;
+                    position: relative;
+                    width: 100%;
+                    height: 16px;
+                    border-bottom: 1px solid black;
+                }
+
+                textarea {
+                    position: absolute;
+                    width: calc(100% - 16px);
+                    height: calc(100% - 33px);
+                    padding: 8px;
+                    margin: 0;
+                    border: 0;
+                    outline: 0;
+                    resize: none;
+                    overflow: hidden;
+                    font-size: 13px;
+                    cursor: text;
+                }
+
+                .resizeHandle {
+                    cursor: nw-resize;
+                    position: absolute;
+                    right: 0px;
+                    bottom: 0px;
+                    width: 8px;
+                    height: 8px;
+                    border-top: 1px solid black;
+                    border-left: 1px solid black;
+                }
+            }
+        }
+    }
+}

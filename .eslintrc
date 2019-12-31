@@ -1,4 +1,5 @@
 {
+	"extends": "standard",
 	"env": {
 		"browser": true,
 		"es6": true
@@ -48,7 +49,7 @@
 				"asyncArrow": "always"
 			}
 		],
-		"no-shadow": 2,
+		"no-shadow": 0,
 		"no-console": 0,
 		"no-alert": 0
 	}
