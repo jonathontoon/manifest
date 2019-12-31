@@ -1,4 +1,13 @@
-import { createMainElement, createCanvasElement, createContainerElement, createCardElement, createDragHandleElement, createTextareaElement, createResizeHandleElement } from "./js/elements";
+import {
+	createMainElement,
+	createCanvasElement,
+	createContainerElement,
+	createCardElement,
+	createDragHandleElement,
+	createTextareaElement,
+	createResizeHandleElement
+} from "./js/elements";
+import { snapToGrid } from "./js/utils";
 
 import "./sass/index.scss";
 
@@ -19,10 +28,6 @@ main.appendChild(canvas);
 
 const container = createContainerElement(width, height);
 main.appendChild(container);
-
-const snapToGrid = (value, grid) => {
-	return (grid) * Math.round(value / (grid));
-};
 
 const createCard = () => {
 	const card = createCardElement();
