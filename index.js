@@ -26,6 +26,8 @@ const snapToGrid = (value, grid) => {
 
 const createCard = () => {
 	const card = createCardElement();
+	card.style.top = `${size}px`;
+	card.style.left = `${size}px`;
 
 	const dragHandle = createDragHandleElement();
 	dragHandle.onmousedown = (e) => {
@@ -53,8 +55,16 @@ const createCard = () => {
 				initialPosition.x = e.clientX;
 				initialPosition.y = e.clientY;
 
-				card.style.top = `${card.offsetTop - currentPosition.y}px`;
-				card.style.left = `${card.offsetLeft - currentPosition.x}px`;
+				const top = card.offsetTop - currentPosition.y;
+				const left = card.offsetLeft - currentPosition.x;
+
+				if (top >= -5) {
+					card.style.top = `${top}px`;
+				}
+
+				if (left >= -5) {
+					card.style.left = `${left}px`;
+				}
 			}
 		};
 
