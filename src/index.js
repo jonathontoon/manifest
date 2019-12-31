@@ -60,16 +60,8 @@ const createCard = () => {
 				initialPosition.x = e.clientX;
 				initialPosition.y = e.clientY;
 
-				const top = card.offsetTop - currentPosition.y;
-				const left = card.offsetLeft - currentPosition.x;
-
-				if (top >= -5) {
-					card.style.top = `${top}px`;
-				}
-
-				if (left >= -5) {
-					card.style.left = `${left}px`;
-				}
+				card.style.top = `${card.offsetTop - currentPosition.y}px`;
+				card.style.left = `${card.offsetLeft - currentPosition.x}px`;
 			}
 		};
 
