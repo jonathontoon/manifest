@@ -24,9 +24,13 @@
     "@babel/preset-env": "^7.7.7",
     "babel-plugin-jsx-pragmatic": "^1.0.2",
     "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
     "parcel-bundler": "^1.12.4",
     "pre-commit": "^1.2.2",
-    "prettier": "^1.19.1",
     "sass": "^1.24.0"
   },
   "dependencies": {
@@ -39,7 +43,6 @@
     "build": "parcel build ./index.html --no-content-hash --no-source-maps --no-cache --public-url ./"
   },
   "pre-commit": [
-    "prettier",
     "lint"
   ]
 }

@@ -1,10 +1,10 @@
 export const createMainElement = (width, height) => {
-    const el = document.createElement("main");
+	const el = document.createElement("main");
 
-    el.style.width = `${width}px`;
-    el.style.height = `${height}px`;
+	el.style.width = `${width}px`;
+	el.style.height = `${height}px`;
 
-    return el;
+	return el;
 };
 
 export const createCanvasElement = (w, h, s) => {
@@ -18,8 +18,8 @@ export const createCanvasElement = (w, h, s) => {
 
 export const createContainerElement = (w, h) => {
 	const el = document.createElement("section");
-    el.id = "container";
-	
+	el.id = "container";
+
 	el.style.width = w;
 	el.style.height = h;
 
@@ -30,30 +30,30 @@ export const createCardElement = () => {
 	const el = document.createElement("div");
 	el.classList.add("card");
 
-    return el;
+	return el;
 };
 
 export const createDragHandleElement = () => {
-    const el = document.createElement("div");
-    el.classList.add("dragHandle");
+	const el = document.createElement("div");
+	el.classList.add("dragHandle");
 
-    return el;
+	return el;
 };
 
 export const createTextareaElement = (text) => {
 	const el = document.createElement("textarea");
-	
+
 	el.placeholder = "Add something here to remember...";
 	el.value = text;
 	el.autocomplete = false;
 	el.spellcheck = false;
-	
+
 	return el;
 };
 
 export const createResizeHandleElement = () => {
-    const el = document.createElement("div");
-    el.classList.add("resizeHandle");
+	const el = document.createElement("div");
+	el.classList.add("resizeHandle");
 
-    return el;
+	return el;
 };
