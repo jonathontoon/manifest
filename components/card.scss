@@ -5,8 +5,9 @@
     min-height: 152px;
     border: 1px solid black;
 
-    .active {
+    &.active {
         user-select: none;
+        box-shadow: 10px 10px rgba(0, 0, 0, 0.25);
     }
 
     .drag {
