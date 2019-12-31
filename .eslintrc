@@ -49,7 +49,7 @@
 				"asyncArrow": "always"
 			}
 		],
-		"no-shadow": 1,
+		"no-shadow": 0,
 		"no-console": 0,
 		"no-alert": 0
 	}
