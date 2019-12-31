@@ -21,6 +21,7 @@ Please create a Github [issue](https://github.com/jonathontoon/memgrid/issues), 
 
 ## Local Development
 // TO DO
+
 ## Deployment
 
 // TO DO

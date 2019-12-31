@@ -19,7 +19,7 @@ export const renderGrid = (canvas, width, height, size) => {
 		for (let y = 0; y <= height; y += size) {
 			context.fillStyle  = "rgba(0, 0, 0, 0.15)";
 			context.beginPath();
-			context.arc(x + 1, y + 1, 1, 0, 2 * Math.PI, true);
+			context.arc(x + 1, y + 3, 1, 0, 2 * Math.PI, true);
 			context.fill();
 		}
 	}	

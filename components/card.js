@@ -118,7 +118,7 @@ export const createCard = (text) => {
 			const snapHeight = snapToGrid(initialSize.height + (e.clientY - initialPosition.y), gridSize);
 			const snapWidth = snapToGrid(initialSize.width + (e.clientX - initialPosition.x), gridSize);
 	
-			card.style.height = `${snapHeight}px`;
+			card.style.height = `${snapHeight + 2}px`;
 			card.style.width = `${snapWidth}px`;
 		}
 	};
@@ -127,7 +127,7 @@ export const createCard = (text) => {
 		const snapHeight = snapToGrid(initialSize.height + (e.clientY - initialPosition.y), gridSize);
 		const snapWidth = snapToGrid(initialSize.width + (e.clientX - initialPosition.x), gridSize);
 
-		card.style.height = `${snapHeight}px`;
+		card.style.height = `${snapHeight + 2}px`;
 		card.style.width = `${snapWidth}px`;
 		card.classList.remove("active");
 	
