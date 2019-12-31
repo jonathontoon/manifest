@@ -2,7 +2,7 @@
   "name": "memgrid",
   "version": "0.0.1",
   "description": "Instant and organized memos in your browser.",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "https://github.com/jonathontoon/memgrid",
   "author": "Jonathon Toon",
   "license": "GPL 2.0",
@@ -38,9 +38,9 @@
   },
   "scripts": {
     "lint": "./node_modules/.bin/eslint . --fix",
-    "dev": "parcel ./index.html --port 3000 --no-cache",
+    "dev": "parcel ./src/index.html --port 3000 --no-cache",
     "prebuild": "rm -rf ./dist/",
-    "build": "parcel build ./index.html --no-content-hash --no-source-maps --no-cache --public-url ./"
+    "build": "parcel build ./src/index.html --no-content-hash --no-source-maps --no-cache --public-url ./"
   },
   "pre-commit": [
     "lint"

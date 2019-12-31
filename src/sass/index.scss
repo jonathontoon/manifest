@@ -3,19 +3,16 @@
 body {
     min-width: 100%;
     min-height: 100%;
-    overflow: hidden;
 
-    main {
+    main#app {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        overflow: hidden;
 
-        canvas {
+        canvas#grid {
             position: absolute;
         }
-
 
         section#container {
             position: absolute;
@@ -25,8 +22,8 @@ body {
             .card {
                 background-color: white;
                 position: absolute;
-                min-width: 128px;
-                min-height: 128px;
+                min-width: 120px;
+                min-height: 120px;
                 border: 1px solid black;
 
                 &.active {

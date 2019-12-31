@@ -1,6 +1,6 @@
 export const createMainElement = (width, height) => {
 	const el = document.createElement("main");
-
+	el.id = "app";
 	el.style.width = `${width}px`;
 	el.style.height = `${height}px`;
 
@@ -19,7 +19,6 @@ export const createCanvasElement = (w, h, s) => {
 export const createContainerElement = (w, h) => {
 	const el = document.createElement("section");
 	el.id = "container";
-
 	el.style.width = w;
 	el.style.height = h;
 

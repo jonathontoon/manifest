@@ -1,9 +1,18 @@
-import { createMainElement, createCanvasElement, createContainerElement, createCardElement, createDragHandleElement, createTextareaElement, createResizeHandleElement } from "./js/elements";
+import {
+	createMainElement,
+	createCanvasElement,
+	createContainerElement,
+	createCardElement,
+	createDragHandleElement,
+	createTextareaElement,
+	createResizeHandleElement
+} from "./js/elements";
+import { snapToGrid } from "./js/utils";
 
 import "./sass/index.scss";
 
-const margin = 32;
-const size = 16;
+const margin = 24;
+const size = 12;
 
 let width = (window.innerWidth - (margin * 2)) - 12;
 let height = (window.innerHeight - (margin * 2)) - 4;
@@ -20,12 +29,10 @@ main.appendChild(canvas);
 const container = createContainerElement(width, height);
 main.appendChild(container);
 
-const snapToGrid = (value, grid) => {
-	return (grid) * Math.round(value / (grid));
-};
-
 const createCard = () => {
 	const card = createCardElement();
+	card.style.top = `${size}px`;
+	card.style.left = `${size}px`;
 
 	const dragHandle = createDragHandleElement();
 	dragHandle.onmousedown = (e) => {
@@ -171,6 +178,7 @@ document.body.appendChild(main);
 
 window.addEventListener("resize", updateElements, false);
 window.addEventListener("load", () => {
+	createCard();
 	createCard();
 	updateElements();
 }, false);
