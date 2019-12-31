@@ -1,0 +1,55 @@
+{
+	"env": {
+		"browser": true,
+		"es6": true
+	},
+	"globals": {
+		"Atomics": "readonly",
+		"SharedArrayBuffer": "readonly"
+	},
+	"parserOptions": {
+		"ecmaVersion": 2019,
+		"sourceType": "module",
+		"ecmaFeatures": {
+			"jsx": true
+		}
+	},
+	"rules": {
+		"brace-style": 0,
+		"indent": [
+			"error",
+			"tab",
+			{
+				"SwitchCase": 1
+			}
+		],
+		"no-tabs": [
+			"error",
+			{
+				"allowIndentationTabs": true
+			}
+		],
+		"semi": [
+			"error",
+			"always"
+		],
+		"jsx-uses-vars": 0,
+		"quotes": [
+			"error",
+			"double"
+		],
+		"no-unused-vars": 0,
+		"react/jsx-no-bind": 0,
+		"space-before-function-paren": [
+			"error",
+			{
+				"anonymous": "never",
+				"named": "never",
+				"asyncArrow": "always"
+			}
+		],
+		"no-shadow": 2,
+		"no-console": 0,
+		"no-alert": 0
+	}
+}

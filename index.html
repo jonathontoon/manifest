@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<title>⬒ / Memgrid</title>
+		<meta name="author" content="memgrid">
+		<meta name="description" content="Instant and organized memos in your browser.">
+		<meta name="keywords" content="notes, memo, ideas, reminder, tab, grid">
+		<meta name="application-name" content="memgrid">
+		<meta name="mobile-web-app-capable" content="yes">
+
+		<meta name="theme-color" content="#ffffff">
+		<meta name="msapplication-navbutton-color" content="#ffffff">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="msapplication-TileColor" content="#ffffff" />
+		<!-- <meta name="msapplication-TileImage" content="images/icon-144x144.png" />
+		<meta name="msapplication-square70x70logo" content="images/icon-70x70.png" />
+		<meta name="msapplication-square150x150logo" content="images/icon-150x150.png" />
+		<meta name="msapplication-wide310x150logo" content="images/icon-310x150.png" />
+		<meta name="msapplication-square310x310logo" content="images/icon-310x310.png" /> -->
+
+		<link rel="manifest" href="memgrid.webmanifest">
+
+		<!-- <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+		<link rel="apple-touch-icon" sizes="180x180" href="images/icon-180x180.png">
+		<link rel="apple-touch-icon-precomposed" sizes="57x57" href="images/icon-57x57.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/icon-114x114.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/icon-72x72.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/icon-144x144.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="60x60" href="images/icon-60x60.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="120x120" href="images/icon-120x120.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="76x76" href="images/icon-76x76.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="152x152" href="images/icon-152x152.png" />
+		<link rel="icon" type="image/png" sizes="196x196" href="images/icon-196x196.png" />
+		<link rel="icon" type="image/png" sizes="128x128" href="images/icon-128x128.png" />
+		<link rel="icon" type="image/png" sizes="96x96" href="images/icon-96x96.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="images/icon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="images/icon-16x16.png" /> -->
+		<link rel="stylesheet" href="reset.css">
+		<style>
+			@import url("https://rsms.me/inter/inter.css");
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+			if ("serviceWorker" in navigator) {
+				window.addEventListener("load", () => {
+					navigator.serviceWorker.register("service-worker.js").then((registration) => {
+						console.log("Service worker registration successful with scope: ", registration.scope);
+					}, (error) => {
+						console.log("Service worker registration failed: ", error);
+					});
+				});
+			}
+		</script>
+		<script type="text/javascript" src="index.js"></script>
+  	</body>
+</html>

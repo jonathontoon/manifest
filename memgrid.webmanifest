@@ -1,0 +1,11 @@
+{
+	"name": "memgrid",
+	"short_name": "memgrid",
+	"description": "Instant and organized memos in your browser.",
+	"theme_color": "#ffffff",
+	"background_color": "#ffffff",
+	"display": "standalone",
+	"orientation": "portrait",
+	"scope": "/",
+	"start_url": "/"
+  }

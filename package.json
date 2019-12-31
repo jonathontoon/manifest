@@ -1,0 +1,43 @@
+{
+  "name": "memgrid",
+  "version": "0.0.1",
+  "description": "Instant and organized memos in your browser.",
+  "main": "index.js",
+  "repository": "https://github.com/jonathontoon/memgrid",
+  "author": "Jonathon Toon",
+  "license": "GPL 2.0",
+  "private": true,
+  "browserslist": [
+    "last 2 Baidu version",
+    "last 2 ChromeAndroid version",
+    "last 2 iOS version",
+    "last 2 Chrome version",
+    "last 2 Firefox version",
+    "last 2 FirefoxAndroid version",
+    "last 2 Opera version",
+    "last 2 Safari version",
+    "last 2 Edge version"
+  ],
+  "devDependencies": {
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "babel-plugin-jsx-pragmatic": "^1.0.2",
+    "eslint": "^6.8.0",
+    "parcel-bundler": "^1.12.4",
+    "pre-commit": "^1.2.2",
+    "sass": "^1.24.0"
+  },
+  "dependencies": {
+    "lit-html": "^1.1.2"
+  },
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint . --fix",
+    "dev": "parcel ./index.html --port 3000 --no-cache",
+    "prebuild": "rm -rf ./dist/",
+    "build": "parcel build ./index.html --no-content-hash --no-source-maps --no-cache --public-url ./"
+  },
+  "pre-commit": [
+    "lint"
+  ]
+}
