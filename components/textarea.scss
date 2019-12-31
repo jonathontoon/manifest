@@ -1,15 +1,13 @@
 textarea {
     position: absolute;
-    top: 28px;
-    left: 10px;
-    width: calc(100% - 20px);
-    height: calc(100% - 38px);
-    padding: 0;
+    width: calc(100% - 16px);
+    height: calc(100% - 33px);
+    padding: 8px;
     margin: 0;
     border: 0;
     outline: 0;
     resize: none;
     overflow: hidden;
-
     font-size: 13px;
+    cursor: text;
 }
