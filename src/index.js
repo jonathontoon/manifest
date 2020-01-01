@@ -23,7 +23,7 @@ let initialSize = { width: 0, height: 0 };
 
 const main = createMainElement(width, height);
 
-const canvas = createCanvasElement(width, height, size);
+const canvas = createCanvasElement(width, height);
 main.appendChild(canvas);
 
 const container = createContainerElement(width, height);
