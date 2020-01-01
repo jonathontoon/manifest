@@ -14,19 +14,19 @@ import "./sass/index.scss";
 const margin = 48;
 const size = 10;
 
-let width = window.innerWidth - margin;
-let height = window.innerHeight - margin;
+let documentWidth = (window.innerWidth - margin) - 1;
+let documentHeight = (window.innerHeight - margin) + 1;
 
 let initialPosition = { x: 0, y: 0 };
 let currentPosition = { x: 0, y: 0 };
 let initialSize = { width: 0, height: 0 };
 
-const main = createMainElement(width, height);
+const main = createMainElement(documentWidth, documentHeight);
 
-const canvas = createCanvasElement(width, height);
+const canvas = createCanvasElement(documentWidth, documentHeight);
 main.appendChild(canvas);
 
-const container = createContainerElement(width, height);
+const container = createContainerElement(documentWidth, documentHeight);
 main.appendChild(container);
 
 const createCard = () => {
@@ -60,8 +60,11 @@ const createCard = () => {
 				initialPosition.x = e.clientX;
 				initialPosition.y = e.clientY;
 
-				card.style.top = `${card.offsetTop - currentPosition.y}px`;
-				card.style.left = `${card.offsetLeft - currentPosition.x}px`;
+				const top = card.offsetTop - currentPosition.y;
+				const left = card.offsetLeft - currentPosition.x;
+
+				card.style.top = `${top}px`;
+				card.style.left = `${left}px`;
 			}
 		};
 
@@ -105,8 +108,10 @@ const createCard = () => {
 		initialPosition.x = e.clientX;
 		initialPosition.y = e.clientY;
 
-		initialSize.width = parseInt(getComputedStyle(card).width, 10);
-		initialSize.height = parseInt(getComputedStyle(card).height, 10);
+		const rect = card.getBoundingClientRect();
+
+		initialSize.width = parseInt(rect.width, 10);
+		initialSize.height = parseInt(rect.height, 10);
 
 		document.onmousemove = (e) => {
 			e = e || window.event;
@@ -117,7 +122,7 @@ const createCard = () => {
 			if (isActive) {
 				const snapHeight = snapToGrid(initialSize.height + (e.clientY - initialPosition.y), size);
 				const snapWidth = snapToGrid(initialSize.width + (e.clientX - initialPosition.x), size);
-
+				
 				card.style.height = `${snapHeight}px`;
 				card.style.width = `${snapWidth}px`;
 			}
@@ -151,8 +156,8 @@ const createCard = () => {
 const renderCanvas = () => {
 	const context = canvas.getContext("2d");
 
-	for (let x = 0; x <= width; x += size) {
-		for (let y = 0; y <= height; y += size) {
+	for (let x = 0; x <= documentWidth; x += size) {
+		for (let y = 0; y <= documentHeight; y += size) {
 			context.fillStyle = "rgba(0, 0, 0, 0.5)";
 			context.beginPath();
 			context.rect(x, y, 1, 1);
@@ -161,24 +166,24 @@ const renderCanvas = () => {
 	}
 };
 
-const updateElements = () => {
-	width = window.innerWidth - margin;
-	height = window.innerHeight - margin;
+const updateDimensions = () => {
+	documentWidth = (window.innerWidth - margin) - 1;
+	documentHeight = (window.innerHeight - margin) + 1;
 
-	main.style.width = `${width}px`;
-	main.style.height = `${height}px`;
+	main.style.width = `${documentWidth}px`;
+	main.style.height = `${documentHeight}px`;
 
-	canvas.width = width;
-	canvas.height = height;
+	canvas.width = documentWidth;
+	canvas.height = documentHeight;
 
 	renderCanvas();
 };
 
 document.body.appendChild(main);
 
-window.addEventListener("resize", updateElements, false);
+window.addEventListener("resize", updateDimensions, false);
 window.addEventListener("load", () => {
 	createCard();
 	createCard();
-	updateElements();
+	updateDimensions();
 }, false);
