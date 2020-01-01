@@ -11,11 +11,11 @@ import { snapToGrid } from "./js/utils";
 
 import "./sass/index.scss";
 
-const margin = 24;
-const size = 12;
+const margin = 48;
+const size = 10;
 
-let width = (window.innerWidth - (margin * 2)) - 12;
-let height = (window.innerHeight - (margin * 2)) - 4;
+let width = window.innerWidth - margin;
+let height = window.innerHeight - margin;
 
 let initialPosition = { x: 0, y: 0 };
 let currentPosition = { x: 0, y: 0 };
@@ -151,19 +151,19 @@ const createCard = () => {
 const renderCanvas = () => {
 	const context = canvas.getContext("2d");
 
-	for (let x = 1; x <= width; x += size) {
-		for (let y = 1; y <= height; y += size) {
-			context.fillStyle = "rgba(0, 0, 0, 0.25)";
+	for (let x = 0; x <= width; x += size) {
+		for (let y = 0; y <= height; y += size) {
+			context.fillStyle = "rgba(0, 0, 0, 0.5)";
 			context.beginPath();
-			context.arc(x, y, 1, 0, 2 * Math.PI, true);
+			context.rect(x, y, 1, 1);
 			context.fill();
 		}
 	}
 };
 
 const updateElements = () => {
-	width = (window.innerWidth - (margin * 2)) - 12;
-	height = (window.innerHeight - (margin * 2)) - 4;
+	width = window.innerWidth - margin;
+	height = window.innerHeight - margin;
 
 	main.style.width = `${width}px`;
 	main.style.height = `${height}px`;
