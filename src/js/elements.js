@@ -7,7 +7,7 @@ export const createMainElement = (width, height) => {
 	return el;
 };
 
-export const createCanvasElement = (w, h, s) => {
+export const createCanvasElement = (w, h) => {
 	const el = document.createElement("canvas");
 	el.id = "grid";
 	el.width = w;
