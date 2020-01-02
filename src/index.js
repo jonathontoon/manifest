@@ -58,7 +58,7 @@ const createCard = () => {
 			if (isActive) {
 				const x = snapToGrid(e.clientX, size);
 				const y = snapToGrid(e.clientY, size);
-				
+
 				currentPosition.x = initialPosition.x - x;
 				currentPosition.y = initialPosition.y - y;
 
