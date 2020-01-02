@@ -7,6 +7,7 @@ import {
 	createTextareaElement,
 	createResizeHandleElement
 } from "./js/elements";
+
 import { snapToGrid } from "./js/utils";
 
 import "./sass/index.scss";
@@ -45,8 +46,8 @@ const createCard = () => {
 
 		document.body.style.cursor = "grabbing";
 
-		initialPosition.x = e.clientX;
-		initialPosition.y = e.clientY;
+		initialPosition.x = snapToGrid(e.clientX, size);
+		initialPosition.y = snapToGrid(e.clientY, size);
 
 		document.onmousemove = (e) => {
 			e = e || window.event;
@@ -55,25 +56,29 @@ const createCard = () => {
 			const isActive = card.classList.contains("active");
 
 			if (isActive) {
-				currentPosition.x = initialPosition.x - e.clientX;
-				currentPosition.y = initialPosition.y - e.clientY;
-				initialPosition.x = e.clientX;
-				initialPosition.y = e.clientY;
+				const x = snapToGrid(e.clientX, size);
+				const y = snapToGrid(e.clientY, size);
+
+				currentPosition.x = initialPosition.x - x;
+				currentPosition.y = initialPosition.y - y;
 
 				const top = card.offsetTop - currentPosition.y;
 				const left = card.offsetLeft - currentPosition.x;
 
 				card.style.top = `${top}px`;
 				card.style.left = `${left}px`;
+
+				initialPosition.x = x;
+				initialPosition.y = y;
 			}
 		};
 
 		document.onmouseup = () => {
-			const snapY = snapToGrid(card.offsetTop - currentPosition.y, size);
-			const snapX = snapToGrid(card.offsetLeft - currentPosition.x, size);
+			const top = snapToGrid(card.offsetTop - currentPosition.y, size);
+			const left = snapToGrid(card.offsetLeft - currentPosition.x, size);
 
-			card.style.top = `${snapY}px`;
-			card.style.left = `${snapX}px`;
+			card.style.top = `${top}px`;
+			card.style.left = `${left}px`;
 
 			card.classList.remove("active");
 
@@ -105,8 +110,8 @@ const createCard = () => {
 
 		resizeHandle.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
 
-		initialPosition.x = e.clientX;
-		initialPosition.y = e.clientY;
+		initialPosition.x = snapToGrid(e.clientX, size);
+		initialPosition.y = snapToGrid(e.clientY, size);
 
 		const rect = card.getBoundingClientRect();
 
@@ -120,11 +125,11 @@ const createCard = () => {
 			const isActive = card.classList.contains("active");
 
 			if (isActive) {
-				const snapHeight = snapToGrid(initialSize.height + (e.clientY - initialPosition.y), size);
-				const snapWidth = snapToGrid(initialSize.width + (e.clientX - initialPosition.x), size);
-				
-				card.style.height = `${snapHeight}px`;
-				card.style.width = `${snapWidth}px`;
+				const height = snapToGrid(initialSize.height + (e.clientY - initialPosition.y), size);
+				const width = snapToGrid(initialSize.width + (e.clientX - initialPosition.x), size);
+
+				card.style.height = `${height}px`;
+				card.style.width = `${width}px`;
 			}
 		};
 
@@ -132,11 +137,11 @@ const createCard = () => {
 			e = e || window.event;
 			e.preventDefault();
 
-			const snapHeight = snapToGrid(initialSize.height + (e.clientY - initialPosition.y), size);
-			const snapWidth = snapToGrid(initialSize.width + (e.clientX - initialPosition.x), size);
+			const height = snapToGrid(initialSize.height + (e.clientY - initialPosition.y), size);
+			const width = snapToGrid(initialSize.width + (e.clientX - initialPosition.x), size);
 
-			card.style.height = `${snapHeight}px`;
-			card.style.width = `${snapWidth}px`;
+			card.style.height = `${height}px`;
+			card.style.width = `${width}px`;
 			card.classList.remove("active");
 
 			resizeHandle.style.backgroundColor = "transparent";
