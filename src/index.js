@@ -15,19 +15,19 @@ import "./sass/index.scss";
 const margin = 48;
 const size = 10;
 
-let documentWidth = (window.innerWidth - margin) - 1;
-let documentHeight = (window.innerHeight - margin) + 1;
+let windowWidth = (window.innerWidth - margin) - 1;
+let windowHeight = (window.innerHeight - margin) + 1;
 
 let initialPosition = { x: 0, y: 0 };
 let currentPosition = { x: 0, y: 0 };
 let initialSize = { width: 0, height: 0 };
 
-const main = createMainElement(documentWidth, documentHeight);
+const main = createMainElement(windowWidth, windowHeight);
 
-const canvas = createCanvasElement(documentWidth, documentHeight);
+const canvas = createCanvasElement(windowWidth, windowHeight);
 main.appendChild(canvas);
 
-const container = createContainerElement(documentWidth, documentHeight);
+const container = createContainerElement(windowWidth, windowHeight);
 main.appendChild(container);
 
 const createCard = () => {
@@ -36,7 +36,57 @@ const createCard = () => {
 	card.style.left = `${size}px`;
 
 	const dragHandle = createDragHandleElement();
-	dragHandle.onmousedown = (e) => {
+
+	const onDrag = (e) => {
+		e = e || window.event;
+		e.preventDefault();
+
+		const isActive = card.classList.contains("active");
+
+		if (isActive) {
+			const x = snapToGrid(e.clientX, size);
+			const y = snapToGrid(e.clientY, size);
+
+			currentPosition.x = initialPosition.x - x;
+			currentPosition.y = initialPosition.y - y;
+
+			const top = card.offsetTop - currentPosition.y;
+			const left = card.offsetLeft - currentPosition.x;
+
+			card.style.top = `${top}px`;
+			card.style.left = `${left}px`;
+
+			initialPosition.x = x;
+			initialPosition.y = y;
+		}
+	};
+
+	const onDragEnd = () => {
+		const top = snapToGrid(card.offsetTop - currentPosition.y, size);
+		const left = snapToGrid(card.offsetLeft - currentPosition.x, size);
+
+		card.style.top = `${top}px`;
+		card.style.left = `${left}px`;
+
+		card.classList.remove("active");
+
+		document.body.style.cursor = "pointer";
+		dragHandle.style.cursor = "grab";
+		dragHandle.style.backgroundColor = "transparent";
+
+		canvas.classList.remove("active");
+
+		initialPosition = { x: 0, y: 0 };
+		currentPosition = { x: 0, y: 0 };
+
+		document.onmousemove = null;
+		document.ontouchmove = null;
+		document.onmouseup = null;
+		document.ontouchcancel = null;
+		document.ontouchend = null;	
+	};
+
+	const onDragStart = (e) => {
 		e = e || window.event;
 		e.preventDefault();
 
@@ -44,55 +94,22 @@ const createCard = () => {
 		dragHandle.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
 		dragHandle.style.cursor = "grabbing";
 
+		canvas.classList.add("active");
+
 		document.body.style.cursor = "grabbing";
 
 		initialPosition.x = snapToGrid(e.clientX, size);
 		initialPosition.y = snapToGrid(e.clientY, size);
 
-		document.onmousemove = (e) => {
-			e = e || window.event;
-			e.preventDefault();
-
-			const isActive = card.classList.contains("active");
-
-			if (isActive) {
-				const x = snapToGrid(e.clientX, size);
-				const y = snapToGrid(e.clientY, size);
-
-				currentPosition.x = initialPosition.x - x;
-				currentPosition.y = initialPosition.y - y;
-
-				const top = card.offsetTop - currentPosition.y;
-				const left = card.offsetLeft - currentPosition.x;
-
-				card.style.top = `${top}px`;
-				card.style.left = `${left}px`;
-
-				initialPosition.x = x;
-				initialPosition.y = y;
-			}
-		};
-
-		document.onmouseup = () => {
-			const top = snapToGrid(card.offsetTop - currentPosition.y, size);
-			const left = snapToGrid(card.offsetLeft - currentPosition.x, size);
-
-			card.style.top = `${top}px`;
-			card.style.left = `${left}px`;
-
-			card.classList.remove("active");
-
-			document.body.style.cursor = "pointer";
-			dragHandle.style.cursor = "grab";
-			dragHandle.style.backgroundColor = "transparent";
-
-			initialPosition = { x: 0, y: 0 };
-			currentPosition = { x: 0, y: 0 };
-
-			document.onmousemove = null;
-			document.onmouseup = null;
-		};
+		document.onmousemove = onDrag;
+		document.ontouchmove = onDrag;
+		document.onmouseup = onDragEnd;
+		document.ontouchcancel = onDragEnd;
+		document.ontouchend = onDragEnd;
 	};
+
+	dragHandle.onmousedown = onDragStart;
+	dragHandle.ontouchstart = onDragStart;
 
 	card.appendChild(dragHandle);
 
@@ -100,7 +117,48 @@ const createCard = () => {
 	card.appendChild(textarea);
 
 	const resizeHandle = createResizeHandleElement();
-	resizeHandle.onmousedown = (e) => {
+
+	const onResize = (e) => {
+		e = e || window.event;
+		e.preventDefault();
+
+		const isActive = card.classList.contains("active");
+
+		if (isActive) {
+			const height = snapToGrid(initialSize.height + (e.clientY - initialPosition.y), size);
+			const width = snapToGrid(initialSize.width + (e.clientX - initialPosition.x), size);
+
+			card.style.height = `${height}px`;
+			card.style.width = `${width}px`;
+		}
+	};
+
+	const onResizeEnd = (e) => {
+		e = e || window.event;
+		e.preventDefault();
+
+		const height = snapToGrid(initialSize.height + (e.clientY - initialPosition.y), size);
+		const width = snapToGrid(initialSize.width + (e.clientX - initialPosition.x), size);
+
+		card.style.height = `${height}px`;
+		card.style.width = `${width}px`;
+		card.classList.remove("active");
+
+		canvas.classList.remove("active");
+
+		resizeHandle.style.backgroundColor = "transparent";
+		document.body.style.cursor = "pointer";
+
+		initialSize = { width: 0, height: 0 };
+
+		document.onmousemove = null;
+		document.ontouchmove = null;
+		document.onmouseup = null;
+		document.ontouchcancel = null;
+		document.ontouchend = null;	
+	};
+
+	const onResizeStart = (e) => {
 		e = e || window.event;
 		e.preventDefault();
 
@@ -110,6 +168,8 @@ const createCard = () => {
 
 		resizeHandle.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
 
+		canvas.classList.add("active");
+
 		initialPosition.x = snapToGrid(e.clientX, size);
 		initialPosition.y = snapToGrid(e.clientY, size);
 
@@ -118,41 +178,15 @@ const createCard = () => {
 		initialSize.width = parseInt(rect.width, 10);
 		initialSize.height = parseInt(rect.height, 10);
 
-		document.onmousemove = (e) => {
-			e = e || window.event;
-			e.preventDefault();
-
-			const isActive = card.classList.contains("active");
-
-			if (isActive) {
-				const height = snapToGrid(initialSize.height + (e.clientY - initialPosition.y), size);
-				const width = snapToGrid(initialSize.width + (e.clientX - initialPosition.x), size);
-
-				card.style.height = `${height}px`;
-				card.style.width = `${width}px`;
-			}
-		};
-
-		document.onmouseup = (e) => {
-			e = e || window.event;
-			e.preventDefault();
-
-			const height = snapToGrid(initialSize.height + (e.clientY - initialPosition.y), size);
-			const width = snapToGrid(initialSize.width + (e.clientX - initialPosition.x), size);
-
-			card.style.height = `${height}px`;
-			card.style.width = `${width}px`;
-			card.classList.remove("active");
-
-			resizeHandle.style.backgroundColor = "transparent";
-			document.body.style.cursor = "pointer";
-
-			initialSize = { width: 0, height: 0 };
-
-			document.onmousemove = null;
-			document.onmouseup = null;
-		};
+		document.onmousemove = onResize;
+		document.ontouchmove = onResize;
+		document.onmouseup = onResizeEnd;
+		document.ontouchcancel = onResizeEnd;
+		document.ontouchend = onResizeEnd;	
 	};
+
+	resizeHandle.onmousedown = onResizeStart;
+	resizeHandle.ontouchstart = onResizeStart;
 
 	card.appendChild(resizeHandle);
 	container.appendChild(card);
@@ -161,8 +195,8 @@ const createCard = () => {
 const renderCanvas = () => {
 	const context = canvas.getContext("2d");
 
-	for (let x = 0; x <= documentWidth; x += size) {
-		for (let y = 0; y <= documentHeight; y += size) {
+	for (let x = 0; x <= windowWidth; x += size) {
+		for (let y = 0; y <= windowHeight; y += size) {
 			context.fillStyle = "rgba(0, 0, 0, 0.5)";
 			context.beginPath();
 			context.rect(x, y, 1, 1);
@@ -172,14 +206,14 @@ const renderCanvas = () => {
 };
 
 const updateDimensions = () => {
-	documentWidth = (window.innerWidth - margin) - 1;
-	documentHeight = (window.innerHeight - margin) + 1;
+	windowWidth = (window.innerWidth - margin) - 1;
+	windowHeight = (window.innerHeight - margin) + 1;
 
-	main.style.width = `${documentWidth}px`;
-	main.style.height = `${documentHeight}px`;
+	main.style.width = `${windowWidth}px`;
+	main.style.height = `${windowHeight}px`;
 
-	canvas.width = documentWidth;
-	canvas.height = documentHeight;
+	canvas.width = windowWidth;
+	canvas.height = windowHeight;
 
 	renderCanvas();
 };

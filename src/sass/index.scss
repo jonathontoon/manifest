@@ -13,6 +13,11 @@ body {
 
         canvas#grid {
             position: absolute;
+            display: none;
+
+            &.active {
+                display: block;
+            }
         }
 
         section#container {
