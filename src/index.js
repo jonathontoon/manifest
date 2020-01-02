@@ -110,8 +110,8 @@ const createCard = () => {
 
 		resizeHandle.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
 
-		initialPosition.x = e.clientX;
-		initialPosition.y = e.clientY;
+		initialPosition.x = snapToGrid(e.clientX, size);
+		initialPosition.y = snapToGrid(e.clientY, size);
 
 		const rect = card.getBoundingClientRect();
 
@@ -125,11 +125,11 @@ const createCard = () => {
 			const isActive = card.classList.contains("active");
 
 			if (isActive) {
-				const snapHeight = snapToGrid(initialSize.height + (e.clientY - initialPosition.y), size);
-				const snapWidth = snapToGrid(initialSize.width + (e.clientX - initialPosition.x), size);
+				const height = snapToGrid(initialSize.height + (e.clientY - initialPosition.y), size);
+				const width = snapToGrid(initialSize.width + (e.clientX - initialPosition.x), size);
 
-				card.style.height = `${snapHeight}px`;
-				card.style.width = `${snapWidth}px`;
+				card.style.height = `${height}px`;
+				card.style.width = `${width}px`;
 			}
 		};
 
@@ -137,11 +137,11 @@ const createCard = () => {
 			e = e || window.event;
 			e.preventDefault();
 
-			const snapHeight = snapToGrid(initialSize.height + (e.clientY - initialPosition.y), size);
-			const snapWidth = snapToGrid(initialSize.width + (e.clientX - initialPosition.x), size);
+			const height = snapToGrid(initialSize.height + (e.clientY - initialPosition.y), size);
+			const width = snapToGrid(initialSize.width + (e.clientX - initialPosition.x), size);
 
-			card.style.height = `${snapHeight}px`;
-			card.style.width = `${snapWidth}px`;
+			card.style.height = `${height}px`;
+			card.style.width = `${width}px`;
 			card.classList.remove("active");
 
 			resizeHandle.style.backgroundColor = "transparent";
