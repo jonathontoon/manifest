@@ -25,9 +25,13 @@ export const createContainerElement = (w, h) => {
 	return el;
 };
 
-export const createCardElement = () => {
+export const createCardElement = (position, size) => {
 	const el = document.createElement("div");
 	el.classList.add("card");
+	el.style.top = `${position.x}px`;
+	el.style.left = `${position.y}px`;
+	el.style.width = `${size.width}px`;
+	el.style.height = `${size.height}px`;
 
 	return el;
 };
