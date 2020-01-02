@@ -15,19 +15,19 @@ import "./sass/index.scss";
 const margin = 48;
 const size = 10;
 
-let documentWidth = (window.innerWidth - margin) - 1;
-let documentHeight = (window.innerHeight - margin) + 1;
+let windowWidth = (window.innerWidth - margin) - 1;
+let windowHeight = (window.innerHeight - margin) + 1;
 
 let initialPosition = { x: 0, y: 0 };
 let currentPosition = { x: 0, y: 0 };
 let initialSize = { width: 0, height: 0 };
 
-const main = createMainElement(documentWidth, documentHeight);
+const main = createMainElement(windowWidth, windowHeight);
 
-const canvas = createCanvasElement(documentWidth, documentHeight);
+const canvas = createCanvasElement(windowWidth, windowHeight);
 main.appendChild(canvas);
 
-const container = createContainerElement(documentWidth, documentHeight);
+const container = createContainerElement(windowWidth, windowHeight);
 main.appendChild(container);
 
 const createCard = () => {
@@ -161,8 +161,8 @@ const createCard = () => {
 const renderCanvas = () => {
 	const context = canvas.getContext("2d");
 
-	for (let x = 0; x <= documentWidth; x += size) {
-		for (let y = 0; y <= documentHeight; y += size) {
+	for (let x = 0; x <= windowWidth; x += size) {
+		for (let y = 0; y <= windowHeight; y += size) {
 			context.fillStyle = "rgba(0, 0, 0, 0.5)";
 			context.beginPath();
 			context.rect(x, y, 1, 1);
@@ -172,14 +172,14 @@ const renderCanvas = () => {
 };
 
 const updateDimensions = () => {
-	documentWidth = (window.innerWidth - margin) - 1;
-	documentHeight = (window.innerHeight - margin) + 1;
+	windowWidth = (window.innerWidth - margin) - 1;
+	windowHeight = (window.innerHeight - margin) + 1;
 
-	main.style.width = `${documentWidth}px`;
-	main.style.height = `${documentHeight}px`;
+	main.style.width = `${windowWidth}px`;
+	main.style.height = `${windowHeight}px`;
 
-	canvas.width = documentWidth;
-	canvas.height = documentHeight;
+	canvas.width = windowWidth;
+	canvas.height = windowHeight;
 
 	renderCanvas();
 };
