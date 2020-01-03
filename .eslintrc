@@ -2,7 +2,7 @@
 	"extends": "standard",
 	"parser": "babel-eslint",
 	"rules": {
-		"no-underscore-dangle": ["error", { "allowAfterThis": true }],
+		"no-underscore-dangle": ["error", { "enforceInMethodNames": false, "allowAfterThis": true }],
 		"no-tabs": 0,
 		"semi": [2, "always"],
 		"indent": ["error", "tab"],
