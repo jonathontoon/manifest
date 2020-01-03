@@ -1,37 +1,50 @@
-export const createMainElement = (width, height) => {
+export const createMainElement = (w, h) => {
 	const el = document.createElement("main");
 	el.id = "app";
-	el.style.width = `${width}px`;
-	el.style.height = `${height}px`;
+	el.style.width = `${w}px`;
+	el.style.height = `${h}px`;
 
 	return el;
 };
 
-export const createCanvasElement = (w, h) => {
+export const createCanvasElement = (t, l, w, h) => {
 	const el = document.createElement("canvas");
 	el.id = "grid";
 	el.width = w;
 	el.height = h;
+	el.style.top = `${t}px`;
+	el.style.left = `${l}px`;
+	el.style.width = `${w}px`;
+	el.style.height = `${h}px`;
 
 	return el;
 };
 
-export const createContainerElement = (w, h) => {
+export const createContainerElement = (t, l, w, h) => {
 	const el = document.createElement("section");
 	el.id = "container";
-	el.style.width = w;
-	el.style.height = h;
+	el.style.top = `${t}px`;
+	el.style.left = `${l}px`;
+	el.style.width = `${w}px`;
+	el.style.height = `${h}px`;
 
 	return el;
 };
 
-export const createCardElement = (position, size) => {
+export const createSelectionElement = () => {
+	const el = document.createElement("div");
+	el.id = "selection";
+
+	return el;
+};
+
+export const createCardElement = (x, y, w, h) => {
 	const el = document.createElement("div");
 	el.classList.add("card");
-	el.style.top = `${position.x}px`;
-	el.style.left = `${position.y}px`;
-	el.style.width = `${size.width}px`;
-	el.style.height = `${size.height}px`;
+	el.style.top = `${x}px`;
+	el.style.left = `${y}px`;
+	el.style.width = `${w}px`;
+	el.style.height = `${h}px`;
 
 	return el;
 };
