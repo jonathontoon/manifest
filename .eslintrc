@@ -5,7 +5,7 @@
 		"no-underscore-dangle": ["error", { "enforceInMethodNames": false, "allowAfterThis": true }],
 		"no-tabs": 0,
 		"semi": [2, "always"],
-		"indent": ["error", "tab"],
+		"indent": ["error", 2],
 		"quotes": [2, "double", { "avoidEscape": true }]
 	}
 }

@@ -5,7 +5,7 @@ import Canvas from "./canvas";
 import Container from "./container";
 
 export default class App {
-	constructor () {
+  constructor () {
 		this._width = (window.innerWidth - MARGIN) - 1;
 		this._height = (window.innerHeight - MARGIN) + 1;
 
