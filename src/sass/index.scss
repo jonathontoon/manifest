@@ -18,19 +18,12 @@ body {
 
             #selection {
                 position: absolute;
-                border: 1px solid black;
-                display: none;
-
-                &.active {
-                    display: block;
-                }
+                background-color: rgba(0, 0, 0, 0.05);
             }
 
             .card {
                 background-color: white;
                 position: absolute;
-                min-width: 100px;
-                min-height: 100px;
                 border: 1px solid black;
 
                 &.active {

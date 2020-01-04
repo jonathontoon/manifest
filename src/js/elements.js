@@ -41,8 +41,8 @@ export const createSelectionElement = () => {
 export const createCardElement = (x, y, w, h) => {
   const el = document.createElement("div");
   el.classList.add("card");
-  el.style.top = `${x}px`;
-  el.style.left = `${y}px`;
+  el.style.top = `${y}px`;
+  el.style.left = `${x}px`;
   el.style.width = `${w}px`;
   el.style.height = `${h}px`;
 
@@ -60,7 +60,6 @@ export const createTextareaElement = (text) => {
   const el = document.createElement("textarea");
 
   el.placeholder = "Add something here to remember...";
-  el.value = text;
   el.autocomplete = false;
   el.spellcheck = false;
 

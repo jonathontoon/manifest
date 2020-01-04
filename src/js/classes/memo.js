@@ -6,16 +6,16 @@ export default class Memo {
   constructor (x, y, w, h) {
     this._cardElement = createCardElement(x, y, w, h);
     this._dragHandleElement = createDragHandleElement();
-    this._textareaElement = createTextareaElement("Cool text");
+    this._textareaElement = createTextareaElement();
     this._resizeHandleElement = createResizeHandleElement();
 
     this._cardElement.appendChild(this._dragHandleElement);
     this._cardElement.appendChild(this._textareaElement);
     this._cardElement.appendChild(this._resizeHandleElement);
 
-    this._initialPosition = { x: 0, y: 0 };
-    this._currentPosition = { x: 0, y: 0 };
-    this._initialSize = { width: 0, height: 0 };
+    this._initialPosition = { x, y };
+    this._currentPosition = { x, y };
+    this._initialSize = { w, h };
 
     this._handleDragStart = this._handleDragStart.bind(this);
     this._handleDragMove = this._handleDragMove.bind(this);
@@ -127,8 +127,8 @@ export default class Memo {
 
     const rect = this._cardElement.getBoundingClientRect();
 
-    this._initialSize.width = parseInt(rect.width, 10);
-    this._initialSize.height = parseInt(rect.height, 10);
+    this._initialSize.w = parseInt(rect.width, 10);
+    this._initialSize.h = parseInt(rect.height, 10);
 
     document.addEventListener("mousemove", this._handleResizeMove, false);
     document.addEventListener("touchmove", this._handleResizeMove, false);
@@ -144,8 +144,8 @@ export default class Memo {
     const isActive = this._cardElement.classList.contains("active");
 
     if (isActive) {
-      const height = snapToGrid(this._initialSize.height + (e.clientY - this._initialPosition.y), GRID_SIZE);
-      const width = snapToGrid(this._initialSize.width + (e.clientX - this._initialPosition.x), GRID_SIZE);
+      const height = snapToGrid(this._initialSize.h + (e.clientY - this._initialPosition.y), GRID_SIZE);
+      const width = snapToGrid(this._initialSize.w + (e.clientX - this._initialPosition.x), GRID_SIZE);
 
       this._cardElement.style.height = `${height}px`;
       this._cardElement.style.width = `${width}px`;
@@ -155,16 +155,16 @@ export default class Memo {
   _handleResizeEnd (e) {
     e.preventDefault();
 
-    const height = snapToGrid(this._initialSize.height + (e.clientY - this._initialPosition.y), GRID_SIZE);
-    const width = snapToGrid(this._initialSize.width + (e.clientX - this._initialPosition.x), GRID_SIZE);
-
+    const width = snapToGrid(this._initialSize.w + (e.clientX - this._initialPosition.x), GRID_SIZE);
+    const height = snapToGrid(this._initialSize.h + (e.clientY - this._initialPosition.y), GRID_SIZE);
+   
     this._cardElement.style.height = `${height}px`;
     this._cardElement.style.width = `${width}px`;
     this._cardElement.classList.remove("active");
 
     this._resizeHandleElement.style.backgroundColor = "transparent";
 
-    this._initialSize = { width: 0, height: 0 };
+    this._initialSize = { w: 0, h: 0 };
 
     this._invalidateEvents();
   };
