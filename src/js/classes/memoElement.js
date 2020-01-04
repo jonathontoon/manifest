@@ -1,37 +1,48 @@
 import { GRID_SIZE } from "../globals";
-import { createCardElement, createDragHandleElement, createTextareaElement, createResizeHandleElement } from "../elements";
 import { snapToGrid } from "../utils";
+
+import TextareaElement from "./textareaElement";
+import CardElement from "./cardElement";
+import DragElement from "./dragElement";
+import ResizeElement from "./resizeElement";
 
 export default class Memo {
   constructor(t, l, w, h) {
-    this._cardElement = createCardElement(t, l, w, h);
-    this._dragHandleElement = createDragHandleElement();
-    this._textareaElement = createTextareaElement();
-    this._resizeHandleElement = createResizeHandleElement();
-
-    this._cardElement.appendChild(this._dragHandleElement);
-    this._cardElement.appendChild(this._textareaElement);
-    this._cardElement.appendChild(this._resizeHandleElement);
-
     this._initialPosition = { x: t, y: l };
     this._currentPosition = { x: t, y: l };
     this._initialSize = { w, h };
 
+    this._createElement = this._createElement.bind(this);
     this._handleDragStart = this._handleDragStart.bind(this);
     this._handleDragMove = this._handleDragMove.bind(this);
     this._handleDragEnd = this._handleDragEnd.bind(this);
-
     this._handleResizeStart = this._handleResizeStart.bind(this);
     this._handleResizeMove = this._handleResizeMove.bind(this);
     this._handleResizeEnd = this._handleResizeEnd.bind(this);
-
     this._invalidateEvents = this._invalidateEvents.bind(this);
 
-    this._dragHandleElement.addEventListener("mousedown", this._handleDragStart, false);
-    this._dragHandleElement.addEventListener("touchstart", this._handleDragStart, false);
+    this.appendChild = this.appendChild.bind(this);
+    this.updatePosition = this.updatePosition.bind(this);
+    this.updateDimensions = this.updateDimensions.bind(this);
 
-    this._resizeHandleElement.addEventListener("mousedown", this._handleResizeStart, false);
-    this._resizeHandleElement.addEventListener("touchstart", this._handleResizeStart, false);
+    this._element = this._createElement();
+
+    this._cardElement = new CardElement();
+    this._dragElement = new DragElement();
+    this._textareaElement = new TextareaElement();
+    this._resizeElement = new ResizeElement();
+
+    this._cardElement.appendChild(this._dragElement.element);
+    this._cardElement.appendChild(this._textareaElement.element);
+    this._cardElement.appendChild(this._resizeElement.element);
+
+    this._dragElement.addEventListener("mousedown", this._handleDragStart, false);
+    this._dragElement.addEventListener("touchstart", this._handleDragStart, false);
+
+    this._resizeElement.addEventListener("mousedown", this._handleResizeStart, false);
+    this._resizeElement.addEventListener("touchstart", this._handleResizeStart, false);
+
+    this.appendChild(this._cardElement);
   }
 
   /*
@@ -39,19 +50,30 @@ export default class Memo {
 	*/
 
   get element() {
-    return this._cardElement;
+    return this._element;
   };
 
   /*
 		Private methods
-	*/
+  */
+
+  _createElement(t, l, w, h) {
+    const el = document.createElement("div");
+    el.classList.add("memo");
+    el.style.top = `${t}px`;
+    el.style.left = `${l}px`;
+    el.style.width = `${w}px`;
+    el.style.height = `${h}px`;
+  
+    return el;
+  };
 
   _handleDragStart(e) {
     e.preventDefault();
 
-    this._cardElement.classList.add("active");
-    this._dragHandleElement.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
-    this._dragHandleElement.style.cursor = "grabbing";
+    this._element.classList.add("active");
+    this._dragElement.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
+    this._dragElement.style.cursor = "grabbing";
 
     document.body.style.cursor = "grabbing";
 
@@ -71,7 +93,7 @@ export default class Memo {
   _handleDragMove(e) {
     e.preventDefault();
 
-    const isActive = this._cardElement.classList.contains("active");
+    const isActive = this._element.classList.contains("active");
 
     if (isActive) {
       const x = snapToGrid(e.clientX, GRID_SIZE);
@@ -82,11 +104,10 @@ export default class Memo {
         y: this._initialPosition.y - y
       };
 
-      const top = this._cardElement.offsetTop - this._currentPosition.y;
-      const left = this._cardElement.offsetLeft - this._currentPosition.x;
+      const top = this._element.offsetTop - this._currentPosition.y;
+      const left = this._element.offsetLeft - this._currentPosition.x;
 
-      this._cardElement.style.top = `${top}px`;
-      this._cardElement.style.left = `${left}px`;
+      this.updatePosition(top, left);
 
       this._initialPosition = { x, y };
     }
@@ -95,15 +116,14 @@ export default class Memo {
   _handleDragEnd(e) {
     e.preventDefault();
 
-    const top = snapToGrid(this._cardElement.offsetTop - this._currentPosition.y, GRID_SIZE);
-    const left = snapToGrid(this._cardElement.offsetLeft - this._currentPosition.x, GRID_SIZE);
+    const top = snapToGrid(this._element.offsetTop - this._currentPosition.y, GRID_SIZE);
+    const left = snapToGrid(this._element.offsetLeft - this._currentPosition.x, GRID_SIZE);
 
-    this._cardElement.style.top = `${top}px`;
-    this._cardElement.style.left = `${left}px`;
-    this._cardElement.classList.remove("active");
+    this.updatePosition(top, left);
+    this._element.classList.remove("active");
 
-    this._dragHandleElement.style.cursor = "grab";
-    this._dragHandleElement.style.backgroundColor = "transparent";
+    this._dragElement.style.cursor = "grab";
+    this._dragElement.style.backgroundColor = "transparent";
 
     document.body.style.cursor = "pointer";
 
@@ -116,16 +136,16 @@ export default class Memo {
   _handleResizeStart(e) {
     e.preventDefault();
 
-    this._cardElement.classList.add("active");
+    this._element.classList.add("active");
 
     document.body.style.cursor = "nw-resize";
 
-    this._resizeHandleElement.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
+    this._resizeElement.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
 
     this._initialPosition.x = snapToGrid(e.clientX, GRID_SIZE);
     this._initialPosition.y = snapToGrid(e.clientY, GRID_SIZE);
 
-    const rect = this._cardElement.getBoundingClientRect();
+    const rect = this._element.getBoundingClientRect();
 
     this._initialSize.w = parseInt(rect.width, 10);
     this._initialSize.h = parseInt(rect.height, 10);
@@ -141,14 +161,13 @@ export default class Memo {
   _handleResizeMove(e) {
     e.preventDefault();
 
-    const isActive = this._cardElement.classList.contains("active");
+    const isActive = this._element.classList.contains("active");
 
     if (isActive) {
-      const height = snapToGrid(this._initialSize.h + (e.clientY - this._initialPosition.y), GRID_SIZE);
       const width = snapToGrid(this._initialSize.w + (e.clientX - this._initialPosition.x), GRID_SIZE);
+      const height = snapToGrid(this._initialSize.h + (e.clientY - this._initialPosition.y), GRID_SIZE);
 
-      this._cardElement.style.height = `${height}px`;
-      this._cardElement.style.width = `${width}px`;
+      this.updateDimensions(width, height);
     }
   };
 
@@ -158,11 +177,10 @@ export default class Memo {
     const width = snapToGrid(this._initialSize.w + (e.clientX - this._initialPosition.x), GRID_SIZE);
     const height = snapToGrid(this._initialSize.h + (e.clientY - this._initialPosition.y), GRID_SIZE);
 
-    this._cardElement.style.height = `${height}px`;
-    this._cardElement.style.width = `${width}px`;
-    this._cardElement.classList.remove("active");
+    this.updateDimensions(width, height);
+    this._element.classList.remove("active");
 
-    this._resizeHandleElement.style.backgroundColor = "transparent";
+    this._resizeElement.style.backgroundColor = "transparent";
 
     this._initialSize = { w: 0, h: 0 };
 
@@ -189,4 +207,22 @@ export default class Memo {
     document.removeEventListener("touchcancel", this._handleResizeEnd, false);
     document.removeEventListener("touchend", this._handleResizeEnd, false);
   }
+
+  /*
+		Public methods
+	*/
+
+  appendChild(childElement) {
+    this._element.appendChild(childElement);
+  };
+
+  updatePosition(t, l) {
+    this._element.style.top = `${t}px`;
+    this._element.style.left = `${l}px`;
+  };
+
+  updateDimensions(w, h) {
+    this._element.style.width = `${w}px`;
+    this._element.style.height = `${h}px`;
+  };
 };
