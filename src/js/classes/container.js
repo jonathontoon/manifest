@@ -120,9 +120,9 @@ export default class Container {
 
   _handleCreateEnd (e) {
     const memo = new Memo(this._initialPosition.x, this._initialPosition.y, this._initalSize.width, this._initalSize.height);
-    this._containerElement.appendChild(memo.element);
     this._memos.push(memo);
 
+    this.appendChild(memo.element);
     this._disableCreateMode();
   };
 
@@ -143,7 +143,7 @@ export default class Container {
 		Public methods
 	*/
 
-  appendChild (childElement) {
+  appendChild(childElement) {
     this._containerElement.appendChild(childElement);
   };
 
