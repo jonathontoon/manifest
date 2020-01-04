@@ -16,7 +16,7 @@ export default class Container {
     this._handleKeyUp = this._handleKeyUp.bind(this);
     this._enableCreateMode = this._enableCreateMode.bind(this);
     this._disableCreateMode = this._disableCreateMode.bind(this);
-    
+
     this._appendSelectionElement = this._appendSelectionElement.bind(this);
     this._removeSelectionElement = this._removeSelectionElement.bind(this);
 
@@ -72,14 +72,14 @@ export default class Container {
     this._invalidateEvents();
   };
 
-  _appendSelectionElement() {
+  _appendSelectionElement () {
     this._containerElement.appendChild(this._selectionElement);
 
     this._selectionElement.style.top = `${this._initialPosition.y}px`;
     this._selectionElement.style.left = `${this._initialPosition.x}px`;
   };
 
-  _removeSelectionElement() {
+  _removeSelectionElement () {
     this._containerElement.removeChild(this._selectionElement);
 
     this._selectionElement.style.top = "0px";
@@ -88,7 +88,7 @@ export default class Container {
     this._selectionElement.style.width = "0px";
   };
 
-  _handleCreateStart(e) {
+  _handleCreateStart (e) {
     const rect = this._containerElement.getBoundingClientRect();
     const x = snapToGrid(e.clientX - rect.left, GRID_SIZE);
     const y = snapToGrid(e.clientY - rect.top, GRID_SIZE);
@@ -104,7 +104,7 @@ export default class Container {
     this._containerElement.addEventListener("touchend", this._handleCreateEnd, false);
   };
 
-  _handleCreateMove(e) {
+  _handleCreateMove (e) {
     const rect = this._containerElement.getBoundingClientRect();
     const x = snapToGrid(e.clientX - rect.left, GRID_SIZE) + 1;
     const y = snapToGrid(e.clientY - rect.top, GRID_SIZE) + 1;
@@ -118,7 +118,7 @@ export default class Container {
     this._initalSize = { width, height };
   };
 
-  _handleCreateEnd(e) {
+  _handleCreateEnd (e) {
     const memo = new Memo(this._initialPosition.x, this._initialPosition.y, this._initalSize.width, this._initalSize.height);
     this._containerElement.appendChild(memo.element);
     this._memos.push(memo);
@@ -126,10 +126,10 @@ export default class Container {
     this._disableCreateMode();
   };
 
-  _invalidateEvents() {
+  _invalidateEvents () {
     this._initialPosition = { x: 0, y: 0 };
     this._initalSize = { width: 0, height: 0 };
-    
+
     this._containerElement.removeEventListener("mousedown", this._handleCreateStart, false);
     this._containerElement.removeEventListener("mousemove", this._handleCreateMove, false);
     this._containerElement.removeEventListener("mouseup", this._handleCreateEnd, false);
