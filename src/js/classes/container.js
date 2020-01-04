@@ -4,13 +4,12 @@ import { GRID_SIZE } from "../globals";
 import Memo from "./memo";
 
 export default class Container {
-  constructor (t, l, w, h) {
+  constructor(t, l, w, h) {
     this._containerElement = createContainerElement(t, l, w, h);
-    this._selectionElement = createSelectionElement();
 
     this._createMode = false;
-    this._initialPosition = { x: 0, y: 0 };
-    this._initalSize = { width: 0, height: 0 };
+    this._initialMouse = { x: 0, y: 0 };
+    this._currentMouse = { x: 0, y: 0 };
     this._memos = [];
 
     this._handleKeyUp = this._handleKeyUp.bind(this);
@@ -35,7 +34,7 @@ export default class Container {
 		Get / Set methods
 	*/
 
-  get element () {
+  get element() {
     return this._containerElement;
   };
 
@@ -43,7 +42,7 @@ export default class Container {
 		Private methods
 	*/
 
-  _handleKeyUp (e) {
+  _handleKeyUp(e) {
     e.preventDefault();
 
     switch (e.keyCode) {
@@ -56,7 +55,7 @@ export default class Container {
     }
   }
 
-  _enableCreateMode () {
+  _enableCreateMode() {
     document.body.style.cursor = "crosshair";
 
     this._createMode = true;
@@ -64,7 +63,7 @@ export default class Container {
     this._containerElement.addEventListener("touchstart", this._handleCreateStart, false);
   };
 
-  _disableCreateMode () {
+  _disableCreateMode() {
     document.body.style.cursor = "pointer";
 
     this._createMode = false;
@@ -72,68 +71,71 @@ export default class Container {
     this._invalidateEvents();
   };
 
-  _appendSelectionElement () {
+  _appendSelectionElement() {
+    this._selectionElement = createSelectionElement();
     this._containerElement.appendChild(this._selectionElement);
-
-    this._selectionElement.style.top = `${this._initialPosition.y}px`;
-    this._selectionElement.style.left = `${this._initialPosition.x}px`;
   };
 
-  _removeSelectionElement () {
+  _removeSelectionElement() {
     this._containerElement.removeChild(this._selectionElement);
-
-    this._selectionElement.style.top = "0px";
-    this._selectionElement.style.left = "0px";
-    this._selectionElement.style.height = "0px";
-    this._selectionElement.style.width = "0px";
   };
 
-  _handleCreateStart (e) {
+  _handleCreateStart(e) {
     const rect = this._containerElement.getBoundingClientRect();
-    const x = snapToGrid(e.clientX - rect.left, GRID_SIZE);
-    const y = snapToGrid(e.clientY - rect.top, GRID_SIZE);
+    const mouseX = snapToGrid(e.clientX - rect.left, GRID_SIZE);
+    const mouseY = snapToGrid(e.clientY - rect.top, GRID_SIZE);
 
-    this._initialPosition = { x, y };
+    this._initialMouse = { x: mouseX, y: mouseY };
 
     this._appendSelectionElement();
 
     this._containerElement.addEventListener("mousemove", this._handleCreateMove, false);
     this._containerElement.addEventListener("mouseup", this._handleCreateEnd, false);
-
     this._containerElement.addEventListener("touchmove", this._handleCreateMove, false);
     this._containerElement.addEventListener("touchend", this._handleCreateEnd, false);
   };
 
-  _handleCreateMove (e) {
+  _handleCreateMove(e) {
     const rect = this._containerElement.getBoundingClientRect();
-    const x = snapToGrid(e.clientX - rect.left, GRID_SIZE) + 1;
-    const y = snapToGrid(e.clientY - rect.top, GRID_SIZE) + 1;
+    const mouseX = snapToGrid(e.clientX - rect.left, GRID_SIZE);
+    const mouseY = snapToGrid(e.clientY - rect.top, GRID_SIZE);
 
-    const width = x - this._initialPosition.x;
-    const height = y - this._initialPosition.y;
+    const width = Math.abs(mouseX - this._initialMouse.x) + 1;
+    const height = Math.abs(mouseY - this._initialMouse.y) + 1;
 
+    const top = (mouseY - this._initialMouse.y < 0) ? mouseY : this._initialMouse.y;
+    const left = (mouseX - this._initialMouse.x < 0) ? mouseX : this._initialMouse.x;
+
+    this._selectionElement.style.top = `${top}px`;
+    this._selectionElement.style.left = `${left}px`;
     this._selectionElement.style.width = `${width}px`;
     this._selectionElement.style.height = `${height}px`;
-
-    this._initalSize = { width, height };
   };
 
-  _handleCreateEnd (e) {
-    const memo = new Memo(this._initialPosition.x, this._initialPosition.y, this._initalSize.width, this._initalSize.height);
-    this._containerElement.appendChild(memo.element);
+  _handleCreateEnd(e) {
+    const rect = this._containerElement.getBoundingClientRect();
+    const mouseX = snapToGrid(e.clientX - rect.left, GRID_SIZE);
+    const mouseY = snapToGrid(e.clientY - rect.top, GRID_SIZE);
+
+    const width = Math.abs(mouseX - this._initialMouse.x) + 1;
+    const height = Math.abs(mouseY - this._initialMouse.y) + 1;
+
+    const top = (mouseY - this._initialMouse.y < 0) ? mouseY : this._initialMouse.y;
+    const left = (mouseX - this._initialMouse.x < 0) ? mouseX : this._initialMouse.x;
+
+    const memo = new Memo(top, left, width, height);
     this._memos.push(memo);
 
+    this.appendChild(memo.element);
     this._disableCreateMode();
   };
 
-  _invalidateEvents () {
-    this._initialPosition = { x: 0, y: 0 };
-    this._initalSize = { width: 0, height: 0 };
+  _invalidateEvents() {
+    this._initialMouse= { x: 0, y: 0 };
 
     this._containerElement.removeEventListener("mousedown", this._handleCreateStart, false);
     this._containerElement.removeEventListener("mousemove", this._handleCreateMove, false);
     this._containerElement.removeEventListener("mouseup", this._handleCreateEnd, false);
-
     this._containerElement.removeEventListener("touchstart", this._handleCreateStart, false);
     this._containerElement.removeEventListener("touchmove", this._handleCreateMove, false);
     this._containerElement.removeEventListener("touchend", this._handleCreateEnd, false);
@@ -143,11 +145,11 @@ export default class Container {
 		Public methods
 	*/
 
-  appendChild (childElement) {
+  appendChild(childElement) {
     this._containerElement.appendChild(childElement);
   };
 
-  updateDimensions (t, l, w, h) {
+  updateDimensions(t, l, w, h) {
     this._containerElement.style.width = `${w}px`;
     this._containerElement.style.height = `${h}px`;
   };

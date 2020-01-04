@@ -5,7 +5,7 @@ import Canvas from "./canvas";
 import Container from "./container";
 
 export default class App {
-  constructor () {
+  constructor() {
     this._width = (window.innerWidth - MARGIN) - 1;
     this._height = (window.innerHeight - MARGIN) + 1;
 
@@ -25,12 +25,12 @@ export default class App {
 		Private methods
 	*/
 
-  _updateSize () {
+  _updateSize() {
     this._width = (window.innerWidth - MARGIN) - 1;
     this._height = (window.innerHeight - MARGIN) + 1;
   }
 
-  _updateElements (e) {
+  _updateElements(e) {
     e.preventDefault();
 
     this._main.updateDimensions(window.innerWidth, window.innerHeight);
@@ -45,7 +45,7 @@ export default class App {
 		Public methods
 	*/
 
-  setup () {
+  setup() {
     this._main.appendChild(this._canvas.element);
     this._main.appendChild(this._container.element);
 

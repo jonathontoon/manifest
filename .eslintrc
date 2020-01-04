@@ -6,6 +6,11 @@
 		"no-tabs": 0,
 		"semi": [2, "always"],
 		"indent": ["error", 2],
-		"quotes": [2, "double", { "avoidEscape": true }]
+		"quotes": [2, "double", { "avoidEscape": true }],
+		"space-before-function-paren": ["error", {
+			"anonymous": "always",
+			"named": "never",
+			"asyncArrow": "always"
+		}]
 	}
 }

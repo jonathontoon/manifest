@@ -3,8 +3,8 @@ import { createCardElement, createDragHandleElement, createTextareaElement, crea
 import { snapToGrid } from "../utils";
 
 export default class Memo {
-  constructor (x, y, w, h) {
-    this._cardElement = createCardElement(x, y, w, h);
+  constructor(t, l, w, h) {
+    this._cardElement = createCardElement(t, l, w, h);
     this._dragHandleElement = createDragHandleElement();
     this._textareaElement = createTextareaElement();
     this._resizeHandleElement = createResizeHandleElement();
@@ -13,8 +13,8 @@ export default class Memo {
     this._cardElement.appendChild(this._textareaElement);
     this._cardElement.appendChild(this._resizeHandleElement);
 
-    this._initialPosition = { x, y };
-    this._currentPosition = { x, y };
+    this._initialPosition = { x: t, y: l };
+    this._currentPosition = { x: t, y: l };
     this._initialSize = { w, h };
 
     this._handleDragStart = this._handleDragStart.bind(this);
@@ -38,7 +38,7 @@ export default class Memo {
 		Get / Set methods
 	*/
 
-  get element () {
+  get element() {
     return this._cardElement;
   };
 
@@ -46,7 +46,7 @@ export default class Memo {
 		Private methods
 	*/
 
-  _handleDragStart (e) {
+  _handleDragStart(e) {
     e.preventDefault();
 
     this._cardElement.classList.add("active");
@@ -68,7 +68,7 @@ export default class Memo {
     document.addEventListener("touchend", this._handleDragEnd, false);
   };
 
-  _handleDragMove (e) {
+  _handleDragMove(e) {
     e.preventDefault();
 
     const isActive = this._cardElement.classList.contains("active");
@@ -92,7 +92,7 @@ export default class Memo {
     }
   };
 
-  _handleDragEnd (e) {
+  _handleDragEnd(e) {
     e.preventDefault();
 
     const top = snapToGrid(this._cardElement.offsetTop - this._currentPosition.y, GRID_SIZE);
@@ -113,7 +113,7 @@ export default class Memo {
     this._invalidateEvents();
   };
 
-  _handleResizeStart (e) {
+  _handleResizeStart(e) {
     e.preventDefault();
 
     this._cardElement.classList.add("active");
@@ -138,7 +138,7 @@ export default class Memo {
     document.addEventListener("touchend", this._handleResizeEnd, false);
   };
 
-  _handleResizeMove (e) {
+  _handleResizeMove(e) {
     e.preventDefault();
 
     const isActive = this._cardElement.classList.contains("active");
@@ -152,7 +152,7 @@ export default class Memo {
     }
   };
 
-  _handleResizeEnd (e) {
+  _handleResizeEnd(e) {
     e.preventDefault();
 
     const width = snapToGrid(this._initialSize.w + (e.clientX - this._initialPosition.x), GRID_SIZE);
@@ -169,7 +169,7 @@ export default class Memo {
     this._invalidateEvents();
   };
 
-  _invalidateEvents () {
+  _invalidateEvents() {
     document.removeEventListener("mousedown", this._handleDragStart, false);
     document.removeEventListener("touchstart", this._handleDragStart, false);
 

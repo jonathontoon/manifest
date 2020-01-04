@@ -38,11 +38,11 @@ export const createSelectionElement = () => {
   return el;
 };
 
-export const createCardElement = (x, y, w, h) => {
+export const createCardElement = (t, l, w, h) => {
   const el = document.createElement("div");
   el.classList.add("card");
-  el.style.top = `${y}px`;
-  el.style.left = `${x}px`;
+  el.style.top = `${t}px`;
+  el.style.left = `${l}px`;
   el.style.width = `${w}px`;
   el.style.height = `${h}px`;
 
