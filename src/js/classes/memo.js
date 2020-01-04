@@ -157,7 +157,7 @@ export default class Memo {
 
     const width = snapToGrid(this._initialSize.w + (e.clientX - this._initialPosition.x), GRID_SIZE);
     const height = snapToGrid(this._initialSize.h + (e.clientY - this._initialPosition.y), GRID_SIZE);
-   
+
     this._cardElement.style.height = `${height}px`;
     this._cardElement.style.width = `${width}px`;
     this._cardElement.classList.remove("active");
