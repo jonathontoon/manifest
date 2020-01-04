@@ -1,7 +1,7 @@
 import { createMainElement } from "../elements";
 
 export default class Main {
-  constructor (w, h) {
+  constructor(w, h) {
     this.mainElement = createMainElement(w, h);
   }
 
@@ -9,7 +9,7 @@ export default class Main {
 		Get / Set methods
 	*/
 
-  get element () {
+  get element() {
     return this.mainElement;
   };
 
@@ -17,11 +17,11 @@ export default class Main {
 		Public methods
 	*/
 
-  appendChild (childElement) {
+  appendChild(childElement) {
     this.mainElement.appendChild(childElement);
   };
 
-  updateDimensions (w, h) {
+  updateDimensions(w, h) {
     this.mainElement.style.width = `${w}px`;
     this.mainElement.style.height = `${h}px`;
   };

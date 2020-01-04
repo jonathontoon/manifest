@@ -2,7 +2,7 @@ import { GRID_SIZE } from "../globals";
 import { createCanvasElement } from "../elements";
 
 export default class Canvas {
-  constructor (t, l, w, h) {
+  constructor(t, l, w, h) {
     this._canvasElement = createCanvasElement(t, l, w, h);
 
     this._updateGrid = this._updateGrid.bind(this);
@@ -17,7 +17,7 @@ export default class Canvas {
 		Get / Set methods
 	*/
 
-  get element () {
+  get element() {
     return this._canvasElement;
   };
 
@@ -25,7 +25,7 @@ export default class Canvas {
 		Private methods
 	*/
 
-  _updateGrid (w, h) {
+  _updateGrid(w, h) {
     const context = this._canvasElement.getContext("2d");
 
     for (let x = 0; x <= w; x += GRID_SIZE) {
@@ -42,11 +42,11 @@ export default class Canvas {
 		Public methods
 	*/
 
-  appendChild (childElement) {
+  appendChild(childElement) {
     this._canvasElement.appendChild(childElement);
   };
 
-  updateDimensions (t, l, w, h) {
+  updateDimensions(t, l, w, h) {
     this._canvasElement.width = w;
     this._canvasElement.height = h;
 
