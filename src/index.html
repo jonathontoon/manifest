@@ -52,17 +52,6 @@
 		}
 	</style>
 	<body>
-		<script type="text/javascript">
-			if ("serviceWorker" in navigator) {
-				window.addEventListener("load", () => {
-					navigator.serviceWorker.register("service-worker.js").then((registration) => {
-						console.log("Service worker registration successful with scope: ", registration.scope);
-					}, (error) => {
-						console.log("Service worker registration failed: ", error);
-					});
-				});
-			}
-		</script>
 		<script type="text/javascript" src="index.js"></script>
   	</body>
 </html>
