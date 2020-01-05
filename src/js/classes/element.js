@@ -5,9 +5,9 @@ export default class Element {
 
     this.addClass = this.addClass.bind(this);
     this.removeClass = this.removeClass.bind(this);
-    
+
     this.style = this.style.bind(this);
-    
+
     this.appendElement = this.appendElement.bind(this);
     this.removeElement = this.removeElement.bind(this);
 
@@ -21,15 +21,15 @@ export default class Element {
   };
 
   get offsetTop() {
-      return this._element.style.offsetTop;
+    return this._element.offsetTop;
   };
 
   get offsetLeft() {
-    return this._element.style.offsetLeft;
-};
+    return this._element.offsetLeft;
+  };
 
   get rect() {
-      return this._element.getBoundingClientRect();
+    return this._element.getBoundingClientRect();
   };
 
   set id(id) {
@@ -77,5 +77,4 @@ export default class Element {
   removeElement(childElement) {
     this._element.removeChild(childElement);
   };
-
 };

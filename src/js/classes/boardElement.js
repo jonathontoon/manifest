@@ -88,10 +88,10 @@ export default class BoardElement extends Element {
     document.body.style.cursor = "pointer";
 
     this._createMode = false;
-    
+
     this.removeElement(this._selectionElement.element);
     this._selectionElement = null;
-    
+
     this._invalidateEvents();
   };
 
@@ -107,5 +107,4 @@ export default class BoardElement extends Element {
   /*
 		Public methods
 	*/
-
 };

@@ -29,7 +29,7 @@ export default class Memo extends Element {
     this._initialPosition = { top, left };
     this._currentPosition = { top, left };
     this._initialSize = { width, height };
-    
+
     this._cardElement = new CardElement();
     this._dragElement = new DragElement();
     this._textareaElement = new TextareaElement();
@@ -88,8 +88,8 @@ export default class Memo extends Element {
         top: this._initialPosition.top - top
       };
 
-      this._cardElement.style("top", `${this._cardElement.offsetTop - this._currentPosition.top}px`);
-      this._cardElement.style("left", `${this._cardElement.offsetLeft - this._currentPosition.left}px`);
+      this.style("top", `${this.offsetTop - this._currentPosition.top}px`);
+      this.style("left", `${this.offsetLeft - this._currentPosition.left}px`);
 
       this._initialPosition = { top, left };
     }
@@ -98,8 +98,8 @@ export default class Memo extends Element {
   _handleDragEnd(e) {
     e.preventDefault();
 
-    const top = snapToGrid(this._element.offsetTop - this._currentPosition.top, GRID_SIZE);
-    const left = snapToGrid(this._element.offsetLeft - this._currentPosition.left, GRID_SIZE);
+    const top = snapToGrid(this.offsetTop - this._currentPosition.top, GRID_SIZE);
+    const left = snapToGrid(this.offsetLeft - this._currentPosition.left, GRID_SIZE);
 
     this.style("top", `${top}px`);
     this.style("left", `${left}px`);
@@ -159,9 +159,9 @@ export default class Memo extends Element {
     const height = snapToGrid(this._initialSize.h + (e.clientY - this._initialPosition.y), GRID_SIZE);
 
     this.updateDimensions(width, height);
-    this._element.classList.remove("active");
+    this.addClass("active");
 
-    this._resizeElement.style.backgroundColor = "transparent";
+    this._resizeElement.style("backgroundColor", "transparent");
 
     this._initialSize = { w: 0, h: 0 };
 

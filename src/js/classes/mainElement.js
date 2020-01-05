@@ -30,16 +30,16 @@ export default class MainElement extends Element {
     this.style("height", `${window.innerHeight}px`);
 
     const width = (window.innerWidth - MARGIN) - 1;
-    const height = (window.innerHeight - MARGIN) + 1;  
+    const height = (window.innerHeight - MARGIN) + 1;
 
-    this._canvasElement.style("top", `${MARGIN/2}px`);
-    this._canvasElement.style("left", `${MARGIN/2}px`);
+    this._canvasElement.style("top", `${MARGIN / 2}px`);
+    this._canvasElement.style("left", `${MARGIN / 2}px`);
     this._canvasElement.style("width", `${width}px`);
     this._canvasElement.style("height", `${height}px`);
     this._canvasElement.draw(width, height);
-    
-    this._boardElement.style("top", `${MARGIN/2}px`);
-    this._boardElement.style("left", `${MARGIN/2}px`);
+
+    this._boardElement.style("top", `${MARGIN / 2}px`);
+    this._boardElement.style("left", `${MARGIN / 2}px`);
     this._boardElement.style("width", `${width}px`);
     this._boardElement.style("height", `${height}px`);
   }
