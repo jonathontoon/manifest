@@ -38,15 +38,15 @@ export default class BoardElement extends Element {
     if (e.target === this.element) {
       document.body.style.cursor = "crosshair";
       this._createMode = true;
-  
+
       const mouseX = snapToGrid(e.clientX - this.rect.left, GRID_SIZE);
       const mouseY = snapToGrid(e.clientY - this.rect.top, GRID_SIZE);
-  
+
       this._initialMouse = { x: mouseX, y: mouseY };
-  
+
       this._selectionElement = new SelectionElement();
       this.appendElement(this._selectionElement.element);
-  
+
       this.addEvent("mousemove", this._handleCreateMove);
       this.addEvent("mouseup", this._handleCreateEnd);
       this.addEvent("touchmove", this._handleCreateMove);

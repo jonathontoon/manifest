@@ -32,6 +32,9 @@ export default class MainElement extends Element {
     const width = (window.innerWidth - MARGIN) - 1;
     const height = (window.innerHeight - MARGIN) + 1;
 
+    this._canvasElement.width = width;
+    this._canvasElement.height = height;
+
     this._canvasElement.style("top", `${MARGIN / 2}px`);
     this._canvasElement.style("left", `${MARGIN / 2}px`);
     this._canvasElement.style("width", `${width}px`);
