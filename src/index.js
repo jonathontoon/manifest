@@ -1,8 +1,8 @@
-import App from "./js/classes/app";
+import MainElement from "./js/classes/mainElement";
 
 import "./sass/index.scss";
 
 window.addEventListener("load", function () {
-  const app = new App();
-  app.setup();
+  const mainElement = new MainElement();
+  document.body.appendChild(mainElement.element);
 }, false);
