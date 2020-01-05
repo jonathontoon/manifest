@@ -16,7 +16,6 @@ export default class BoardElement extends Element {
 
     this.attribute("id", "container");
 
-    this._createMode = false;
     this._initialMouse = { x: 0, y: 0 };
     this._currentMouse = { x: 0, y: 0 };
     this._memoElements = [];
@@ -37,7 +36,6 @@ export default class BoardElement extends Element {
   _handleCreateStart(e) {
     if (e.target === this.element) {
       document.body.style.cursor = "crosshair";
-      this._createMode = true;
 
       const mouseX = snapToGrid(e.clientX - this.rect.left, GRID_SIZE);
       const mouseY = snapToGrid(e.clientY - this.rect.top, GRID_SIZE);
@@ -82,14 +80,19 @@ export default class BoardElement extends Element {
 
     if (width >= 50 && height >= 50) {
       const memoElement = new MemoElement(top, left, width, height);
-      this._memoElements.push(memoElement);
+      memoElement.onMemoEdit = function(e) {
+        console.log(e.target.value);
+      };
 
+      memoElement.onMemoClose = function(e) {
+        console.log(e.target.value);
+      };
+
+      this._memoElements.push(memoElement);
       this.appendElement(memoElement.element);
     }
 
     document.body.style.cursor = "pointer";
-
-    this._createMode = false;
 
     this.removeElement(this._selectionElement.element);
     this._selectionElement = null;

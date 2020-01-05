@@ -20,9 +20,15 @@ export default class Memo extends Element {
     this.style("width", `${width}px`);
     this.style("height", `${height}px`);
 
+    this._handleMemoEditCallback = null;
+    this._handleMemoCloseCallback = null;
+
     this._handleDragStart = this._handleDragStart.bind(this);
     this._handleDragMove = this._handleDragMove.bind(this);
     this._handleDragEnd = this._handleDragEnd.bind(this);
+
+    this._handleTextareaInput = this._handleTextareaInput.bind(this);
+
     this._handleResizeStart = this._handleResizeStart.bind(this);
     this._handleResizeMove = this._handleResizeMove.bind(this);
     this._handleResizeEnd = this._handleResizeEnd.bind(this);
@@ -46,6 +52,8 @@ export default class Memo extends Element {
     this._dragElement.addEvent("mousedown", this._handleDragStart);
     this._dragElement.addEvent("touchstart", this._handleDragStart);
 
+    this._textareaElement.addEvent("input", this._handleTextareaInput);
+
     this._resizeElement.addEvent("mousedown", this._handleResizeStart);
     this._resizeElement.addEvent("touchstart", this._handleResizeStart);
 
@@ -53,6 +61,14 @@ export default class Memo extends Element {
   }
 
   // Get & Set Methods
+
+  set onMemoEdit(callback) {
+    this._handleMemoEditCallback = callback;
+  }
+
+  set onMemoClose(callback) {
+    this._handleMemoCloseCallback = callback;
+  }
 
   // Private methods
 
@@ -119,6 +135,14 @@ export default class Memo extends Element {
 
     this._invalidateEvents();
   };
+
+  _handleTextareaInput(e) {
+    console.log(e.target.value);
+
+    if (this._handleMemoEdit) {
+      this._handleMemoEditCallback(e);
+    }
+  }
 
   _handleResizeStart(e) {
     e.preventDefault();
