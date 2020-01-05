@@ -10,10 +10,8 @@ export default class MainElement extends Element {
 
     this._handeResize = this._handeResize.bind(this);
 
-    this.id = "app";
+    this.attribute("id", "app");
 
-    this._width = (window.innerWidth - MARGIN) - 1;
-    this._height = (window.innerHeight - MARGIN) + 1;
     this._canvasElement = new CanvasElement(MARGIN / 2, MARGIN / 2, this._width, this._height);
     this._boardElement = new BoardElement(MARGIN / 2, MARGIN / 2, this._width, this._height);
 
@@ -32,8 +30,8 @@ export default class MainElement extends Element {
     const width = (window.innerWidth - MARGIN) - 1;
     const height = (window.innerHeight - MARGIN) + 1;
 
-    this._canvasElement.width = width;
-    this._canvasElement.height = height;
+    this._canvasElement.attribute("width", width);
+    this._canvasElement.attribute("height", height);
 
     this._canvasElement.style("top", `${MARGIN / 2}px`);
     this._canvasElement.style("left", `${MARGIN / 2}px`);

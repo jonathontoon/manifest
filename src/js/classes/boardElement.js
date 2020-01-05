@@ -14,7 +14,7 @@ export default class BoardElement extends Element {
     this._handleCreateEnd = this._handleCreateEnd.bind(this);
     this._invalidateEvents = this._invalidateEvents.bind(this);
 
-    this.id = "container";
+    this.attribute("id", "container");
 
     this._createMode = false;
     this._initialMouse = { x: 0, y: 0 };
@@ -105,8 +105,4 @@ export default class BoardElement extends Element {
     this.removeEvent("touchmove", this._handleCreateMove);
     this.removeEvent("touchend", this._handleCreateEnd);
   };
-
-  /*
-		Public methods
-	*/
 };

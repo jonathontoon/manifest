@@ -12,6 +12,7 @@ export default class Memo extends Element {
     super("div");
 
     this.addClass("memo");
+    
     this.style("top", `${top}px`);
     this.style("left", `${left}px`);
 

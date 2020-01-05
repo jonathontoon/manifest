@@ -7,10 +7,10 @@ export default class CanvasElement extends Element {
 
     this.draw = this.draw.bind(this);
 
-    this.id = "grid";
+    this.attribute("id", "grid");
 
-    this.width = width;
-    this.height = height;
+    this.attribute("width", width);
+    this.attribute("height", height);
 
     this.style("top", `${top}px`);
     this.style("left", `${left}px`);
