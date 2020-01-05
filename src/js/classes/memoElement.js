@@ -2,7 +2,7 @@ import { GRID_SIZE } from "../globals";
 import { snapToGrid } from "../utils";
 
 import Element from "./element";
-import TextareaElement from "./textareaElement";
+import TextAreaElement from "./textareaElement";
 import CardElement from "./cardElement";
 import DragElement from "./dragElement";
 import ResizeElement from "./resizeElement";
@@ -32,7 +32,7 @@ export default class Memo extends Element {
 
     this._cardElement = new CardElement();
     this._dragElement = new DragElement();
-    this._textareaElement = new TextareaElement();
+    this._textareaElement = new TextAreaElement();
     this._resizeElement = new ResizeElement();
 
     this._cardElement.appendElement(this._dragElement.element);

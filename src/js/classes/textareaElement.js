@@ -1,6 +1,6 @@
 import Element from "./element";
 
-export default class ResizeElement extends Element {
+export default class TextAreaElement extends Element {
   constructor() {
     super("textarea");
 
