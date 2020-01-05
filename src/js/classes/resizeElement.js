@@ -1,36 +1,9 @@
-export default class ResizeElement {
-    constructor() {
-      this._createElement = this._createElement.bind(this);
-      this.appendChild = this.appendChild.bind(this);
+import Element from "./element";
 
-      this._element = this._createElement();
-    }
-  
-    /*
-          Get / Set methods
-      */
-  
-    get element() {
-      return this._element;
-    };
-  
-    /*
-          Private methods
-    */
-    
-    _createElement() {
-        const el = document.createElement("div");
-        el.classList.add("resizeHandle");
+export default class ResizeElement extends Element {
+  constructor() {
+    super("div");
 
-        return el;
-    };
-  
-    /*
-          Public methods
-      */
-  
-    appendChild(childElement) {
-      this._element.appendChild(childElement);
-    };
-  };
-  
+    this.addClass("resize");
+  }
+};

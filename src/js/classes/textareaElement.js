@@ -1,37 +1,11 @@
-export default class ResizeElement {
-    constructor() {
-      this._createElement = this._createElement.bind(this);
-      this._element = this._createElement();
-    }
-  
-    /*
-          Get / Set methods
-      */
-  
-    get element() {
-      return this._element;
-    };
-  
-    /*
-          Private methods
-    */
-    
-    _createElement() {
-        const el = document.createElement("textarea");
+import Element from "./element";
 
-        el.placeholder = "Add something here to remember...";
-        el.autocomplete = false;
-        el.spellcheck = false;
-    
-        return el;
-    };
-  
-    /*
-          Public methods
-      */
-  
-    appendChild(childElement) {
-      this._element.appendChild(childElement);
-    };
-  };
-  
+export default class ResizeElement extends Element {
+  constructor() {
+    super("textarea");
+
+    this._element.placeholder = "Add something here to remember...";
+    this._element.autocomplete = false;
+    this._element.spellcheck = false;
+  }
+};

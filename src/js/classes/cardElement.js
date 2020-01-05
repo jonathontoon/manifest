@@ -1,33 +1,9 @@
-export default class CardElement {
+import Element from "./element";
+
+export default class CardElement extends Element {
   constructor() {
-    this._createElement = this._createElement.bind(this);
-    this._element = this._createElement();
+    super("div");
+
+    this.addClass("card");
   }
-
-  /*
-		Get / Set methods
-	*/
-
-  get element() {
-    return this._element;
-  };
-
-  /*
-		Private methods
-  */
-  
-  _createElement() {
-    const el = document.createElement("div");
-    el.classList.add("card");
-
-    return el;
-  };
-
-  /*
-		Public methods
-	*/
-
-  appendChild(childElement) {
-    this._element.appendChild(childElement);
-  };
 };

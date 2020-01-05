@@ -1,54 +1,46 @@
 import { MARGIN } from "../globals";
 
+import Element from "./element";
 import CanvasElement from "./canvasElement";
 import BoardElement from "./boardElement";
 
-export default class MainElement {
+export default class MainElement extends Element {
   constructor() {
+    super("main");
+
+    this._handeResize = this._handeResize.bind(this);
+
+    this.id = "app";
+
     this._width = (window.innerWidth - MARGIN) - 1;
     this._height = (window.innerHeight - MARGIN) + 1;
-
-    this._createElement = this._createElement.bind(this);
-    this._updateElements = this._updateElements.bind(this);
-
-    this._element = this._createElement(window.innerWidth, window.innerHeight);
     this._canvasElement = new CanvasElement(MARGIN / 2, MARGIN / 2, this._width, this._height);
     this._boardElement = new BoardElement(MARGIN / 2, MARGIN / 2, this._width, this._height);
 
-    this._element.appendChild(this._canvasElement.element);
-    this._element.appendChild(this._boardElement.element);
+    this.appendElement(this._canvasElement.element);
+    this.appendElement(this._boardElement.element);
 
-    window.addEventListener("resize", this._updateElements, false);
-  }
+    this._handeResize();
 
-  get element() {
-    return this._element;
+    window.addEventListener("resize", this._handeResize, false);
   };
 
-  /*
-		Private methods
-	*/
+  _handeResize() {
+    this.style("width", `${window.innerWidth}px`);
+    this.style("height", `${window.innerHeight}px`);
 
-  _createElement(w, h) {
-    const el = document.createElement("main");
-    el.id = "app";
-    el.style.width = `${w}px`;
-    el.style.height = `${h}px`;
+    const width = (window.innerWidth - MARGIN) - 1;
+    const height = (window.innerHeight - MARGIN) + 1;  
 
-    return el;
-  }
-
-  _updateElements(e) {
-    e.preventDefault();
-
-    this._element.style.width = window.innerWidth;
-    this._element.style.height = window.innerHeight;
+    this._canvasElement.style("top", `${MARGIN/2}px`);
+    this._canvasElement.style("left", `${MARGIN/2}px`);
+    this._canvasElement.style("width", `${width}px`);
+    this._canvasElement.style("height", `${height}px`);
+    this._canvasElement.draw(width, height);
     
-    this._width = (window.innerWidth - MARGIN) - 1;
-    this._height = (window.innerHeight - MARGIN) + 1;
-
-    this._canvasElement.updatePosition(MARGIN / 2, MARGIN / 2);
-    this._canvasElement.updateDimensions(this._width, this._height);
-    this._boardElement.updateDimensions(MARGIN / 2, MARGIN / 2, this._width, this._height);
-  };
+    this._boardElement.style("top", `${MARGIN/2}px`);
+    this._boardElement.style("left", `${MARGIN/2}px`);
+    this._boardElement.style("width", `${width}px`);
+    this._boardElement.style("height", `${height}px`);
+  }
 };

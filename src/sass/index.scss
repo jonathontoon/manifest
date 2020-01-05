@@ -16,12 +16,12 @@ body {
         section#container {
             position: absolute;
 
-            #selection {
+            div#selection {
                 position: absolute;
                 background-color: rgba(0, 0, 0, 0.05);
             }
 
-            .memo {
+            div.memo {
                 background-color: white;
                 position: absolute;
                 border: 1px solid black;
@@ -31,10 +31,12 @@ body {
                     box-shadow: 10px 10px rgba(0, 0, 0, 0.25);
                 }
 
-                .card {
-                    position: relative;
+                div.card {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
     
-                    .dragHandle {
+                    div.drag {
                         cursor: grab;
                         position: relative;
                         width: 100%;
@@ -56,7 +58,7 @@ body {
                         cursor: text;
                     }
     
-                    .resizeHandle {
+                    div.resize {
                         cursor: nw-resize;
                         position: absolute;
                         right: 0px;
