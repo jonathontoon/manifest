@@ -148,7 +148,8 @@ export default class Memo extends Element {
       const width = snapToGrid(this._initialSize.width + (e.clientX - this._initialPosition.left), GRID_SIZE);
       const height = snapToGrid(this._initialSize.height + (e.clientY - this._initialPosition.top), GRID_SIZE);
 
-      this.updateDimensions(width, height);
+      this.style("width", `${width}px`);
+      this.style("height", `${height}px`);
     }
   };
 
@@ -158,10 +159,14 @@ export default class Memo extends Element {
     const width = snapToGrid(this._initialSize.w + (e.clientX - this._initialPosition.x), GRID_SIZE);
     const height = snapToGrid(this._initialSize.h + (e.clientY - this._initialPosition.y), GRID_SIZE);
 
-    this.updateDimensions(width, height);
-    this.addClass("active");
+    this.style("width", `${width}px`);
+    this.style("height", `${height}px`);
+    this.removeClass("active");
 
+    this._resizeElement.style("cursor", "nw-resize");
     this._resizeElement.style("backgroundColor", "transparent");
+
+    document.body.style.cursor = "pointer";
 
     this._initialSize = { w: 0, h: 0 };
 
@@ -187,23 +192,5 @@ export default class Memo extends Element {
     document.removeEventListener("mouseup", this._handleResizeEnd, false);
     document.removeEventListener("touchcancel", this._handleResizeEnd, false);
     document.removeEventListener("touchend", this._handleResizeEnd, false);
-  }
-
-  /*
-		Public methods
-	*/
-
-  appendChild(childElement) {
-    this._element.appendChild(childElement);
-  };
-
-  updatePosition(t, l) {
-    this._element.style.top = `${t}px`;
-    this._element.style.left = `${l}px`;
-  };
-
-  updateDimensions(w, h) {
-    this._element.style.width = `${w}px`;
-    this._element.style.height = `${h}px`;
   };
 };
