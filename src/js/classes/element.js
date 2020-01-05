@@ -56,7 +56,7 @@ export default class Element {
   };
 
   attribute(attr, value) {
-    this._element.setAttribute(attr, value);
+    this._element[attr] = value;
   };
 
   style(property, value) {

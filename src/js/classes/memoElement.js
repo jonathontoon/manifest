@@ -6,13 +6,14 @@ import TextAreaElement from "./textareaElement";
 import CardElement from "./cardElement";
 import DragElement from "./dragElement";
 import ResizeElement from "./resizeElement";
+import CloseElement from "./closeElement";
 
 export default class Memo extends Element {
   constructor(top, left, width, height) {
     super("div");
 
     this.addClass("memo");
-    
+
     this.style("top", `${top}px`);
     this.style("left", `${left}px`);
 
@@ -33,10 +34,12 @@ export default class Memo extends Element {
 
     this._cardElement = new CardElement();
     this._dragElement = new DragElement();
+    this._closeElement = new CloseElement();
     this._textareaElement = new TextAreaElement();
     this._resizeElement = new ResizeElement();
 
     this._cardElement.appendElement(this._dragElement.element);
+    this._cardElement.appendElement(this._closeElement.element);
     this._cardElement.appendElement(this._textareaElement.element);
     this._cardElement.appendElement(this._resizeElement.element);
 
@@ -146,8 +149,8 @@ export default class Memo extends Element {
     const isActive = this.containsClass("active");
 
     if (isActive) {
-      const width = snapToGrid(this._initialSize.width + (e.clientX - this._initialPosition.left), GRID_SIZE);
-      const height = snapToGrid(this._initialSize.height + (e.clientY - this._initialPosition.top), GRID_SIZE);
+      const width = snapToGrid(this._initialSize.width + (e.clientX - this._initialPosition.left), GRID_SIZE) - 1;
+      const height = snapToGrid(this._initialSize.height + (e.clientY - this._initialPosition.top), GRID_SIZE) - 1;
 
       this.style("width", `${width}px`);
       this.style("height", `${height}px`);

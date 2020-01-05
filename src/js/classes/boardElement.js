@@ -74,13 +74,13 @@ export default class BoardElement extends Element {
     const mouseX = snapToGrid(e.clientX - this.rect.left, GRID_SIZE);
     const mouseY = snapToGrid(e.clientY - this.rect.top, GRID_SIZE);
 
-    const width = Math.abs(mouseX - this._initialMouse.x) + 1;
-    const height = Math.abs(mouseY - this._initialMouse.y) + 1;
+    const width = Math.abs(mouseX - this._initialMouse.x) - 1;
+    const height = Math.abs(mouseY - this._initialMouse.y) - 1;
 
     const top = (mouseY - this._initialMouse.y < 0) ? mouseY : this._initialMouse.y;
     const left = (mouseX - this._initialMouse.x < 0) ? mouseX : this._initialMouse.x;
 
-    if (width >= 80 && height >= 80) {
+    if (width >= 50 && height >= 50) {
       const memoElement = new MemoElement(top, left, width, height);
       this._memoElements.push(memoElement);
 
