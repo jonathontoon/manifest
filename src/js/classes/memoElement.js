@@ -9,8 +9,10 @@ import ResizeElement from "./resizeElement";
 import CloseElement from "./closeElement";
 
 export default class Memo extends Element {
-  constructor(top, left, width, height) {
+  constructor(uuid, { top, left }, { width, height }) {
     super("div");
+
+    this.data("id", uuid);
 
     this.addClass("memo");
 
@@ -28,6 +30,7 @@ export default class Memo extends Element {
     this._handleDragEnd = this._handleDragEnd.bind(this);
 
     this._handleTextareaInput = this._handleTextareaInput.bind(this);
+    this._handleClose = this._handleClose.bind(this);
 
     this._handleResizeStart = this._handleResizeStart.bind(this);
     this._handleResizeMove = this._handleResizeMove.bind(this);
@@ -53,6 +56,7 @@ export default class Memo extends Element {
     this._dragElement.addEvent("touchstart", this._handleDragStart);
 
     this._textareaElement.addEvent("input", this._handleTextareaInput);
+    this._closeElement.addEvent("click", this._handleClose);
 
     this._resizeElement.addEvent("mousedown", this._handleResizeStart);
     this._resizeElement.addEvent("touchstart", this._handleResizeStart);
@@ -137,10 +141,16 @@ export default class Memo extends Element {
   };
 
   _handleTextareaInput(e) {
-    console.log(e.target.value);
+    if (this._handleMemoEditCallback) {
+      const textareaValue = e.target.value;
+      this._handleMemoEditCallback(textareaValue);
+    }
+  }
 
-    if (this._handleMemoEdit) {
-      this._handleMemoEditCallback(e);
+  _handleClose() {
+    if (this._handleMemoCloseCallback) {
+      const id = this._element.dataset.id;
+      this._handleMemoCloseCallback(id);
     }
   }
 

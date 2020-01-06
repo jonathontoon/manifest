@@ -6,6 +6,7 @@ export default class Element {
     this.addClass = this.addClass.bind(this);
     this.removeClass = this.removeClass.bind(this);
 
+    this.data = this.data.bind(this);
     this.attribute = this.attribute.bind(this);
     this.style = this.style.bind(this);
 
@@ -53,6 +54,10 @@ export default class Element {
 
   containsClass(name) {
     return this._element.classList.contains(name);
+  };
+
+  data(attr, value) {
+    this._element.dataset[attr] = value;
   };
 
   attribute(attr, value) {

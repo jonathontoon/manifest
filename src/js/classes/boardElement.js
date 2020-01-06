@@ -1,4 +1,4 @@
-import { snapToGrid } from "../utils";
+import { snapToGrid, uuidv4 } from "../utils";
 import { GRID_SIZE } from "../globals";
 
 import Element from "./element";
@@ -12,6 +12,10 @@ export default class BoardElement extends Element {
     this._handleCreateStart = this._handleCreateStart.bind(this);
     this._handleCreateMove = this._handleCreateMove.bind(this);
     this._handleCreateEnd = this._handleCreateEnd.bind(this);
+
+    this._handleOnMemoEdit = this._handleOnMemoEdit.bind(this);
+    this._handleOnMemoClose = this._handleOnMemoClose.bind(this);
+
     this._invalidateEvents = this._invalidateEvents.bind(this);
 
     this.attribute("id", "container");
@@ -79,17 +83,14 @@ export default class BoardElement extends Element {
     const left = (mouseX - this._initialMouse.x < 0) ? mouseX : this._initialMouse.x;
 
     if (width >= 50 && height >= 50) {
-      const memoElement = new MemoElement(top, left, width, height);
-      memoElement.onMemoEdit = function(e) {
-        console.log(e.target.value);
-      };
+      const id = uuidv4();
+      const memoElement = new MemoElement(id, { top, left }, { width, height });
+      memoElement.onMemoEdit = this._handleOnMemoEdit;
+      memoElement.onMemoClose = this._handleOnMemoClose;
 
-      memoElement.onMemoClose = function(e) {
-        console.log(e.target.value);
-      };
-
-      this._memoElements.push(memoElement);
+      this._memoElements[id] = memoElement;
       this.appendElement(memoElement.element);
+      console.log(this._memoElements);
     }
 
     document.body.style.cursor = "pointer";
@@ -98,6 +99,16 @@ export default class BoardElement extends Element {
     this._selectionElement = null;
 
     this._invalidateEvents();
+  };
+
+  _handleOnMemoEdit(value) {
+    console.log(value);
+  };
+
+  _handleOnMemoClose(id) {
+    const memoElement = this._memoElements[id];
+    this.removeElement(memoElement.element);
+    delete this._memoElements[id];
   };
 
   _invalidateEvents() {
