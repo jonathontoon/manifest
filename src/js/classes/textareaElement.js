@@ -7,7 +7,7 @@ export default class TextAreaElement extends Element {
     this._handleOnFocus = this._handleOnFocus.bind(this);
     this._handleOnBlur = this._handleOnBlur.bind(this);
 
-    this.attribute("placeholder", "Add something here to remember...");
+    this.attribute("placeholder", "Add a short memo...");
     this.attribute("autocomplete", false);
     this.attribute("spellcheck", false);
 
