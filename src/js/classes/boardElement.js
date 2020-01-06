@@ -106,9 +106,11 @@ export default class BoardElement extends Element {
   };
 
   _handleOnMemoClose(id) {
-    const memoElement = this._memoElements[id];
-    this.removeElement(memoElement.element);
-    delete this._memoElements[id];
+    if (window.confirm("Are you sure you would like to delete this memo?")) {
+      const memoElement = this._memoElements[id];
+      this.removeElement(memoElement.element);
+      delete this._memoElements[id];
+    }
   };
 
   _invalidateEvents() {
