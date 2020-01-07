@@ -6,14 +6,14 @@ body {
     overflow: hidden;
     cursor: pointer;
 
-    main#app {
+    main {
         position: absolute;
 
         canvas#grid {
             position: absolute;
         }
 
-        section#container {
+        section#board {
             position: absolute;
 
             div#selection {

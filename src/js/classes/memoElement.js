@@ -49,11 +49,11 @@ export default class Memo extends Element {
     this._closeElement = new CloseElement();
     this._closeElement.addEvent("click", this._handleClose);
     this._cardElement.appendElement(this._closeElement.element);
-    
+
     this._textareaElement = new TextAreaElement(text);
     this._textareaElement.addEvent("input", this._handleInput);
     this._cardElement.appendElement(this._textareaElement.element);
-   
+
     this._resizeElement = new ResizeElement();
     this._resizeElement.addEvent("mousedown", this._handleResizeStart);
     this._resizeElement.addEvent("touchstart", this._handleResizeStart);
