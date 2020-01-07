@@ -65,14 +65,9 @@ export default class Memo extends Element {
     if (memos && memos[uuid] === undefined) {
       memos[uuid] = {
         text: null,
-        position: {
-          top,
-          left,
+        position: { top, left,
         },
-        size: {
-          width,
-          height
-        }
+        size: { width, height }
       };
       window.localStorage.setItem("memos", JSON.stringify(memos));
     }
@@ -144,10 +139,7 @@ export default class Memo extends Element {
     const id = this.data("id");
     const memos = JSON.parse(window.localStorage.getItem("memos"));
     if (memos) {
-      memos[id].position = {
-        top,
-        left
-      };
+      memos[id].position = { top, left };
       window.localStorage.setItem("memos", JSON.stringify(memos));
     }
 
@@ -233,10 +225,7 @@ export default class Memo extends Element {
     const id = this.data("id");
     const memos = JSON.parse(window.localStorage.getItem("memos"));
     if (memos) {
-      memos[id].size = {
-        width,
-        height
-      };
+      memos[id].size = { width, height };
       window.localStorage.setItem("memos", JSON.stringify(memos));
     }
 
