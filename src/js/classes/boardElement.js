@@ -9,11 +9,11 @@ export default class BoardElement extends Element {
   constructor(top, left, width, height) {
     super("section");
 
+    this._populateMemos = this._populateMemos.bind(this);
+
     this._handleCreateStart = this._handleCreateStart.bind(this);
     this._handleCreateMove = this._handleCreateMove.bind(this);
     this._handleCreateEnd = this._handleCreateEnd.bind(this);
-
-    this._handleOnMemoClose = this._handleOnMemoClose.bind(this);
 
     this._invalidateEvents = this._invalidateEvents.bind(this);
 
@@ -32,9 +32,20 @@ export default class BoardElement extends Element {
 
     this.addEvent("mousedown", this._handleCreateStart);
     this.addEvent("touchstart", this._handleCreateStart);
+
+    this._populateMemos();
   }
 
   // Private methods
+
+  _populateMemos() {
+    const memos = window.localStorage.getItem("memos");
+    if (memos) {
+      console.log(memos);
+    } else {
+      window.localStorage.setItem("memos", JSON.stringify({}));
+    }
+  };
 
   _handleCreateStart(e) {
     if (e.target === this.element) {
@@ -84,10 +95,6 @@ export default class BoardElement extends Element {
     if (width >= 50 && height >= 50) {
       const id = uuidv4();
       const memoElement = new MemoElement(id, { top, left }, { width, height });
-      memoElement.onMemoEdit = this._handleOnMemoEdit;
-      memoElement.onMemoClose = this._handleOnMemoClose;
-
-      this._memoElements[id] = memoElement;
       this.appendElement(memoElement.element);
     }
 
@@ -97,14 +104,6 @@ export default class BoardElement extends Element {
     this._selectionElement = null;
 
     this._invalidateEvents();
-  };
-
-  _handleOnMemoClose(id) {
-    if (window.confirm("Are you sure you would like to delete this memo?")) {
-      const memoElement = this._memoElements[id];
-      this.removeElement(memoElement.element);
-      delete this._memoElements[id];
-    }
   };
 
   _invalidateEvents() {

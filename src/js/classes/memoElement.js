@@ -22,13 +22,11 @@ export default class Memo extends Element {
     this.style("width", `${width}px`);
     this.style("height", `${height}px`);
 
-    this._handleMemoCloseCallback = null;
-
     this._handleDragStart = this._handleDragStart.bind(this);
     this._handleDragMove = this._handleDragMove.bind(this);
     this._handleDragEnd = this._handleDragEnd.bind(this);
 
-    this._handleTextareaInput = this._handleTextareaInput.bind(this);
+    this._handleInput = this._handleInput.bind(this);
     this._handleClose = this._handleClose.bind(this);
 
     this._handleResizeStart = this._handleResizeStart.bind(this);
@@ -41,32 +39,39 @@ export default class Memo extends Element {
     this._initialSize = { width, height };
 
     this._cardElement = new CardElement();
+
     this._dragElement = new DragElement();
+    this._dragElement.addEvent("mousedown", this._handleDragStart);
+    this._dragElement.addEvent("touchstart", this._handleDragStart);
+
     this._closeElement = new CloseElement();
+    this._closeElement.addEvent("click", this._handleClose);
+
     this._textareaElement = new TextAreaElement();
+    this._textareaElement.addEvent("input", this._handleInput);
+
     this._resizeElement = new ResizeElement();
+    this._resizeElement.addEvent("mousedown", this._handleResizeStart);
+    this._resizeElement.addEvent("touchstart", this._handleResizeStart);
 
     this._cardElement.appendElement(this._dragElement.element);
     this._cardElement.appendElement(this._closeElement.element);
     this._cardElement.appendElement(this._textareaElement.element);
     this._cardElement.appendElement(this._resizeElement.element);
 
-    this._dragElement.addEvent("mousedown", this._handleDragStart);
-    this._dragElement.addEvent("touchstart", this._handleDragStart);
-
-    this._textareaElement.addEvent("input", this._handleTextareaInput);
-    this._closeElement.addEvent("click", this._handleClose);
-
-    this._resizeElement.addEvent("mousedown", this._handleResizeStart);
-    this._resizeElement.addEvent("touchstart", this._handleResizeStart);
-
     this.appendElement(this._cardElement.element);
-  }
 
-  // Get & Set Methods
-
-  set onMemoClose(callback) {
-    this._handleMemoCloseCallback = callback;
+    const memos = JSON.parse(window.localStorage.getItem("memos"));
+    if (memos) {
+      memos[uuid] = {
+        value: null,
+        top,
+        left,
+        width,
+        height
+      };
+      window.localStorage.setItem("memos", JSON.stringify(memos));
+    }
   }
 
   // Private methods
@@ -107,8 +112,8 @@ export default class Memo extends Element {
         top: this._initialPosition.top - top
       };
 
-      this.style("top", `${this.offsetTop - this._currentPosition.top}px`);
-      this.style("left", `${this.offsetLeft - this._currentPosition.left}px`);
+      this.style("top", `${this.attribute("offsetTop") - this._currentPosition.top}px`);
+      this.style("left", `${this.attribute("offsetLeft") - this._currentPosition.left}px`);
 
       this._initialPosition = { top, left };
     }
@@ -117,8 +122,8 @@ export default class Memo extends Element {
   _handleDragEnd(e) {
     e.preventDefault();
 
-    const top = snapToGrid(this.offsetTop - this._currentPosition.top, GRID_SIZE);
-    const left = snapToGrid(this.offsetLeft - this._currentPosition.left, GRID_SIZE);
+    const top = snapToGrid(this.attribute("offsetTop") - this._currentPosition.top, GRID_SIZE);
+    const left = snapToGrid(this.attribute("offsetLeft") - this._currentPosition.left, GRID_SIZE);
 
     this.style("top", `${top}px`);
     this.style("left", `${left}px`);
@@ -132,18 +137,36 @@ export default class Memo extends Element {
     this._initialPosition = { top: 0, left: 0 };
     this._currentPosition = { top: 0, left: 0 };
 
+    const id = this.data("id");
+    const memos = JSON.parse(window.localStorage.getItem("memos"));
+    if (memos) {
+      memos[id].top = top;
+      memos[id].left = left;
+      window.localStorage.setItem("memos", JSON.stringify(memos));
+    }
+
     this._invalidateEvents();
   };
 
-  _handleTextareaInput(e) {
+  _handleInput(e) {
     const textareaValue = e.target.value;
-    console.log(textareaValue);
+    const id = this.data("id");
+    const memos = JSON.parse(window.localStorage.getItem("memos"));
+    if (memos) {
+      memos[id].value = textareaValue;
+      window.localStorage.setItem("memos", JSON.stringify(memos));
+    }
   }
 
   _handleClose() {
-    if (this._handleMemoCloseCallback) {
-      const id = this._element.dataset.id;
-      this._handleMemoCloseCallback(id);
+    if (window.confirm("Are you sure you'd like to delete this memo?")) {
+      const id = this.data("id");
+      const memos = JSON.parse(window.localStorage.getItem("memos"));
+      if (memos) {
+        delete memos[id];
+        window.localStorage.setItem("memos", JSON.stringify(memos));
+      }
+      this.remove();
     }
   }
 
@@ -187,8 +210,8 @@ export default class Memo extends Element {
   _handleResizeEnd(e) {
     e.preventDefault();
 
-    const width = snapToGrid(this._initialSize.w + (e.clientX - this._initialPosition.x), GRID_SIZE);
-    const height = snapToGrid(this._initialSize.h + (e.clientY - this._initialPosition.y), GRID_SIZE);
+    const width = snapToGrid(this._initialSize.width + (e.clientX - this._initialPosition.left), GRID_SIZE);
+    const height = snapToGrid(this._initialSize.height + (e.clientY - this._initialPosition.top), GRID_SIZE);
 
     this.style("width", `${width}px`);
     this.style("height", `${height}px`);
@@ -200,6 +223,14 @@ export default class Memo extends Element {
     document.body.style.cursor = null;
 
     this._initialSize = { w: 0, h: 0 };
+
+    const id = this.data("id");
+    const memos = JSON.parse(window.localStorage.getItem("memos"));
+    if (memos) {
+      memos[id].width = width;
+      memos[id].height = height;
+      window.localStorage.setItem("memos", JSON.stringify(memos));
+    }
 
     this._invalidateEvents();
   };
