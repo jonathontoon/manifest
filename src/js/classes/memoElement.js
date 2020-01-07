@@ -9,7 +9,7 @@ import ResizeElement from "./resizeElement";
 import CloseElement from "./closeElement";
 
 export default class Memo extends Element {
-  constructor(uuid, { top, left }, { width, height }) {
+  constructor(uuid, text, { top, left }, { width, height }) {
     super("div");
 
     this.data("id", uuid);
@@ -47,7 +47,7 @@ export default class Memo extends Element {
     this._closeElement = new CloseElement();
     this._closeElement.addEvent("click", this._handleClose);
 
-    this._textareaElement = new TextAreaElement();
+    this._textareaElement = new TextAreaElement(text);
     this._textareaElement.addEvent("input", this._handleInput);
 
     this._resizeElement = new ResizeElement();
@@ -62,9 +62,10 @@ export default class Memo extends Element {
     this.appendElement(this._cardElement.element);
 
     const memos = JSON.parse(window.localStorage.getItem("memos"));
-    if (memos) {
+    console.log(memos[uuid]);
+    if (memos && memos[uuid] === undefined) {
       memos[uuid] = {
-        value: null,
+        text: null,
         top,
         left,
         width,
@@ -149,11 +150,11 @@ export default class Memo extends Element {
   };
 
   _handleInput(e) {
-    const textareaValue = e.target.value;
+    const text = e.target.value;
     const id = this.data("id");
     const memos = JSON.parse(window.localStorage.getItem("memos"));
     if (memos) {
-      memos[id].value = textareaValue;
+      memos[id].text = text;
       window.localStorage.setItem("memos", JSON.stringify(memos));
     }
   }

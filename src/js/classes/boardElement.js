@@ -39,9 +39,14 @@ export default class BoardElement extends Element {
   // Private methods
 
   _populateMemos() {
-    const memos = window.localStorage.getItem("memos");
+    const memos = JSON.parse(window.localStorage.getItem("memos"));
     if (memos) {
-      console.log(memos);
+      Object.keys(memos).forEach((key) => {
+        const memo = memos[key];
+
+        const memoElement = new MemoElement(key, memo.text, { top: memo.top, left: memo.left }, { width: memo.width, height: memo.height });
+        this.appendElement(memoElement.element);
+      });
     } else {
       window.localStorage.setItem("memos", JSON.stringify({}));
     }
@@ -94,7 +99,7 @@ export default class BoardElement extends Element {
 
     if (width >= 50 && height >= 50) {
       const id = uuidv4();
-      const memoElement = new MemoElement(id, { top, left }, { width, height });
+      const memoElement = new MemoElement(id, null, { top, left }, { width, height });
       this.appendElement(memoElement.element);
     }
 
