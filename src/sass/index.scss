@@ -25,10 +25,10 @@ body {
                 background-color: white;
                 position: absolute;
                 border: 1px solid black;
-                user-select: auto;
+                user-select: none;
 
                 &.active {
-                    user-select: none;
+                    user-select: auto;
                     box-shadow: 10px 10px rgba(0, 0, 0, 0.25);
                 }
 
