@@ -12,6 +12,7 @@ export default class Element {
 
     this.appendElement = this.appendElement.bind(this);
     this.removeElement = this.removeElement.bind(this);
+    this.remove = this.remove.bind(this);
 
     this._element = document.createElement(tag);
   }
@@ -20,14 +21,6 @@ export default class Element {
 
   get element() {
     return this._element;
-  };
-
-  get offsetTop() {
-    return this._element.offsetTop;
-  };
-
-  get offsetLeft() {
-    return this._element.offsetLeft;
   };
 
   get rect() {
@@ -56,15 +49,27 @@ export default class Element {
     return this._element.classList.contains(name);
   };
 
-  data(attr, value) {
+  data(attr, value = undefined) {
+    if (value === undefined) {
+      return this._element.dataset[attr];
+    }
+
     this._element.dataset[attr] = value;
   };
 
-  attribute(attr, value) {
+  attribute(attr, value = undefined) {
+    if (value === undefined) {
+      return this._element[attr];
+    }
+
     this._element[attr] = value;
   };
 
-  style(property, value) {
+  style(property, value = undefined) {
+    if (value === undefined) {
+      return this._element.style[property];
+    }
+
     this._element.style[property] = value;
   };
 
@@ -75,4 +80,8 @@ export default class Element {
   removeElement(childElement) {
     this._element.removeChild(childElement);
   };
+
+  remove() {
+    this._element.remove();
+  }
 };

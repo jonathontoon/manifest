@@ -1,7 +1,7 @@
 import Element from "./element";
 
 export default class TextAreaElement extends Element {
-  constructor() {
+  constructor(text) {
     super("textarea");
 
     this._handleOnFocus = this._handleOnFocus.bind(this);
@@ -13,6 +13,8 @@ export default class TextAreaElement extends Element {
 
     this.addEvent("focus", this._handleOnFocus);
     this.addEvent("blur", this._handleOnBlur);
+
+    if (text) { this.attribute("value", text); }
   };
 
   // Private methods
