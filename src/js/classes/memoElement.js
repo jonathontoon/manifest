@@ -22,7 +22,6 @@ export default class Memo extends Element {
     this.style("width", `${width}px`);
     this.style("height", `${height}px`);
 
-    this._handleMemoEditCallback = null;
     this._handleMemoCloseCallback = null;
 
     this._handleDragStart = this._handleDragStart.bind(this);
@@ -65,10 +64,6 @@ export default class Memo extends Element {
   }
 
   // Get & Set Methods
-
-  set onMemoEdit(callback) {
-    this._handleMemoEditCallback = callback;
-  }
 
   set onMemoClose(callback) {
     this._handleMemoCloseCallback = callback;
@@ -141,10 +136,8 @@ export default class Memo extends Element {
   };
 
   _handleTextareaInput(e) {
-    if (this._handleMemoEditCallback) {
-      const textareaValue = e.target.value;
-      this._handleMemoEditCallback(textareaValue);
-    }
+    const textareaValue = e.target.value;
+    console.log(textareaValue);
   }
 
   _handleClose() {

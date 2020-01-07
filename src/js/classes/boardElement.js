@@ -13,7 +13,6 @@ export default class BoardElement extends Element {
     this._handleCreateMove = this._handleCreateMove.bind(this);
     this._handleCreateEnd = this._handleCreateEnd.bind(this);
 
-    this._handleOnMemoEdit = this._handleOnMemoEdit.bind(this);
     this._handleOnMemoClose = this._handleOnMemoClose.bind(this);
 
     this._invalidateEvents = this._invalidateEvents.bind(this);
@@ -22,7 +21,7 @@ export default class BoardElement extends Element {
 
     this._initialMouse = { x: 0, y: 0 };
     this._currentMouse = { x: 0, y: 0 };
-    this._memoElements = [];
+    this._memoElements = {};
 
     this._selectionElement = null;
 
@@ -90,7 +89,6 @@ export default class BoardElement extends Element {
 
       this._memoElements[id] = memoElement;
       this.appendElement(memoElement.element);
-      console.log(this._memoElements);
     }
 
     document.body.style.cursor = "pointer";
@@ -99,10 +97,6 @@ export default class BoardElement extends Element {
     this._selectionElement = null;
 
     this._invalidateEvents();
-  };
-
-  _handleOnMemoEdit(value) {
-    console.log(value);
   };
 
   _handleOnMemoClose(id) {

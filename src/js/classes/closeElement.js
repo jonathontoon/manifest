@@ -5,6 +5,6 @@ export default class CloseElement extends Element {
     super("div");
 
     this.addClass("close");
-    this.attribute("innerText", "‒");
+    this.attribute("innerHTML", "–");
   }
 };
