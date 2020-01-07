@@ -44,7 +44,7 @@ export default class BoardElement extends Element {
       Object.keys(memos).forEach((key) => {
         const memo = memos[key];
 
-        const memoElement = new MemoElement(key, memo.text, { top: memo.top, left: memo.left }, { width: memo.width, height: memo.height });
+        const memoElement = new MemoElement(key, memo.text, memo.position, memo.size);
         this.appendElement(memoElement.element);
       });
     } else {
