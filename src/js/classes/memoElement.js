@@ -62,14 +62,17 @@ export default class Memo extends Element {
     this.appendElement(this._cardElement.element);
 
     const memos = JSON.parse(window.localStorage.getItem("memos"));
-    console.log(memos[uuid]);
     if (memos && memos[uuid] === undefined) {
       memos[uuid] = {
         text: null,
-        top,
-        left,
-        width,
-        height
+        position: {
+          top,
+          left,
+        },
+        size: {
+          width,
+          height
+        }
       };
       window.localStorage.setItem("memos", JSON.stringify(memos));
     }
@@ -141,8 +144,10 @@ export default class Memo extends Element {
     const id = this.data("id");
     const memos = JSON.parse(window.localStorage.getItem("memos"));
     if (memos) {
-      memos[id].top = top;
-      memos[id].left = left;
+      memos[id].position = {
+        top,
+        left
+      };
       window.localStorage.setItem("memos", JSON.stringify(memos));
     }
 
@@ -228,8 +233,10 @@ export default class Memo extends Element {
     const id = this.data("id");
     const memos = JSON.parse(window.localStorage.getItem("memos"));
     if (memos) {
-      memos[id].width = width;
-      memos[id].height = height;
+      memos[id].size = {
+        width,
+        height
+      };
       window.localStorage.setItem("memos", JSON.stringify(memos));
     }
 
