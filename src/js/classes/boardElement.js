@@ -91,7 +91,7 @@ export default class BoardElement extends Element {
       this.appendElement(memoElement.element);
     }
 
-    document.body.style.cursor = "pointer";
+    document.body.style.cursor = null;
 
     this.removeElement(this._selectionElement.element);
     this._selectionElement = null;

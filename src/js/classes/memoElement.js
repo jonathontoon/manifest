@@ -127,7 +127,7 @@ export default class Memo extends Element {
     this._dragElement.style("cursor", "grab");
     this._dragElement.style("backgroundColor", "transparent");
 
-    document.body.style.cursor = "pointer";
+    document.body.style.cursor = null;
 
     this._initialPosition = { top: 0, left: 0 };
     this._currentPosition = { top: 0, left: 0 };
@@ -197,7 +197,7 @@ export default class Memo extends Element {
     this._resizeElement.style("cursor", "nw-resize");
     this._resizeElement.style("backgroundColor", "transparent");
 
-    document.body.style.cursor = "pointer";
+    document.body.style.cursor = null;
 
     this._initialSize = { w: 0, h: 0 };
 
