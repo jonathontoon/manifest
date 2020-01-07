@@ -1,4 +1,4 @@
-import { snapToGrid } from "../utils";
+import { snapToGrid, uuidv4 } from "../utils";
 import { GRID_SIZE } from "../globals";
 
 import Element from "./element";
@@ -12,14 +12,16 @@ export default class BoardElement extends Element {
     this._handleCreateStart = this._handleCreateStart.bind(this);
     this._handleCreateMove = this._handleCreateMove.bind(this);
     this._handleCreateEnd = this._handleCreateEnd.bind(this);
+
+    this._handleOnMemoClose = this._handleOnMemoClose.bind(this);
+
     this._invalidateEvents = this._invalidateEvents.bind(this);
 
-    this.id = "container";
+    this.attribute("id", "container");
 
-    this._createMode = false;
     this._initialMouse = { x: 0, y: 0 };
     this._currentMouse = { x: 0, y: 0 };
-    this._memoElements = [];
+    this._memoElements = {};
 
     this._selectionElement = null;
 
@@ -37,7 +39,6 @@ export default class BoardElement extends Element {
   _handleCreateStart(e) {
     if (e.target === this.element) {
       document.body.style.cursor = "crosshair";
-      this._createMode = true;
 
       const mouseX = snapToGrid(e.clientX - this.rect.left, GRID_SIZE);
       const mouseY = snapToGrid(e.clientY - this.rect.top, GRID_SIZE);
@@ -74,27 +75,36 @@ export default class BoardElement extends Element {
     const mouseX = snapToGrid(e.clientX - this.rect.left, GRID_SIZE);
     const mouseY = snapToGrid(e.clientY - this.rect.top, GRID_SIZE);
 
-    const width = Math.abs(mouseX - this._initialMouse.x) + 1;
-    const height = Math.abs(mouseY - this._initialMouse.y) + 1;
+    const width = Math.abs(mouseX - this._initialMouse.x) - 1;
+    const height = Math.abs(mouseY - this._initialMouse.y) - 1;
 
     const top = (mouseY - this._initialMouse.y < 0) ? mouseY : this._initialMouse.y;
     const left = (mouseX - this._initialMouse.x < 0) ? mouseX : this._initialMouse.x;
 
-    if (width >= 80 && height >= 80) {
-      const memoElement = new MemoElement(top, left, width, height);
-      this._memoElements.push(memoElement);
+    if (width >= 50 && height >= 50) {
+      const id = uuidv4();
+      const memoElement = new MemoElement(id, { top, left }, { width, height });
+      memoElement.onMemoEdit = this._handleOnMemoEdit;
+      memoElement.onMemoClose = this._handleOnMemoClose;
 
+      this._memoElements[id] = memoElement;
       this.appendElement(memoElement.element);
     }
 
     document.body.style.cursor = "pointer";
 
-    this._createMode = false;
-
     this.removeElement(this._selectionElement.element);
     this._selectionElement = null;
 
     this._invalidateEvents();
+  };
+
+  _handleOnMemoClose(id) {
+    if (window.confirm("Are you sure you would like to delete this memo?")) {
+      const memoElement = this._memoElements[id];
+      this.removeElement(memoElement.element);
+      delete this._memoElements[id];
+    }
   };
 
   _invalidateEvents() {
@@ -105,8 +115,4 @@ export default class BoardElement extends Element {
     this.removeEvent("touchmove", this._handleCreateMove);
     this.removeEvent("touchend", this._handleCreateEnd);
   };
-
-  /*
-		Public methods
-	*/
 };

@@ -6,6 +6,8 @@ export default class Element {
     this.addClass = this.addClass.bind(this);
     this.removeClass = this.removeClass.bind(this);
 
+    this.data = this.data.bind(this);
+    this.attribute = this.attribute.bind(this);
     this.style = this.style.bind(this);
 
     this.appendElement = this.appendElement.bind(this);
@@ -32,18 +34,6 @@ export default class Element {
     return this._element.getBoundingClientRect();
   };
 
-  set id(id) {
-    this._element.id = id;
-  };
-
-  set width(width) {
-    this._element.width = width;
-  };
-
-  set height(height) {
-    this._element.height = height;
-  };
-
   // Public methods
 
   addEvent(event, listener) {
@@ -66,8 +56,16 @@ export default class Element {
     return this._element.classList.contains(name);
   };
 
-  style(attr, value) {
-    this._element.style[attr] = value;
+  data(attr, value) {
+    this._element.dataset[attr] = value;
+  };
+
+  attribute(attr, value) {
+    this._element[attr] = value;
+  };
+
+  style(property, value) {
+    this._element.style[property] = value;
   };
 
   appendElement(childElement) {

@@ -2,25 +2,35 @@ import { GRID_SIZE } from "../globals";
 import { snapToGrid } from "../utils";
 
 import Element from "./element";
-import TextareaElement from "./textareaElement";
+import TextAreaElement from "./textareaElement";
 import CardElement from "./cardElement";
 import DragElement from "./dragElement";
 import ResizeElement from "./resizeElement";
+import CloseElement from "./closeElement";
 
 export default class Memo extends Element {
-  constructor(top, left, width, height) {
+  constructor(uuid, { top, left }, { width, height }) {
     super("div");
 
+    this.data("id", uuid);
+
     this.addClass("memo");
+
     this.style("top", `${top}px`);
     this.style("left", `${left}px`);
 
     this.style("width", `${width}px`);
     this.style("height", `${height}px`);
 
+    this._handleMemoCloseCallback = null;
+
     this._handleDragStart = this._handleDragStart.bind(this);
     this._handleDragMove = this._handleDragMove.bind(this);
     this._handleDragEnd = this._handleDragEnd.bind(this);
+
+    this._handleTextareaInput = this._handleTextareaInput.bind(this);
+    this._handleClose = this._handleClose.bind(this);
+
     this._handleResizeStart = this._handleResizeStart.bind(this);
     this._handleResizeMove = this._handleResizeMove.bind(this);
     this._handleResizeEnd = this._handleResizeEnd.bind(this);
@@ -32,15 +42,20 @@ export default class Memo extends Element {
 
     this._cardElement = new CardElement();
     this._dragElement = new DragElement();
-    this._textareaElement = new TextareaElement();
+    this._closeElement = new CloseElement();
+    this._textareaElement = new TextAreaElement();
     this._resizeElement = new ResizeElement();
 
     this._cardElement.appendElement(this._dragElement.element);
+    this._cardElement.appendElement(this._closeElement.element);
     this._cardElement.appendElement(this._textareaElement.element);
     this._cardElement.appendElement(this._resizeElement.element);
 
     this._dragElement.addEvent("mousedown", this._handleDragStart);
     this._dragElement.addEvent("touchstart", this._handleDragStart);
+
+    this._textareaElement.addEvent("input", this._handleTextareaInput);
+    this._closeElement.addEvent("click", this._handleClose);
 
     this._resizeElement.addEvent("mousedown", this._handleResizeStart);
     this._resizeElement.addEvent("touchstart", this._handleResizeStart);
@@ -49,6 +64,10 @@ export default class Memo extends Element {
   }
 
   // Get & Set Methods
+
+  set onMemoClose(callback) {
+    this._handleMemoCloseCallback = callback;
+  }
 
   // Private methods
 
@@ -116,6 +135,18 @@ export default class Memo extends Element {
     this._invalidateEvents();
   };
 
+  _handleTextareaInput(e) {
+    const textareaValue = e.target.value;
+    console.log(textareaValue);
+  }
+
+  _handleClose() {
+    if (this._handleMemoCloseCallback) {
+      const id = this._element.dataset.id;
+      this._handleMemoCloseCallback(id);
+    }
+  }
+
   _handleResizeStart(e) {
     e.preventDefault();
 
@@ -145,8 +176,8 @@ export default class Memo extends Element {
     const isActive = this.containsClass("active");
 
     if (isActive) {
-      const width = snapToGrid(this._initialSize.width + (e.clientX - this._initialPosition.left), GRID_SIZE);
-      const height = snapToGrid(this._initialSize.height + (e.clientY - this._initialPosition.top), GRID_SIZE);
+      const width = snapToGrid(this._initialSize.width + (e.clientX - this._initialPosition.left), GRID_SIZE) - 1;
+      const height = snapToGrid(this._initialSize.height + (e.clientY - this._initialPosition.top), GRID_SIZE) - 1;
 
       this.style("width", `${width}px`);
       this.style("height", `${height}px`);
