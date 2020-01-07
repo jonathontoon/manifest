@@ -39,34 +39,31 @@ export default class Memo extends Element {
     this._initialSize = { width, height };
 
     this._cardElement = new CardElement();
+    this.appendElement(this._cardElement.element);
 
     this._dragElement = new DragElement();
     this._dragElement.addEvent("mousedown", this._handleDragStart);
     this._dragElement.addEvent("touchstart", this._handleDragStart);
+    this._cardElement.appendElement(this._dragElement.element);
 
     this._closeElement = new CloseElement();
     this._closeElement.addEvent("click", this._handleClose);
-
+    this._cardElement.appendElement(this._closeElement.element);
+    
     this._textareaElement = new TextAreaElement(text);
     this._textareaElement.addEvent("input", this._handleInput);
-
+    this._cardElement.appendElement(this._textareaElement.element);
+   
     this._resizeElement = new ResizeElement();
     this._resizeElement.addEvent("mousedown", this._handleResizeStart);
     this._resizeElement.addEvent("touchstart", this._handleResizeStart);
-
-    this._cardElement.appendElement(this._dragElement.element);
-    this._cardElement.appendElement(this._closeElement.element);
-    this._cardElement.appendElement(this._textareaElement.element);
     this._cardElement.appendElement(this._resizeElement.element);
-
-    this.appendElement(this._cardElement.element);
 
     const memos = JSON.parse(window.localStorage.getItem("memos"));
     if (memos && memos[uuid] === undefined) {
       memos[uuid] = {
         text: null,
-        position: { top, left,
-        },
+        position: { top, left },
         size: { width, height }
       };
       window.localStorage.setItem("memos", JSON.stringify(memos));
