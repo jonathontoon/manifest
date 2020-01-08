@@ -1,9 +1,9 @@
-import { GRID_SIZE, MARGIN } from "./js/globals";
-import { snapToGrid, confirm, uuidv4, getLocalStorageItem, setLocalStorageItem } from "./js/utils";
+import { GRID_SIZE, MARGIN } from "./globals";
+import { snapToGrid, confirm, uuidv4, getLocalStorageItem, setLocalStorageItem } from "./utils";
 
-import "./sass/index.scss";
+import "../sass/index.scss";
 
-let activeMemo = null;
+let activeMemo;
 
 let main, canvas, board, selection;
 let width, height;
@@ -234,6 +234,7 @@ function handleMemoResizeEnd(e) {
   setLocalStorageItem("memos", memos);
 
   document.body.style.cursor = null;
+  activeMemo = null;
   currentSize = null;
 
   document.removeEventListener("mousemove", handleMemoResizeMove, false);
