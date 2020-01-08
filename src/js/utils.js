@@ -1,3 +1,15 @@
+export function confirm(text) {
+  return window.confirm(text);
+};
+
+export function setLocalStorageItem(item, value) {
+  return window.localStorage.setItem(`${item}`, JSON.stringify(value));
+};
+
+export function getLocalStorageItem(item) {
+  return JSON.parse(window.localStorage.getItem(item));
+};
+
 export function snapToGrid(value, grid) {
   return (grid) * Math.round(value / (grid));
 };
