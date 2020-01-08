@@ -6,14 +6,14 @@ body {
     overflow: hidden;
     cursor: pointer;
 
-    main#app {
+    main {
         position: absolute;
 
         canvas#grid {
             position: absolute;
         }
 
-        section#container {
+        section#board {
             position: absolute;
 
             div#selection {
@@ -31,72 +31,60 @@ body {
                     user-select: auto;
                     box-shadow: 10px 10px rgba(0, 0, 0, 0.25);
                 }
-
-                div.card {
+                div.close {
                     position: absolute;
+                    top: 0px;
+                    left: 0px;
+                    color: black;
+                    font-size: 10px;
+                    font-weight: normal;
+                    text-align: center;
+                    line-height: 15px;
+                    width: 16px;
+                    height: 16px;
+                    border-bottom: 1px solid black;
+                }
+
+                div.drag {
+                    cursor: grab;
+                    position: absolute;
+                    top: 0px;
+                    right: 0px;
                     width: 100%;
-                    height: 100%;
+                    height: 16px;
+                    border-bottom: 1px solid black;
+                }
 
-                    div.close {
-                        position: absolute;
-                        top: 0px;
-                        left: 0px;
-                        color: black;
-                        font-size: 10px;
-                        font-weight: normal;
-                        text-align: center;
-                        line-height: 15px;
-                        width: 16px;
-                        height: 16px;
-                        border-bottom: 1px solid black;
-                    }
+                textarea.input {
+                    position: absolute;
+                    top: 17px;
+                    left: 0px;
+                    width: calc(100% - 32px);
+                    height: calc(100% - 49px);
+                    padding: 16px;
+                    margin: 0;
+                    border: 0;
+                    outline: 0;
+                    resize: none;
+                    overflow: hidden;
+                    font-family: "Mono S", "Courier New", Courier, monospace;
+                    font-size: 12px;
+                    cursor: text;
 
-                    div.drag {
-                        cursor: grab;
-                        position: absolute;
-                        top: 0px;
-                        right: 0px;
-                        width: 100%;
-                        height: 16px;
-                        border-bottom: 1px solid black;
+                    &::placeholder {
+                        color: rgba(0, 0, 0, 0.4);
                     }
-    
-                    textarea {
-                        user-select: none;
-                        position: absolute;
-                        top: 17px;
-                        left: 0px;
-                        width: calc(100% - 32px);
-                        height: calc(100% - 49px);
-                        padding: 16px;
-                        margin: 0;
-                        border: 0;
-                        outline: 0;
-                        resize: none;
-                        overflow: hidden;
-                        font-family: "Mono S", "Courier New", Courier, monospace;
-                        font-size: 12px;
-                        cursor: text;
+                }
 
-                        &::placeholder {
-                            color: rgba(0, 0, 0, 0.4);
-                        }
-
-                        &.active {
-                            user-select: auto;
-                        }
-                    }
-    
-                    div.resize {
-                        cursor: nw-resize;
-                        position: absolute;
-                        right: 0px;
-                        bottom: 0px;
-                        width: 6px;
-                        height: 6px;
-                        border-top: 1px solid black;
-                        border-left: 1px solid black;
-                    }
+                div.resize {
+                    cursor: nw-resize;
+                    position: absolute;
+                    right: 0px;
+                    bottom: 0px;
+                    width: 6px;
+                    height: 6px;
+                    border-top: 1px solid black;
+                    border-left: 1px solid black;
                 }
             }
         }
