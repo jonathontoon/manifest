@@ -7,7 +7,7 @@ let activeMemo = null;
 
 let main, canvas, board, selection;
 let width, height;
-let initialMouse;
+let currentMouse, currentSize;
 
 /*
   Generic Event Handlers
@@ -17,7 +17,13 @@ function onMouseDown(e) {
   if (e.target === board) {
     handleBoardDragStart(e);
   } else {
-    console.log(e.target.classList[0], e.target.parentElement.classList[0]);
+    if (e.target.classList[0] === "drag") {
+      handleMemoDragStart(e);
+    } else if (e.target.classList[0] === "resize") {
+      handleMemoResizeStart(e);
+    } else {
+      console.log(e.target.classList[0], e.target.parentElement.classList[0]);
+    }
   }
   // else {
   //   if (e.target.parentElement.classList[0] === "memo") {
@@ -71,17 +77,10 @@ function createMemo(uuid, text, position, size) {
   textarea.setAttribute("autocomplete", false);
   textarea.setAttribute("spellcheck", false);
 
-  if (text) {
-    textarea.setAttribute("value", text);
-  }
+  if (text) { textarea.setAttribute("value", text); }
 
-  textarea.addEventListener("focus", function (e) {
-    e.target.classList.add("active");
-  }, false);
-
-  textarea.addEventListener("blur", function (e) {
-    e.target.classList.remove("active");
-  }, false);
+  textarea.addEventListener("focus", function (e) { e.target.classList.add("active"); }, false);
+  textarea.addEventListener("blur", function (e) { e.target.classList.remove("active"); }, false);
 
   memo.appendChild(textarea);
 
@@ -95,33 +94,169 @@ function createMemo(uuid, text, position, size) {
 };
 
 function handleMemoDragStart(e) {
+  e.preventDefault();
 
+  activeMemo = e.target.parentNode;
+  activeMemo.classList.add("active");
+  activeMemo.style.zIndex = "99999";
+
+  e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
+  e.target.style.cursor = "grabbing";
+
+  document.body.style.cursor = "grabbing";
+
+  const x = snapToGrid(e.clientX, GRID_SIZE);
+  const y = snapToGrid(e.clientY, GRID_SIZE);
+
+  currentMouse = { x, y };
+
+  document.addEventListener("mousemove", handleMemoDragMove, false);
+  document.addEventListener("touchmove", handleMemoDragMove, false);
+
+  document.addEventListener("mouseup", handleMemoDragEnd, false);
+  document.addEventListener("touchcancel", handleMemoDragEnd, false);
+  document.addEventListener("touchend", handleMemoDragEnd, false);
 };
 
 function handleMemoDragMove(e) {
+  e.preventDefault();
 
+  const isActive = activeMemo.classList.contains("active");
+
+  if (isActive) {
+    const x = snapToGrid(e.clientX, GRID_SIZE);
+    const y = snapToGrid(e.clientY, GRID_SIZE);
+
+    activeMemo.style.top = `${activeMemo.offsetTop - (currentMouse.y - y)}px`;
+    activeMemo.style.left = `${activeMemo.offsetLeft - (currentMouse.x - x)}px`;
+
+    currentMouse = { x, y };
+  }
 };
 
 function handleMemoDragEnd(e) {
+  e.preventDefault();
 
+  const x = snapToGrid(e.clientX, GRID_SIZE);
+  const y = snapToGrid(e.clientY, GRID_SIZE);
+
+  activeMemo.style.top = `${activeMemo.offsetTop - (currentMouse.y - y)}px`;
+  activeMemo.style.left = `${activeMemo.offsetLeft - (currentMouse.x - x)}px`;
+  activeMemo.classList.remove("active");
+
+  const drag = activeMemo.querySelectorAll(".drag")[0];
+  drag.style.cursor = "grab";
+  drag.style.backgroundColor = "transparent";
+
+  document.body.style.cursor = null;
+  activeMemo = null;
+  currentMouse = null;
+
+  document.removeEventListener("mousemove", handleMemoDragMove, false);
+  document.removeEventListener("touchmove", handleMemoDragMove, false);
+
+  document.removeEventListener("mouseup", handleMemoDragEnd, false);
+  document.removeEventListener("touchcancel", handleMemoDragEnd, false);
+  document.removeEventListener("touchend", handleMemoDragEnd, false);
+
+  // const id = this.data("id");
+  // const memos = JSON.parse(window.localStorage.getItem("memos"));
+  // if (memos) {
+  //   memos[id].position = { top, left };
+  //   window.localStorage.setItem("memos", JSON.stringify(memos));
+  // }
+
+  // this._invalidateEvents();
 };
 
 function handleMemoClose(e) {
   if (confirm("Are you sure you want to remove this memo?")) {
-    board.removeChild(e.target.parentElement);
+    board.removeChild(e.target.parentNode);
   }
 };
 
-function handleMemoResizeStart() {
+function handleMemoResizeStart(e) {
+  e.preventDefault();
 
+  activeMemo = e.target.parentNode;
+  activeMemo.classList.add("active");
+  activeMemo.style.zIndex = "99999";
+
+  document.body.style.cursor = "nw-resize";
+
+  e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
+
+  const y = snapToGrid(e.clientY, GRID_SIZE);
+  const x = snapToGrid(e.clientX, GRID_SIZE);
+
+  const rect = activeMemo.getBoundingClientRect();
+  const width = parseInt(rect.width, 10);
+  const height = parseInt(rect.height, 10);
+
+  currentMouse = { x, y };
+  currentSize = { width, height };
+
+  document.addEventListener("mousemove", handleMemoResizeMove, false);
+  document.addEventListener("touchmove", handleMemoResizeMove, false);
+
+  document.addEventListener("mouseup", handleMemoResizeEnd, false);
+  document.addEventListener("touchcancel", handleMemoResizeEnd, false);
+  document.addEventListener("touchend", handleMemoResizeEnd, false);
 };
 
-function handleMemoResizeMove() {
+function handleMemoResizeMove(e) {
+  e.preventDefault();
 
+  const isActive = activeMemo.classList.contains("active");
+
+  if (isActive) {
+    const x = snapToGrid(e.clientX, GRID_SIZE);
+    const y = snapToGrid(e.clientY, GRID_SIZE);
+
+    const width = (currentSize.width + (x - currentMouse.x)) - 1;
+    const height = (currentSize.height + (y - currentMouse.y)) - 1;
+
+    activeMemo.style.width = `${width}px`;
+    activeMemo.style.height = `${height}px`;
+  }
 };
 
-function handleMemoResizeEnd() {
+function handleMemoResizeEnd(e) {
+  e.preventDefault();
 
+  const x = snapToGrid(e.clientX, GRID_SIZE);
+  const y = snapToGrid(e.clientY, GRID_SIZE);
+
+  const width = (currentSize.width + (x - currentMouse.x)) - 1;
+  const height = (currentSize.height + (y - currentMouse.y)) - 1;
+
+  activeMemo.style.width = `${width}px`;
+  activeMemo.style.height = `${height}px`;
+
+  const resize = activeMemo.querySelectorAll(".resize")[0];
+  resize.style.cursor = "nw-resize";
+  resize.style.backgroundColor = "transparent";
+
+  activeMemo.classList.remove("active");
+
+  document.body.style.cursor = null;
+  currentSize = null;
+
+  document.removeEventListener("mousemove", handleMemoResizeMove, false);
+  document.removeEventListener("touchmove", handleMemoResizeMove, false);
+
+  document.removeEventListener("mouseup", handleMemoResizeEnd, false);
+  document.removeEventListener("touchcancel", handleMemoResizeEnd, false);
+  document.removeEventListener("touchend", handleMemoResizeEnd, false);
+
+  // const id = this.data("id");
+  // const memos = JSON.parse(window.localStorage.getItem("memos"));
+  // if (memos) {
+  //   memos[id].size = { width, height };
+  //   window.localStorage.setItem("memos", JSON.stringify(memos));
+  // }
+
+  // this._invalidateEvents();
 };
 
 /*
@@ -130,12 +265,12 @@ function handleMemoResizeEnd() {
 
 function handleBoardDragStart(e) {
   document.body.style.cursor = "crosshair";
-
+  
   const rect = board.getBoundingClientRect();
   const x = snapToGrid(e.clientX - rect.left, GRID_SIZE);
   const y = snapToGrid(e.clientY - rect.top, GRID_SIZE);
 
-  initialMouse = { x, y };
+  currentMouse = { x, y };
 
   selection = document.createElement("div");
   selection.setAttribute("id", "selection");
@@ -146,6 +281,7 @@ function handleBoardDragStart(e) {
   document.addEventListener("touchmove", handleBoardDragMove, false);
 
   document.addEventListener("mouseup", handleBoardDragEnd, false);
+  document.addEventListener("touchcancel", handleBoardDragEnd, false);
   document.addEventListener("touchend", handleBoardDragEnd, false);
 };
 
@@ -154,10 +290,10 @@ function handleBoardDragMove(e) {
   const x = snapToGrid(e.clientX - rect.left, GRID_SIZE);
   const y = snapToGrid(e.clientY - rect.top, GRID_SIZE);
 
-  const top = (y - initialMouse.y < 0) ? y : initialMouse.y;
-  const left = (x - initialMouse.x < 0) ? x : initialMouse.x;
-  const width = Math.abs(x - initialMouse.x) + 1;
-  const height = Math.abs(y - initialMouse.y) + 1;
+  const top = (y - currentMouse.y < 0) ? y : currentMouse.y;
+  const left = (x - currentMouse.x < 0) ? x : currentMouse.x;
+  const width = Math.abs(x - currentMouse.x) + 1;
+  const height = Math.abs(y - currentMouse.y) + 1;
 
   selection.style.top = `${top}px`;
   selection.style.left = `${left}px`;
@@ -170,11 +306,11 @@ function handleBoardDragEnd(e) {
   const x = snapToGrid(e.clientX - rect.left, GRID_SIZE);
   const y = snapToGrid(e.clientY - rect.top, GRID_SIZE);
 
-  const width = Math.abs(x - initialMouse.x) - 1;
-  const height = Math.abs(y - initialMouse.y) - 1;
+  const width = Math.abs(x - currentMouse.x) - 1;
+  const height = Math.abs(y - currentMouse.y) - 1;
 
-  const top = (y - initialMouse.y < 0) ? y : initialMouse.y;
-  const left = (x - initialMouse.x < 0) ? y : initialMouse.x;
+  const top = (y - currentMouse.y < 0) ? y : currentMouse.y;
+  const left = (x - currentMouse.x < 0) ? y : currentMouse.x;
 
   if (width >= 50 && height >= 50) {
     const id = uuidv4();
@@ -189,6 +325,7 @@ function handleBoardDragEnd(e) {
   document.removeEventListener("touchmove", handleBoardDragMove, false);
 
   document.removeEventListener("mouseup", handleBoardDragEnd, false);
+  document.removeEventListener("touchcancel", handleBoardDragEnd, false);
   document.removeEventListener("touchend", handleBoardDragEnd, false);
 };
 

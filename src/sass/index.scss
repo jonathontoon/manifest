@@ -56,7 +56,6 @@ body {
                 }
 
                 textarea.input {
-                    user-select: none;
                     position: absolute;
                     top: 17px;
                     left: 0px;
@@ -74,10 +73,6 @@ body {
 
                     &::placeholder {
                         color: rgba(0, 0, 0, 0.4);
-                    }
-
-                    &.active {
-                        user-select: auto;
                     }
                 }
 
