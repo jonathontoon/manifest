@@ -1,5 +1,5 @@
 import { GRID_SIZE, MARGIN } from "./js/globals";
-import { snapToGrid, uuidv4 } from "./js/utils";
+import { snapToGrid, confirm, uuidv4, getLocalStorageItem, setLocalStorageItem } from "./js/utils";
 
 import "./sass/index.scss";
 
@@ -21,37 +21,17 @@ function onMouseDown(e) {
       handleMemoDragStart(e);
     } else if (e.target.classList[0] === "resize") {
       handleMemoResizeStart(e);
-    } else {
-      console.log(e.target.classList[0], e.target.parentElement.classList[0]);
     }
   }
-  // else {
-  //   if (e.target.parentElement.classList[0] === "memo") {
-  //     switch (e.target.classList[0]) {
-  //       case "drag":
-  //         handleMemoDragStart(e);
-  //         break;
-  //       case "resize":
-  //         handleMemoResizeStart(e);
-  //         break;
-  //     }
-  //   }
-  // }
-};
-
-function onMouseMove(e) {
-};
-
-function onMouseUp(e) {
 };
 
 /*
   Memo Functions and Handlers
 */
 
-function createMemo(uuid, text, position, size) {
+function createMemo(id, text, position, size) {
   const memo = document.createElement("div");
-  memo.setAttribute("data-id", uuid);
+  memo.setAttribute("data-id", id);
   memo.classList.add("memo");
   memo.style.top = `${position.top}px`;
   memo.style.left = `${position.left}px`;
@@ -77,10 +57,15 @@ function createMemo(uuid, text, position, size) {
   textarea.setAttribute("autocomplete", false);
   textarea.setAttribute("spellcheck", false);
 
-  if (text) { textarea.setAttribute("value", text); }
+  if (text) { textarea.value = text; ; }
 
   textarea.addEventListener("focus", function (e) { e.target.classList.add("active"); }, false);
   textarea.addEventListener("blur", function (e) { e.target.classList.remove("active"); }, false);
+  textarea.addEventListener("input", function (e) {
+    const memos = getLocalStorageItem("memos");
+    memos[id] = { ...memos[id], text: e.target.value };
+    setLocalStorageItem("memos", memos);
+  }, false);
 
   memo.appendChild(textarea);
 
@@ -140,13 +125,21 @@ function handleMemoDragEnd(e) {
   const x = snapToGrid(e.clientX, GRID_SIZE);
   const y = snapToGrid(e.clientY, GRID_SIZE);
 
-  activeMemo.style.top = `${activeMemo.offsetTop - (currentMouse.y - y)}px`;
-  activeMemo.style.left = `${activeMemo.offsetLeft - (currentMouse.x - x)}px`;
+  const top = activeMemo.offsetTop - (currentMouse.y - y);
+  const left = activeMemo.offsetLeft - (currentMouse.x - x);
+
+  activeMemo.style.top = `${top}px`;
+  activeMemo.style.left = `${left}px`;
   activeMemo.classList.remove("active");
 
   const drag = activeMemo.querySelectorAll(".drag")[0];
   drag.style.cursor = "grab";
   drag.style.backgroundColor = "transparent";
+
+  const id = activeMemo.dataset.id;
+  const memos = getLocalStorageItem("memos");
+  memos[id] = { ...memos[id], position: { top, left } };
+  setLocalStorageItem("memos", memos);
 
   document.body.style.cursor = null;
   activeMemo = null;
@@ -158,19 +151,15 @@ function handleMemoDragEnd(e) {
   document.removeEventListener("mouseup", handleMemoDragEnd, false);
   document.removeEventListener("touchcancel", handleMemoDragEnd, false);
   document.removeEventListener("touchend", handleMemoDragEnd, false);
-
-  // const id = this.data("id");
-  // const memos = JSON.parse(window.localStorage.getItem("memos"));
-  // if (memos) {
-  //   memos[id].position = { top, left };
-  //   window.localStorage.setItem("memos", JSON.stringify(memos));
-  // }
-
-  // this._invalidateEvents();
 };
 
 function handleMemoClose(e) {
   if (confirm("Are you sure you want to remove this memo?")) {
+    const id = e.target.parentNode.dataset.id;
+    const memos = getLocalStorageItem("memos");
+    delete memos[id];
+    setLocalStorageItem("memos", memos);
+
     board.removeChild(e.target.parentNode);
   }
 };
@@ -239,6 +228,11 @@ function handleMemoResizeEnd(e) {
 
   activeMemo.classList.remove("active");
 
+  const id = activeMemo.dataset.id;
+  const memos = getLocalStorageItem("memos");
+  memos[id] = { ...memos[id], size: { width, height } };
+  setLocalStorageItem("memos", memos);
+
   document.body.style.cursor = null;
   currentSize = null;
 
@@ -248,15 +242,6 @@ function handleMemoResizeEnd(e) {
   document.removeEventListener("mouseup", handleMemoResizeEnd, false);
   document.removeEventListener("touchcancel", handleMemoResizeEnd, false);
   document.removeEventListener("touchend", handleMemoResizeEnd, false);
-
-  // const id = this.data("id");
-  // const memos = JSON.parse(window.localStorage.getItem("memos"));
-  // if (memos) {
-  //   memos[id].size = { width, height };
-  //   window.localStorage.setItem("memos", JSON.stringify(memos));
-  // }
-
-  // this._invalidateEvents();
 };
 
 /*
@@ -265,7 +250,7 @@ function handleMemoResizeEnd(e) {
 
 function handleBoardDragStart(e) {
   document.body.style.cursor = "crosshair";
-  
+
   const rect = board.getBoundingClientRect();
   const x = snapToGrid(e.clientX - rect.left, GRID_SIZE);
   const y = snapToGrid(e.clientY - rect.top, GRID_SIZE);
@@ -316,6 +301,10 @@ function handleBoardDragEnd(e) {
     const id = uuidv4();
     const memo = createMemo(id, null, { top, left }, { width, height });
     board.appendChild(memo);
+
+    const memos = getLocalStorageItem("memos");
+    memos[id] = { text: null, position: { top, left }, size: { width, height } };
+    setLocalStorageItem("memos", memos);
   }
 
   document.body.style.cursor = null;
@@ -381,6 +370,16 @@ function onLoad() {
   main.appendChild(canvas);
   main.appendChild(board);
   document.body.appendChild(main);
+
+  const memos = getLocalStorageItem("memos");
+  if (!memos) {
+    setLocalStorageItem("memos", {});
+  } else {
+    Object.keys(memos).forEach(function (key) {
+      const memo = createMemo(key, memos[key].text, memos[key].position, memos[key].size);
+      board.appendChild(memo);
+    });
+  }
 
   onResize();
 };
