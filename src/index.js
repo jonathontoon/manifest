@@ -3,9 +3,15 @@ import { snapToGrid, uuidv4 } from "./js/utils";
 
 import "./sass/index.scss";
 
+let activeMemo = null;
+
 let main, canvas, board, selection;
 let width, height, initalSize;
 let initialMouse, currentMouse;
+
+/*
+  Event Handler Functions
+*/
 
 function onMouseDown(e) {
   if (e.target === board) {
@@ -27,6 +33,10 @@ function onMouseDown(e) {
 
     document.addEventListener("mouseup", onMouseUp, false);
     document.addEventListener("touchend", onMouseUp, false);
+  } else {
+    if (e.target.parentNode.classList[0] === "memo") {
+      console.log(e.target.classList[0]);
+    }
   }
 };
 
@@ -54,15 +64,22 @@ function onMouseUp(e) {
   const x = snapToGrid(e.clientX - rect.left, GRID_SIZE);
   const y = snapToGrid(e.clientY - rect.top, GRID_SIZE);
 
-  currentMouse = { x, y };
-  document.body.style.cursor = null;
-  board.removeChild(selection);
+  const width = Math.abs(x - initialMouse.x) - 1;
+  const height = Math.abs(y - initialMouse.y) - 1;
+
+  const top = (y - initialMouse.y < 0) ? y : initialMouse.y;
+  const left = (x - initialMouse.x < 0) ? y : initialMouse.x;
 
   if (width >= 50 && height >= 50) {
     const id = uuidv4();
-    // const memoElement = new MemoElement(id, null, { top, left }, { width, height });
-    // this.appendElement(memoElement.element);
+    const memo = createMemo(id, null, { top, left }, { width, height });
+    board.appendChild(memo);
   }
+
+  document.body.style.cursor = null;
+  board.removeChild(selection);
+
+  currentMouse = { x, y };
 
   document.removeEventListener("mousemove", onMouseMove, false);
   document.removeEventListener("touchmove", onMouseMove, false);
@@ -70,6 +87,65 @@ function onMouseUp(e) {
   document.removeEventListener("mouseup", onMouseUp, false);
   document.removeEventListener("touchend", onMouseUp, false);
 };
+
+/*
+  Memo Functions
+*/
+
+function createMemo(uuid, text, position, size) {
+  const memo = document.createElement("div");
+  memo.setAttribute("data-id", uuid);
+  memo.classList.add("memo");
+  memo.style.top = `${position.top}px`;
+  memo.style.left = `${position.left}px`;
+  memo.style.width = `${size.width}px`;
+  memo.style.height = `${size.height}px`;
+
+  const drag = document.createElement("div");
+  drag.classList.add("drag");
+  drag.addEventListener("mousedown", onMouseDown, false);
+  drag.addEventListener("touchstart", onMouseDown, false);
+  memo.appendChild(drag);
+
+  const close = document.createElement("div");
+  close.classList.add("close");
+  close.innerHTML = "–";
+  close.addEventListener("mousedown", onMouseDown, false);
+  close.addEventListener("touchstart", onMouseDown, false);
+  memo.appendChild(close);
+
+  const textarea = document.createElement("textarea");
+  textarea.classList.add("input");
+  textarea.setAttribute("placeholder", "Add a short memo...");
+  textarea.setAttribute("autocomplete", false);
+  textarea.setAttribute("spellcheck", false);
+
+  if (text) {
+    textarea.setAttribute("value", text);
+  }
+
+  textarea.addEventListener("focus", function (e) {
+    e.target.classList.add("active");
+  }, false);
+
+  textarea.addEventListener("blur", function (e) {
+    e.target.classList.remove("active");
+  }, false);
+
+  memo.appendChild(textarea);
+
+  const resize = document.createElement("div");
+  resize.classList.add("resize");
+  resize.addEventListener("mousedown", onMouseDown, false);
+  resize.addEventListener("touchstart", onMouseDown, false);
+  memo.appendChild(resize);
+
+  return memo;
+};
+
+/*
+  App Functions
+*/
 
 function onResize() {
   main.style.width = `${window.innerWidth}px`;
