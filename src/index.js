@@ -6,90 +6,41 @@ import "./sass/index.scss";
 let activeMemo = null;
 
 let main, canvas, board, selection;
-let width, height, initalSize;
-let initialMouse, currentMouse;
+let width, height;
+let initialMouse;
 
 /*
-  Event Handler Functions
+  Generic Event Handlers
 */
 
 function onMouseDown(e) {
   if (e.target === board) {
-    document.body.style.cursor = "crosshair";
-
-    const rect = board.getBoundingClientRect();
-    const x = snapToGrid(e.clientX - rect.left, GRID_SIZE);
-    const y = snapToGrid(e.clientY - rect.top, GRID_SIZE);
-
-    initialMouse = { x, y };
-
-    selection = document.createElement("div");
-    selection.setAttribute("id", "selection");
-
-    board.appendChild(selection);
-
-    document.addEventListener("mousemove", onMouseMove, false);
-    document.addEventListener("touchmove", onMouseMove, false);
-
-    document.addEventListener("mouseup", onMouseUp, false);
-    document.addEventListener("touchend", onMouseUp, false);
+    handleBoardDragStart(e);
   } else {
-    if (e.target.parentNode.classList[0] === "memo") {
-      console.log(e.target.classList[0]);
-    }
+    console.log(e.target.classList[0], e.target.parentElement.classList[0]);
   }
+  // else {
+  //   if (e.target.parentElement.classList[0] === "memo") {
+  //     switch (e.target.classList[0]) {
+  //       case "drag":
+  //         handleMemoDragStart(e);
+  //         break;
+  //       case "resize":
+  //         handleMemoResizeStart(e);
+  //         break;
+  //     }
+  //   }
+  // }
 };
 
 function onMouseMove(e) {
-  const rect = board.getBoundingClientRect();
-  const x = snapToGrid(e.clientX - rect.left, GRID_SIZE);
-  const y = snapToGrid(e.clientY - rect.top, GRID_SIZE);
-
-  const top = (y - initialMouse.y < 0) ? y : initialMouse.y;
-  const left = (x - initialMouse.x < 0) ? x : initialMouse.x;
-  const width = Math.abs(x - initialMouse.x) + 1;
-  const height = Math.abs(y - initialMouse.y) + 1;
-
-  selection.style.top = `${top}px`;
-  selection.style.left = `${left}px`;
-  selection.style.width = `${width}px`;
-  selection.style.height = `${height}px`;
-
-  currentMouse = { x, y };
-  initalSize = { width, height };
 };
 
 function onMouseUp(e) {
-  const rect = board.getBoundingClientRect();
-  const x = snapToGrid(e.clientX - rect.left, GRID_SIZE);
-  const y = snapToGrid(e.clientY - rect.top, GRID_SIZE);
-
-  const width = Math.abs(x - initialMouse.x) - 1;
-  const height = Math.abs(y - initialMouse.y) - 1;
-
-  const top = (y - initialMouse.y < 0) ? y : initialMouse.y;
-  const left = (x - initialMouse.x < 0) ? y : initialMouse.x;
-
-  if (width >= 50 && height >= 50) {
-    const id = uuidv4();
-    const memo = createMemo(id, null, { top, left }, { width, height });
-    board.appendChild(memo);
-  }
-
-  document.body.style.cursor = null;
-  board.removeChild(selection);
-
-  currentMouse = { x, y };
-
-  document.removeEventListener("mousemove", onMouseMove, false);
-  document.removeEventListener("touchmove", onMouseMove, false);
-
-  document.removeEventListener("mouseup", onMouseUp, false);
-  document.removeEventListener("touchend", onMouseUp, false);
 };
 
 /*
-  Memo Functions
+  Memo Functions and Handlers
 */
 
 function createMemo(uuid, text, position, size) {
@@ -110,8 +61,8 @@ function createMemo(uuid, text, position, size) {
   const close = document.createElement("div");
   close.classList.add("close");
   close.innerHTML = "–";
-  close.addEventListener("mousedown", onMouseDown, false);
-  close.addEventListener("touchstart", onMouseDown, false);
+  close.addEventListener("mouseup", handleMemoClose, false);
+  close.addEventListener("touchend", handleMemoClose, false);
   memo.appendChild(close);
 
   const textarea = document.createElement("textarea");
@@ -141,6 +92,104 @@ function createMemo(uuid, text, position, size) {
   memo.appendChild(resize);
 
   return memo;
+};
+
+function handleMemoDragStart(e) {
+
+};
+
+function handleMemoDragMove(e) {
+
+};
+
+function handleMemoDragEnd(e) {
+
+};
+
+function handleMemoClose(e) {
+  if (confirm("Are you sure you want to remove this memo?")) {
+    board.removeChild(e.target.parentElement);
+  }
+};
+
+function handleMemoResizeStart() {
+
+};
+
+function handleMemoResizeMove() {
+
+};
+
+function handleMemoResizeEnd() {
+
+};
+
+/*
+  Board Functions and Handlers
+*/
+
+function handleBoardDragStart(e) {
+  document.body.style.cursor = "crosshair";
+
+  const rect = board.getBoundingClientRect();
+  const x = snapToGrid(e.clientX - rect.left, GRID_SIZE);
+  const y = snapToGrid(e.clientY - rect.top, GRID_SIZE);
+
+  initialMouse = { x, y };
+
+  selection = document.createElement("div");
+  selection.setAttribute("id", "selection");
+
+  board.appendChild(selection);
+
+  document.addEventListener("mousemove", handleBoardDragMove, false);
+  document.addEventListener("touchmove", handleBoardDragMove, false);
+
+  document.addEventListener("mouseup", handleBoardDragEnd, false);
+  document.addEventListener("touchend", handleBoardDragEnd, false);
+};
+
+function handleBoardDragMove(e) {
+  const rect = board.getBoundingClientRect();
+  const x = snapToGrid(e.clientX - rect.left, GRID_SIZE);
+  const y = snapToGrid(e.clientY - rect.top, GRID_SIZE);
+
+  const top = (y - initialMouse.y < 0) ? y : initialMouse.y;
+  const left = (x - initialMouse.x < 0) ? x : initialMouse.x;
+  const width = Math.abs(x - initialMouse.x) + 1;
+  const height = Math.abs(y - initialMouse.y) + 1;
+
+  selection.style.top = `${top}px`;
+  selection.style.left = `${left}px`;
+  selection.style.width = `${width}px`;
+  selection.style.height = `${height}px`;
+};
+
+function handleBoardDragEnd(e) {
+  const rect = board.getBoundingClientRect();
+  const x = snapToGrid(e.clientX - rect.left, GRID_SIZE);
+  const y = snapToGrid(e.clientY - rect.top, GRID_SIZE);
+
+  const width = Math.abs(x - initialMouse.x) - 1;
+  const height = Math.abs(y - initialMouse.y) - 1;
+
+  const top = (y - initialMouse.y < 0) ? y : initialMouse.y;
+  const left = (x - initialMouse.x < 0) ? y : initialMouse.x;
+
+  if (width >= 50 && height >= 50) {
+    const id = uuidv4();
+    const memo = createMemo(id, null, { top, left }, { width, height });
+    board.appendChild(memo);
+  }
+
+  document.body.style.cursor = null;
+  board.removeChild(selection);
+
+  document.removeEventListener("mousemove", handleBoardDragMove, false);
+  document.removeEventListener("touchmove", handleBoardDragMove, false);
+
+  document.removeEventListener("mouseup", handleBoardDragEnd, false);
+  document.removeEventListener("touchend", handleBoardDragEnd, false);
 };
 
 /*

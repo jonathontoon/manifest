@@ -1,3 +1,7 @@
+export function confirm(text) {
+  return window.confirm(text);
+};
+
 export function snapToGrid(value, grid) {
   return (grid) * Math.round(value / (grid));
 };
