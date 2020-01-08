@@ -38,19 +38,6 @@ function createMemo(id, text, position, size) {
   memo.style.width = `${size.width}px`;
   memo.style.height = `${size.height}px`;
 
-  const drag = document.createElement("div");
-  drag.classList.add("drag");
-  drag.addEventListener("mousedown", onMouseDown, false);
-  drag.addEventListener("touchstart", onMouseDown, false);
-  memo.appendChild(drag);
-
-  const close = document.createElement("div");
-  close.classList.add("close");
-  close.innerHTML = "–";
-  close.addEventListener("mouseup", handleMemoClose, false);
-  close.addEventListener("touchend", handleMemoClose, false);
-  memo.appendChild(close);
-
   const textarea = document.createElement("textarea");
   textarea.classList.add("input");
   textarea.setAttribute("placeholder", "Add a short memo...");
@@ -68,6 +55,19 @@ function createMemo(id, text, position, size) {
   }, false);
 
   memo.appendChild(textarea);
+
+  const drag = document.createElement("div");
+  drag.classList.add("drag");
+  drag.addEventListener("mousedown", onMouseDown, false);
+  drag.addEventListener("touchstart", onMouseDown, false);
+  memo.appendChild(drag);
+
+  const close = document.createElement("div");
+  close.classList.add("close");
+  close.innerHTML = "–";
+  close.addEventListener("mouseup", handleMemoClose, false);
+  close.addEventListener("touchend", handleMemoClose, false);
+  memo.appendChild(close);
 
   const resize = document.createElement("div");
   resize.classList.add("resize");
