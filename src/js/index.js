@@ -44,7 +44,7 @@ function createMemo(id, text, position, size) {
   textarea.setAttribute("autocomplete", false);
   textarea.setAttribute("spellcheck", false);
 
-  if (text) { textarea.value = text; }
+  if (text) { textarea.value = text; ; }
 
   textarea.addEventListener("focus", function (e) { e.target.classList.add("active"); }, false);
   textarea.addEventListener("blur", function (e) { e.target.classList.remove("active"); }, false);
@@ -263,13 +263,6 @@ function handleBoardDragStart(e) {
 
   board.appendChild(selection);
 
-  const id = uuidv4();
-  const memo = createMemo(id, null, { top: 0, left: 0 }, { width: 0, height: 0 });
-  memo.style.display = "none";
-  board.appendChild(memo);
-
-  activeMemo = memo;
-
   document.addEventListener("mousemove", handleBoardDragMove, false);
   document.addEventListener("touchmove", handleBoardDragMove, false);
 
@@ -306,19 +299,13 @@ function handleBoardDragEnd(e) {
   const left = (x - currentMouse.x < 0) ? y : currentMouse.x;
 
   if (width >= 50 && height >= 50) {
-    activeMemo.style.top = `${top}px`;
-    activeMemo.style.left = `${left}px`;
-    activeMemo.style.width = `${width}px`;
-    activeMemo.style.height = `${height}px`;
-    activeMemo.style.display = "block";
+    const id = uuidv4();
+    const memo = createMemo(id, null, { top, left }, { width, height });
+    board.appendChild(memo);
 
-    const id = activeMemo.dataset.id;
     const memos = getLocalStorageItem("memos");
     memos[id] = { text: null, position: { top, left }, size: { width, height } };
     setLocalStorageItem("memos", memos);
-  } else {
-    board.removeChild(activeMemo);
-    activeMemo = null;
   }
 
   document.body.style.cursor = null;
