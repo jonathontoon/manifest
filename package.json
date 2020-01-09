@@ -1,7 +1,7 @@
 {
   "name": "manifest",
   "version": "0.0.1",
-  "description": "Instant and organized memos in your browser.",
+  "description": "An instant grid-based pinboard for note taking.",
   "main": "src/index.js",
   "repository": "https://github.com/jonathontoon/manifest",
   "author": "Jonathon Toon",
@@ -24,6 +24,7 @@
     "@babel/preset-env": "^7.7.7",
     "babel-eslint": "^10.0.3",
     "babel-plugin-jsx-pragmatic": "^1.0.2",
+    "babel-preset-minify": "^0.5.1",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.19.1",
