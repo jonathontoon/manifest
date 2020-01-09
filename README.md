@@ -20,7 +20,7 @@ Manifest is a grid-based pinboard for note taking. Simply click and drag anywher
 
 ## FAQ
 
-### 1. Is this available as a Chrome or some kind of web extension?
+### 1. Is this available as some kind of web extension?
 In order to avoid investing too much in a single one eco-system there's no plan to create an extension right now.
 
 ### 2. What about a desktop app?
