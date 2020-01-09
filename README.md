@@ -27,7 +27,7 @@ In order to avoid investing too much in a single one eco-system there's no plan 
 Given that the easiest way to make a desktop app would use something like [Electron](https://github.com/electron) or most likely [DeskGap](https://github.com/patr0nus/DeskGap), which are just web views themselves, there's not too much unique that a desktop-specific app could offer. For now at least offline/progressive web app support is a goal for this project.
 
 ### 3. Can Manifest work on mobile?
-Manifest is not a mobile-centric product. This is intentional, as the specific experience and interactions which offer such experience rely on more accurage types of input. If mobile support was made possible though it would most likely require it's own bespoke experience. In saying that, tablet support is definitely a goal for this project.
+Manifest is not a mobile-centric product. This is intentional, as the specific experience and interactions which offer such experience rely on more accurate types of input. If mobile support was made possible though it would most likely require it's own bespoke experience. In saying that, tablet support is definitely a goal for this project.
 
 ### 4. What is Manifest built with?
 Simply vanilla JS and SASS, bundled with Parcel.
