@@ -1,5 +1,5 @@
 import { GRID_SIZE, MARGIN, DEFAULT_MEMO } from "./globals";
-import { snapToGrid, confirm, uuidv4, getLocalStorageItem, setLocalStorageItem } from "./utils";
+import { snapToGrid, confirm, generateUUID, getLocalStorageItem, setLocalStorageItem } from "./utils";
 
 import "../sass/index.scss";
 
@@ -40,38 +40,38 @@ function createMemo(id, text, position, size) {
   const textarea = document.createElement("textarea");
   textarea.classList.add("input");
   textarea.setAttribute("placeholder", "Add a short memo...");
-  textarea.setAttribute("autocomplete", false);
+  textarea.setAttribute("autocomplete", true);
   textarea.setAttribute("spellcheck", false);
 
   if (text) { textarea.value = text; ; }
 
-  textarea.addEventListener("focus", function (e) { e.target.classList.add("active"); }, false);
-  textarea.addEventListener("blur", function (e) { e.target.classList.remove("active"); }, false);
+  textarea.addEventListener("focus", function (e) { e.target.classList.add("active"); });
+  textarea.addEventListener("blur", function (e) { e.target.classList.remove("active"); });
   textarea.addEventListener("input", function (e) {
     const memos = getLocalStorageItem("manifest_memos");
     memos[id] = { ...memos[id], text: e.target.value };
     setLocalStorageItem("manifest_memos", memos);
-  }, false);
+  });
 
   memo.appendChild(textarea);
 
   const drag = document.createElement("div");
   drag.classList.add("drag");
-  drag.addEventListener("mousedown", onMouseDown, false);
-  drag.addEventListener("touchstart", onMouseDown, false);
+  drag.addEventListener("mousedown", onMouseDown);
+  drag.addEventListener("touchstart", onMouseDown);
   memo.appendChild(drag);
 
   const close = document.createElement("div");
   close.classList.add("close");
   close.innerHTML = "–";
-  close.addEventListener("mouseup", handleMemoClose, false);
-  close.addEventListener("touchend", handleMemoClose, false);
+  close.addEventListener("mouseup", handleMemoClose);
+  close.addEventListener("touchend", handleMemoClose);
   memo.appendChild(close);
 
   const resize = document.createElement("div");
   resize.classList.add("resize");
-  resize.addEventListener("mousedown", onMouseDown, false);
-  resize.addEventListener("touchstart", onMouseDown, false);
+  resize.addEventListener("mousedown", onMouseDown);
+  resize.addEventListener("touchstart", onMouseDown);
   memo.appendChild(resize);
 
   return memo;
@@ -94,12 +94,12 @@ function handleMemoDragStart(e) {
 
   currentMouse = { x, y };
 
-  document.addEventListener("mousemove", handleMemoDragMove, false);
-  document.addEventListener("touchmove", handleMemoDragMove, false);
+  document.addEventListener("mousemove", handleMemoDragMove);
+  document.addEventListener("touchmove", handleMemoDragMove);
 
-  document.addEventListener("mouseup", handleMemoDragEnd, false);
-  document.addEventListener("touchcancel", handleMemoDragEnd, false);
-  document.addEventListener("touchend", handleMemoDragEnd, false);
+  document.addEventListener("mouseup", handleMemoDragEnd);
+  document.addEventListener("touchcancel", handleMemoDragEnd);
+  document.addEventListener("touchend", handleMemoDragEnd);
 };
 
 function handleMemoDragMove(e) {
@@ -144,12 +144,12 @@ function handleMemoDragEnd(e) {
   activeMemo = null;
   currentMouse = null;
 
-  document.removeEventListener("mousemove", handleMemoDragMove, false);
-  document.removeEventListener("touchmove", handleMemoDragMove, false);
+  document.removeEventListener("mousemove", handleMemoDragMove);
+  document.removeEventListener("touchmove", handleMemoDragMove);
 
-  document.removeEventListener("mouseup", handleMemoDragEnd, false);
-  document.removeEventListener("touchcancel", handleMemoDragEnd, false);
-  document.removeEventListener("touchend", handleMemoDragEnd, false);
+  document.removeEventListener("mouseup", handleMemoDragEnd);
+  document.removeEventListener("touchcancel", handleMemoDragEnd);
+  document.removeEventListener("touchend", handleMemoDragEnd);
 };
 
 function handleMemoClose(e) {
@@ -184,12 +184,12 @@ function handleMemoResizeStart(e) {
   currentMouse = { x, y };
   currentSize = { width, height };
 
-  document.addEventListener("mousemove", handleMemoResizeMove, false);
-  document.addEventListener("touchmove", handleMemoResizeMove, false);
+  document.addEventListener("mousemove", handleMemoResizeMove);
+  document.addEventListener("touchmove", handleMemoResizeMove);
 
-  document.addEventListener("mouseup", handleMemoResizeEnd, false);
-  document.addEventListener("touchcancel", handleMemoResizeEnd, false);
-  document.addEventListener("touchend", handleMemoResizeEnd, false);
+  document.addEventListener("mouseup", handleMemoResizeEnd);
+  document.addEventListener("touchcancel", handleMemoResizeEnd);
+  document.addEventListener("touchend", handleMemoResizeEnd);
 };
 
 function handleMemoResizeMove(e) {
@@ -236,12 +236,12 @@ function handleMemoResizeEnd(e) {
   activeMemo = null;
   currentSize = null;
 
-  document.removeEventListener("mousemove", handleMemoResizeMove, false);
-  document.removeEventListener("touchmove", handleMemoResizeMove, false);
+  document.removeEventListener("mousemove", handleMemoResizeMove);
+  document.removeEventListener("touchmove", handleMemoResizeMove);
 
-  document.removeEventListener("mouseup", handleMemoResizeEnd, false);
-  document.removeEventListener("touchcancel", handleMemoResizeEnd, false);
-  document.removeEventListener("touchend", handleMemoResizeEnd, false);
+  document.removeEventListener("mouseup", handleMemoResizeEnd);
+  document.removeEventListener("touchcancel", handleMemoResizeEnd);
+  document.removeEventListener("touchend", handleMemoResizeEnd);
 };
 
 /*
@@ -262,12 +262,12 @@ function handleBoardDragStart(e) {
 
   board.appendChild(selection);
 
-  document.addEventListener("mousemove", handleBoardDragMove, false);
-  document.addEventListener("touchmove", handleBoardDragMove, false);
+  document.addEventListener("mousemove", handleBoardDragMove);
+  document.addEventListener("touchmove", handleBoardDragMove);
 
-  document.addEventListener("mouseup", handleBoardDragEnd, false);
-  document.addEventListener("touchcancel", handleBoardDragEnd, false);
-  document.addEventListener("touchend", handleBoardDragEnd, false);
+  document.addEventListener("mouseup", handleBoardDragEnd);
+  document.addEventListener("touchcancel", handleBoardDragEnd);
+  document.addEventListener("touchend", handleBoardDragEnd);
 };
 
 function handleBoardDragMove(e) {
@@ -297,7 +297,7 @@ function handleBoardDragEnd(e) {
   const height = selectionRect.height;
 
   if (width >= 80 && height >= 80) {
-    const id = uuidv4();
+    const id = generateUUID();
     const memo = createMemo(id, null, { top, left }, { width, height });
     board.appendChild(memo);
 
@@ -309,12 +309,12 @@ function handleBoardDragEnd(e) {
   document.body.style.cursor = null;
   board.removeChild(selection);
 
-  document.removeEventListener("mousemove", handleBoardDragMove, false);
-  document.removeEventListener("touchmove", handleBoardDragMove, false);
+  document.removeEventListener("mousemove", handleBoardDragMove);
+  document.removeEventListener("touchmove", handleBoardDragMove);
 
-  document.removeEventListener("mouseup", handleBoardDragEnd, false);
-  document.removeEventListener("touchcancel", handleBoardDragEnd, false);
-  document.removeEventListener("touchend", handleBoardDragEnd, false);
+  document.removeEventListener("mouseup", handleBoardDragEnd);
+  document.removeEventListener("touchcancel", handleBoardDragEnd);
+  document.removeEventListener("touchend", handleBoardDragEnd);
 };
 
 /*
@@ -366,8 +366,8 @@ function onLoad() {
   board = document.createElement("section");
   board.setAttribute("id", "board");
 
-  board.addEventListener("mousedown", onMouseDown, false);
-  board.addEventListener("touchstart", onMouseDown, false);
+  board.addEventListener("mousedown", onMouseDown);
+  board.addEventListener("touchstart", onMouseDown);
 
   main.appendChild(canvas);
   main.appendChild(board);
@@ -393,5 +393,5 @@ function onLoad() {
   onResize();
 };
 
-window.addEventListener("resize", onResize, false);
-window.addEventListener("load", onLoad, false);
+window.addEventListener("resize", onResize);
+window.addEventListener("load", onLoad);
