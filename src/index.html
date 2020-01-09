@@ -4,71 +4,62 @@
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width,initial-scale=1">
-		<title>❏ Memgrid</title>
+		<title>Memgrid</title>
 		<meta name="author" content="memgrid">
 		<meta name="description" content="Instant and organized memos in your browser.">
 		<meta name="keywords" content="notes, memo, ideas, reminder, tab, grid">
 		<meta name="application-name" content="memgrid">
 		<meta name="mobile-web-app-capable" content="yes">
 
-		<meta name="theme-color" content="#ffffff">
-		<meta name="msapplication-navbutton-color" content="#ffffff">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-		<meta name="msapplication-TileColor" content="#ffffff" />
-		<!-- <meta name="msapplication-TileImage" content="images/icon-144x144.png" />
-		<meta name="msapplication-square70x70logo" content="images/icon-70x70.png" />
-		<meta name="msapplication-square150x150logo" content="images/icon-150x150.png" />
-		<meta name="msapplication-wide310x150logo" content="images/icon-310x150.png" />
-		<meta name="msapplication-square310x310logo" content="images/icon-310x310.png" /> -->
-
+		<link rel="apple-touch-icon" sizes="57x57" href="./assets/images/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="./assets/images/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="./assets/images/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="./assets/images/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="./assets/images/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="./assets/images/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="./assets/images/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="./assets/images/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="./assets/images/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="./assets/images/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="./assets/images/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon-16x16.png">
 		<link rel="manifest" href="memgrid.webmanifest">
-
-		<!-- <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-		<link rel="apple-touch-icon" sizes="180x180" href="images/icon-180x180.png">
-		<link rel="apple-touch-icon-precomposed" sizes="57x57" href="images/icon-57x57.png" />
-		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/icon-114x114.png" />
-		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/icon-72x72.png" />
-		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/icon-144x144.png" />
-		<link rel="apple-touch-icon-precomposed" sizes="60x60" href="images/icon-60x60.png" />
-		<link rel="apple-touch-icon-precomposed" sizes="120x120" href="images/icon-120x120.png" />
-		<link rel="apple-touch-icon-precomposed" sizes="76x76" href="images/icon-76x76.png" />
-		<link rel="apple-touch-icon-precomposed" sizes="152x152" href="images/icon-152x152.png" />
-		<link rel="icon" type="image/png" sizes="196x196" href="images/icon-196x196.png" />
-		<link rel="icon" type="image/png" sizes="128x128" href="images/icon-128x128.png" />
-		<link rel="icon" type="image/png" sizes="96x96" href="images/icon-96x96.png" />
-		<link rel="icon" type="image/png" sizes="32x32" href="images/icon-32x32.png" />
-		<link rel="icon" type="image/png" sizes="16x16" href="images/icon-16x16.png" /> -->
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="./assets/images/ms-icon-144x144.png">
+		<meta name="theme-color" content="#ffffff">
 	</head>
 	<style type="text/css">
 		@font-face {
 			font-family: "Mono S";
-			src: url("./fonts/bold.woff2") format("woff2"),
-				url("./fonts/bold.woff") format("woff");
+			src: url("./assets/fonts/bold.woff2") format("woff2"),
+				url("./assets/fonts/bold.woff") format("woff");
 			font-weight: bold;
 			font-style: normal;
 		}
 
 		@font-face {
 			font-family: "Mono S";
-			src: url("./fonts/bolditalic.woff2") format("woff2"),
-				url("./fonts/bolditalic.woff") format("woff");
+			src: url("./assets/fonts/bolditalic.woff2") format("woff2"),
+				url("./assets/fonts/bolditalic.woff") format("woff");
 			font-weight: bold;
 			font-style: italic;
 		}
 
 		@font-face {
 			font-family: "Mono S";
-			src: url("./fonts/italic.woff2") format("woff2"),
-				url("./fonts/italic.woff") format("woff");
+			src: url("./assets/fonts/italic.woff2") format("woff2"),
+				url("./assets/fonts/italic.woff") format("woff");
 			font-weight: normal;
 			font-style: italic;
 		}
 
 		@font-face {
 			font-family: "Mono S";
-			src: url("./fonts/regular.woff2") format("woff2"),
-				url("./fonts/regular.woff") format("woff");
+			src: url("./assets/fonts/regular.woff2") format("woff2"),
+				url("./assets/fonts/regular.woff") format("woff");
 			font-weight: normal;
 			font-style: normal;
 		}
