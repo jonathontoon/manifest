@@ -1,4 +1,4 @@
-import { GRID_SIZE, MARGIN } from "./globals";
+import { GRID_SIZE, MARGIN, DEFAULT_MEMO } from "./globals";
 import { snapToGrid, confirm, uuidv4, getLocalStorageItem, setLocalStorageItem } from "./utils";
 
 import "../sass/index.scss";
@@ -376,6 +376,13 @@ function onLoad() {
   const memos = getLocalStorageItem("manifest_memos");
   if (!memos) {
     setLocalStorageItem("manifest_memos", {});
+
+    const memo = createMemo(DEFAULT_MEMO.id, DEFAULT_MEMO.text, DEFAULT_MEMO.position, DEFAULT_MEMO.size);
+    board.appendChild(memo);
+
+    const memos = getLocalStorageItem("manifest_memos");
+    memos[DEFAULT_MEMO.id] = { text: DEFAULT_MEMO.text, position: DEFAULT_MEMO.position, size: DEFAULT_MEMO.size };
+    setLocalStorageItem("manifest_memos", memos);
   } else {
     Object.keys(memos).forEach(function (key) {
       const memo = createMemo(key, memos[key].text, memos[key].position, memos[key].size);
