@@ -1,9 +1,9 @@
 {
-  "name": "memgrid",
+  "name": "manifest",
   "version": "0.0.1",
   "description": "Instant and organized memos in your browser.",
   "main": "src/index.js",
-  "repository": "https://github.com/jonathontoon/memgrid",
+  "repository": "https://github.com/jonathontoon/manifest",
   "author": "Jonathon Toon",
   "license": "GPL 2.0",
   "private": true,
