@@ -48,9 +48,9 @@ function createMemo(id, text, position, size) {
   textarea.addEventListener("focus", function (e) { e.target.classList.add("active"); }, false);
   textarea.addEventListener("blur", function (e) { e.target.classList.remove("active"); }, false);
   textarea.addEventListener("input", function (e) {
-    const memos = getLocalStorageItem("memos");
+    const memos = getLocalStorageItem("manifest_memos");
     memos[id] = { ...memos[id], text: e.target.value };
-    setLocalStorageItem("memos", memos);
+    setLocalStorageItem("manifest_memos", memos);
   }, false);
 
   memo.appendChild(textarea);
@@ -136,9 +136,9 @@ function handleMemoDragEnd(e) {
   drag.style.backgroundColor = "transparent";
 
   const id = activeMemo.dataset.id;
-  const memos = getLocalStorageItem("memos");
+  const memos = getLocalStorageItem("manifest_memos");
   memos[id] = { ...memos[id], position: { top, left } };
-  setLocalStorageItem("memos", memos);
+  setLocalStorageItem("manifest_memos", memos);
 
   document.body.style.cursor = null;
   activeMemo = null;
@@ -155,9 +155,9 @@ function handleMemoDragEnd(e) {
 function handleMemoClose(e) {
   if (confirm("Are you sure you want to remove this memo?")) {
     const id = e.target.parentNode.dataset.id;
-    const memos = getLocalStorageItem("memos");
+    const memos = getLocalStorageItem("manifest_memos");
     delete memos[id];
-    setLocalStorageItem("memos", memos);
+    setLocalStorageItem("manifest_memos", memos);
 
     board.removeChild(e.target.parentNode);
   }
@@ -228,9 +228,9 @@ function handleMemoResizeEnd(e) {
   activeMemo.classList.remove("active");
 
   const id = activeMemo.dataset.id;
-  const memos = getLocalStorageItem("memos");
+  const memos = getLocalStorageItem("manifest_memos");
   memos[id] = { ...memos[id], size: { width, height } };
-  setLocalStorageItem("memos", memos);
+  setLocalStorageItem("manifest_memos", memos);
 
   document.body.style.cursor = null;
   activeMemo = null;
@@ -301,9 +301,9 @@ function handleBoardDragEnd(e) {
     const memo = createMemo(id, null, { top, left }, { width, height });
     board.appendChild(memo);
 
-    const memos = getLocalStorageItem("memos");
+    const memos = getLocalStorageItem("manifest_memos");
     memos[id] = { text: null, position: { top, left }, size: { width, height } };
-    setLocalStorageItem("memos", memos);
+    setLocalStorageItem("manifest_memos", memos);
   }
 
   document.body.style.cursor = null;
@@ -373,9 +373,9 @@ function onLoad() {
   main.appendChild(board);
   document.body.appendChild(main);
 
-  const memos = getLocalStorageItem("memos");
+  const memos = getLocalStorageItem("manifest_memos");
   if (!memos) {
-    setLocalStorageItem("memos", {});
+    setLocalStorageItem("manifest_memos", {});
   } else {
     Object.keys(memos).forEach(function (key) {
       const memo = createMemo(key, memos[key].text, memos[key].position, memos[key].size);

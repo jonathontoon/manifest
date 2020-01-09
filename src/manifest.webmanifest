@@ -1,6 +1,6 @@
 {
-	"name": "memgrid",
-	"short_name": "memgrid",
+	"name": "manifest",
+	"short_name": "manifest",
 	"description": "Instant and organized memos in your browser.",
 	"theme_color": "#ffffff",
 	"background_color": "#ffffff",
