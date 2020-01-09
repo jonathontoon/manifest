@@ -6,7 +6,6 @@ import "../sass/index.scss";
 let activeMemo;
 
 let main, canvas, board, selection;
-let width, height;
 let currentMouse, currentSize;
 
 /*
@@ -288,15 +287,14 @@ function handleBoardDragMove(e) {
 };
 
 function handleBoardDragEnd(e) {
-  const rect = board.getBoundingClientRect();
-  const x = snapToGrid(e.clientX - rect.left, GRID_SIZE);
-  const y = snapToGrid(e.clientY - rect.top, GRID_SIZE);
+  const boardRect = board.getBoundingClientRect();
+  const selectionRect = selection.getBoundingClientRect();
 
-  const width = Math.abs(x - currentMouse.x) - 1;
-  const height = Math.abs(y - currentMouse.y) - 1;
+  const top = selectionRect.top - boardRect.top;
+  const left = selectionRect.left - boardRect.left;
 
-  const top = (y - currentMouse.y < 0) ? y : currentMouse.y;
-  const left = (x - currentMouse.x < 0) ? y : currentMouse.x;
+  const width = selectionRect.width;
+  const height = selectionRect.height;
 
   if (width >= 50 && height >= 50) {
     const id = uuidv4();
@@ -327,8 +325,8 @@ function onResize() {
   main.style.width = `${window.innerWidth}px`;
   main.style.height = `${window.innerHeight}px`;
 
-  width = (window.innerWidth - MARGIN) - 1;
-  height = (window.innerHeight - MARGIN) + 1;
+  const width = (window.innerWidth - MARGIN) - 1;
+  const height = (window.innerHeight - MARGIN) + 1;
 
   canvas.setAttribute("width", width);
   canvas.setAttribute("height", height);
@@ -353,6 +351,9 @@ function onResize() {
   board.style.left = `${MARGIN / 2}px`;
   board.style.width = `${width}px`;
   board.style.height = `${height}px`;
+
+  currentMouse = null;
+  currentSize = null;
 };
 
 function onLoad() {
