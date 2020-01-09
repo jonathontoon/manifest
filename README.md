@@ -25,4 +25,4 @@ Manifest is free and will always be free. However if you'd like to contribute a 
 
 ## Acknowledgements
 
-Thank you to ![bnjm](https://www.github.com/bnjm) for help with the grid snapping logic, as well as every one who helped test the first release.
+Thank you to [bnjm](https://www.github.com/bnjm) for help with the grid snapping logic, as well as everyone who helped test the first release.
