@@ -5,6 +5,7 @@
 [![Size](https://img.shields.io/bundlephobia/minzip/manifest?style=flat)](https://github.com/jonathontoon/manifest/releases/latest)
 [![Dependencies](https://img.shields.io/david/jonathontoon/manifest)](https://github.com/jonathontoon/manifest/blob/master/package.json)
 [![Project License](https://img.shields.io/github/license/jonathontoon/manifest.svg)](https://github.com/jonathontoon/manifest/blob/master/LICENSE)
+
 ![Manifest](https://i.imgur.com/yIS8dNW.png)
 
 ### Table of Contents
