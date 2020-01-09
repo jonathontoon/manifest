@@ -21,7 +21,7 @@ Manifest is a grid-based pinboard for note taking. Simply click anywhere to crea
 Please create a Github [issue](https://github.com/jonathontoon/manifest/issues), following the `ISSUE_TEMPLATE.md` and provide as much information as possible regarding the bug, including screenshots or error codes.
 
 ## Donate
-Manifest is free and will always be free. However if you'd like to contribute a small donation via ![LiberaPay](https://liberapay.com/jonathontoon/) to help pay for domain and server costs it would be greatly appreciated.
+Manifest is free and will always be free. However if you'd like to contribute a small donation via [LiberaPay](https://liberapay.com/jonathontoon/) to help pay for domain and server costs it would be greatly appreciated.
 
 ## Acknowledgements
 
