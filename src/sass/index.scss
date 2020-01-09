@@ -24,6 +24,8 @@ body {
             div.memo {
                 background-color: white;
                 position: absolute;
+                min-width: 80px;
+                min-height: 80px;
                 border: 1px solid black;
                 user-select: none;
 
@@ -68,7 +70,7 @@ body {
                     resize: none;
                     overflow: hidden;
                     font-family: monospace;
-                    font-size: 12px;
+                    font-size: 13px;
                     cursor: text;
 
                     &::placeholder {
