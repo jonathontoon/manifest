@@ -5,6 +5,8 @@
 [![GitHub Release](https://img.shields.io/github/release/jonathontoon/manifest.svg)](https://github.com/jonathontoon/manifest/releases/latest)
 [![Project License](https://img.shields.io/github/license/jonathontoon/manifest.svg)](https://github.com/jonathontoon/manifest/blob/master/LICENSE)
 
+![Manifest](https://i.imgur.com/yIS8dNW.png)
+
 ### Table of Contents
 
 - [Introduction](#introduction)
