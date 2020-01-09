@@ -374,7 +374,7 @@ function onLoad() {
   document.body.appendChild(main);
 
   const memos = getLocalStorageItem("manifest_memos");
-  if (!memos) {
+  if (!memos || Object.keys(memos).length === 0) {
     setLocalStorageItem("manifest_memos", {});
 
     const memo = createMemo(DEFAULT_MEMO.id, DEFAULT_MEMO.text, DEFAULT_MEMO.position, DEFAULT_MEMO.size);
