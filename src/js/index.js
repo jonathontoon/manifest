@@ -8,6 +8,8 @@ let activeMemo;
 let main, canvas, board, selection;
 let currentMouse, currentSize;
 
+const maximumMemoIndex = "99998";
+
 /*
   Generic Event Handlers
 */
@@ -82,7 +84,7 @@ function handleMemoDragStart(e) {
 
   activeMemo = e.target.parentNode;
   activeMemo.classList.add("active");
-  activeMemo.style.zIndex = "99999";
+  activeMemo.style.zIndex = maximumMemoIndex;
 
   e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
   e.target.style.cursor = "grabbing";
@@ -168,7 +170,7 @@ function handleMemoResizeStart(e) {
 
   activeMemo = e.target.parentNode;
   activeMemo.classList.add("active");
-  activeMemo.style.zIndex = "99999";
+  activeMemo.style.zIndex = maximumMemoIndex;
 
   document.body.style.cursor = "nw-resize";
 
