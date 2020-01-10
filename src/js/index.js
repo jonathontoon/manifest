@@ -1,5 +1,5 @@
 import { GRID_SIZE, MARGIN, DEFAULT_MEMO } from "./globals";
-import { snapToGrid, confirm, generateUUID, getLocalStorageItem, setLocalStorageItem } from "./utils";
+import { snapToGrid, confirm, generateUUID, getLocalStorageItem, setLocalStorageItem, decreaseAllMemoIndexes } from "./utils";
 
 import "../sass/index.scss";
 
@@ -7,6 +7,9 @@ let activeMemo;
 
 let main, canvas, board, selection;
 let currentMouse, currentSize;
+
+const dragIndicatorIndex = "99999";
+const maximumMemoIndex = "99998";
 
 /*
   Generic Event Handlers
@@ -36,6 +39,7 @@ function createMemo(id, text, position, size) {
   memo.style.left = `${position.left}px`;
   memo.style.width = `${size.width}px`;
   memo.style.height = `${size.height}px`;
+  memo.style.zIndex = maximumMemoIndex;
 
   const textarea = document.createElement("textarea");
   textarea.classList.add("input");
@@ -45,7 +49,14 @@ function createMemo(id, text, position, size) {
 
   if (text) { textarea.value = text; ; }
 
-  textarea.addEventListener("focus", function (e) { e.target.classList.add("active"); });
+  textarea.addEventListener("focus", function (e) {
+    e.target.classList.add("active");
+
+    decreaseAllMemoIndexes();
+
+    activeMemo = e.target.parentNode;
+    activeMemo.style.zIndex = maximumMemoIndex;
+  });
   textarea.addEventListener("blur", function (e) { e.target.classList.remove("active"); });
   textarea.addEventListener("input", function (e) {
     const memos = getLocalStorageItem("manifest_memos");
@@ -80,9 +91,11 @@ function createMemo(id, text, position, size) {
 function handleMemoDragStart(e) {
   e.preventDefault();
 
+  decreaseAllMemoIndexes();
+
   activeMemo = e.target.parentNode;
   activeMemo.classList.add("active");
-  activeMemo.style.zIndex = "99999";
+  activeMemo.style.zIndex = maximumMemoIndex;
 
   e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
   e.target.style.cursor = "grabbing";
@@ -166,9 +179,11 @@ function handleMemoClose(e) {
 function handleMemoResizeStart(e) {
   e.preventDefault();
 
+  decreaseAllMemoIndexes();
+
   activeMemo = e.target.parentNode;
   activeMemo.classList.add("active");
-  activeMemo.style.zIndex = "99999";
+  activeMemo.style.zIndex = maximumMemoIndex;
 
   document.body.style.cursor = "nw-resize";
 
@@ -201,8 +216,8 @@ function handleMemoResizeMove(e) {
     const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
     const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
-    const width = (currentSize.width + (x - currentMouse.x)) - 1;
-    const height = (currentSize.height + (y - currentMouse.y)) - 1;
+    const width = (currentSize.width + (x - currentMouse.x)) - 4;
+    const height = (currentSize.height + (y - currentMouse.y)) - 4;
 
     activeMemo.style.width = `${width}px`;
     activeMemo.style.height = `${height}px`;
@@ -215,8 +230,8 @@ function handleMemoResizeEnd(e) {
   const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
   const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
-  const width = (currentSize.width + (x - currentMouse.x)) - 1;
-  const height = (currentSize.height + (y - currentMouse.y)) - 1;
+  const width = (currentSize.width + (x - currentMouse.x)) - 4;
+  const height = (currentSize.height + (y - currentMouse.y)) - 4;
 
   activeMemo.style.width = `${width}px`;
   activeMemo.style.height = `${height}px`;
@@ -259,6 +274,7 @@ function handleBoardDragStart(e) {
 
   selection = document.createElement("div");
   selection.setAttribute("id", "selection");
+  selection.style.zIndex = dragIndicatorIndex;
 
   board.appendChild(selection);
 
@@ -293,8 +309,8 @@ function handleBoardDragEnd(e) {
   const top = selectionRect.top - boardRect.top;
   const left = selectionRect.left - boardRect.left;
 
-  const width = selectionRect.width;
-  const height = selectionRect.height;
+  const width = selectionRect.width - 2;
+  const height = selectionRect.height - 2;
 
   if (width >= 80 && height >= 80) {
     const id = generateUUID();
