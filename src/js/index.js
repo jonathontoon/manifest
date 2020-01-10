@@ -8,6 +8,8 @@ let activeMemo;
 let main, canvas, board, selection;
 let currentMouse, currentSize;
 
+const maximumMemoIndex = "99998";
+
 /*
   Generic Event Handlers
 */
