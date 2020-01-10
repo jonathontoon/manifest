@@ -20,3 +20,11 @@ export function generateUUID() {
     return v.toString(16);
   });
 };
+
+export function decreaseAllMemoIndexes() {
+  const memos = document.getElementsByClassName("memo");
+  for (const memo of memos) {
+    let index = memo.style.zIndex;
+    memo.style.zIndex = --index;
+  }
+};
