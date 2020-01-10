@@ -216,8 +216,8 @@ function handleMemoResizeMove(e) {
     const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
     const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
-    const width = (currentSize.width + (x - currentMouse.x)) - 1;
-    const height = (currentSize.height + (y - currentMouse.y)) - 1;
+    const width = (currentSize.width + (x - currentMouse.x)) - 4;
+    const height = (currentSize.height + (y - currentMouse.y)) - 4;
 
     activeMemo.style.width = `${width}px`;
     activeMemo.style.height = `${height}px`;
@@ -230,8 +230,8 @@ function handleMemoResizeEnd(e) {
   const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
   const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
-  const width = (currentSize.width + (x - currentMouse.x)) - 1;
-  const height = (currentSize.height + (y - currentMouse.y)) - 1;
+  const width = (currentSize.width + (x - currentMouse.x)) - 4;
+  const height = (currentSize.height + (y - currentMouse.y)) - 4;
 
   activeMemo.style.width = `${width}px`;
   activeMemo.style.height = `${height}px`;
@@ -309,8 +309,8 @@ function handleBoardDragEnd(e) {
   const top = selectionRect.top - boardRect.top;
   const left = selectionRect.left - boardRect.left;
 
-  const width = selectionRect.width;
-  const height = selectionRect.height;
+  const width = selectionRect.width - 2;
+  const height = selectionRect.height - 2;
 
   if (width >= 80 && height >= 80) {
     const id = generateUUID();
