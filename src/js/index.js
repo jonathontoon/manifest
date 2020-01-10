@@ -391,12 +391,10 @@ function onLoad() {
 
   const memos = getLocalStorageItem("manifest_memos");
   if (!memos || Object.keys(memos).length === 0) {
-    setLocalStorageItem("manifest_memos", {});
-
     const memo = createMemo(DEFAULT_MEMO.id, DEFAULT_MEMO.text, DEFAULT_MEMO.position, DEFAULT_MEMO.size);
     board.appendChild(memo);
 
-    const memos = getLocalStorageItem("manifest_memos");
+    const memos = {};
     memos[DEFAULT_MEMO.id] = { text: DEFAULT_MEMO.text, position: DEFAULT_MEMO.position, size: DEFAULT_MEMO.size };
     setLocalStorageItem("manifest_memos", memos);
   } else {
