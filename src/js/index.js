@@ -8,6 +8,7 @@ let activeMemo;
 let main, canvas, board, selection;
 let currentMouse, currentSize;
 
+const dragIndicatorIndex = "99999";
 const maximumMemoIndex = "99998";
 
 /*
