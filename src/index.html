@@ -22,14 +22,24 @@
 		<link rel="apple-touch-icon" sizes="144x144" href="./assets/images/apple-icon-144x144.png">
 		<link rel="apple-touch-icon" sizes="152x152" href="./assets/images/apple-icon-152x152.png">
 		<link rel="apple-touch-icon" sizes="180x180" href="./assets/images/apple-icon-180x180.png">
-		<link rel="icon" type="image/png" sizes="192x192"  href="./assets/images/android-icon-192x192.png">
+
+		<link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon-16x16.png">
 		<link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
 		<link rel="icon" type="image/png" sizes="96x96" href="./assets/images/favicon-96x96.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon-16x16.png">
+
+		<link rel="icon" type="image/png" sizes="36x36"  href="./assets/images/android-icon-36x36.png">
+		<link rel="icon" type="image/png" sizes="48x48"  href="./assets/images/android-icon-48x48.png">
+		<link rel="icon" type="image/png" sizes="72x72"  href="./assets/images/android-icon-72x72.png">
+		<link rel="icon" type="image/png" sizes="96x96"  href="./assets/images/android-icon-96x96.png">
+		<link rel="icon" type="image/png" sizes="144x144"  href="./assets/images/android-icon-144x144.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="./assets/images/android-icon-192x192.png">
+		
 		<link rel="manifest" href="manifest.webmanifest">
-		<meta name="msapplication-TileColor" content="#ffffff">
+		
+		<meta name="msapplication-TileColor" content="#000000">
 		<meta name="msapplication-TileImage" content="./assets/images/ms-icon-144x144.png">
-		<meta name="theme-color" content="#ffffff">
+		<meta name="msapplication-config" content="./assets/images/browserconfig.xml" />
+		<meta name="theme-color" content="#000000">
 	</head>
 	<body>
 		<noscript>
@@ -38,5 +48,47 @@
 			</main>
 		</noscript>
 		<script type="text/javascript" src="./js/index.js"></script>
+		<script type="text/javascript">
+
+			const cacheName = "manifest-1.0.0"; 
+			const cacheFiles = [
+				"./",
+				"./index.html",
+				"./js/index.js",
+				"./sass/reset.css",
+				"./sass/style.css"
+			];
+
+			self.addEventListener("install", function(e) {
+				e.waitUntil(
+					// Open the cache
+					caches.open(cacheName).then(function(cache) {
+
+						// Add all the default files to the cache
+						console.log("[ServiceWorker] Caching cacheFiles");
+						return cache.addAll(cacheFiles);
+					})
+				);
+			});
+
+			self.addEventListener("activate", function(e) {
+				e.waitUntil(
+					// Get all the cache keys (cacheName)
+					caches.keys().then(function(cacheNames) {
+						return Promise.all(cacheNames.map(function(thisCacheName) {
+
+							// If a cached item is saved under a previous cacheName
+							if (thisCacheName !== cacheName) {
+
+								// Delete that cached file
+								console.log("[ServiceWorker] Removing Cached Files from Cache - ", thisCacheName);
+								return caches.delete(thisCacheName);
+							}
+						}));
+					})
+				);
+			});
+
+		</script>
   	</body>
 </html>
