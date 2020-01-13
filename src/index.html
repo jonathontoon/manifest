@@ -56,7 +56,7 @@
 				"./index.html",
 				"./js/index.js",
 				"./sass/reset.css",
-				"./sass/style.css"
+				"./sass/style.scss"
 			];
 
 			self.addEventListener("install", function(e) {
@@ -88,6 +88,16 @@
 					})
 				);
 			});
+
+			if ("serviceWorker" in navigator) {
+				navigator.serviceWorker.register("./service-worker.js").then(function (serviceWorker) {
+					console.log("Service Worker registered.");
+					console.log(serviceWorker);
+				}).catch(function (error) {
+					console.log("Error registering the Service Worker.");
+					console.log(error);
+				});
+			}
 
 		</script>
   	</body>
