@@ -93,24 +93,24 @@ function handleMemoDragStart(e) {
     e.preventDefault();
 
     decreaseAllMemoIndexes();
-  
+
     activeMemo = e.target.parentNode;
     activeMemo.classList.add("active");
     activeMemo.style.zIndex = maximumMemoIndex;
-  
+
     e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
     e.target.style.cursor = "grabbing";
-  
+
     document.body.style.cursor = "grabbing";
-  
+
     const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
     const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
-  
+
     currentMouse = { x, y };
-  
+
     document.addEventListener("mousemove", handleMemoDragMove);
     document.addEventListener("touchmove", handleMemoDragMove);
-  
+
     document.addEventListener("mouseup", handleMemoDragEnd);
     document.addEventListener("touchcancel", handleMemoDragEnd);
     document.addEventListener("touchend", handleMemoDragEnd);
@@ -183,28 +183,28 @@ function handleMemoResizeStart(e) {
     e.preventDefault();
 
     decreaseAllMemoIndexes();
-  
+
     activeMemo = e.target.parentNode;
     activeMemo.classList.add("active");
     activeMemo.style.zIndex = maximumMemoIndex;
-  
+
     document.body.style.cursor = "nw-resize";
-  
+
     e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
-  
+
     const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
     const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
-  
+
     const rect = activeMemo.getBoundingClientRect();
     const width = parseInt(rect.width, 10);
     const height = parseInt(rect.height, 10);
-  
+
     currentMouse = { x, y };
     currentSize = { width, height };
-  
+
     document.addEventListener("mousemove", handleMemoResizeMove);
     document.addEventListener("touchmove", handleMemoResizeMove);
-  
+
     document.addEventListener("mouseup", handleMemoResizeEnd);
     document.addEventListener("touchcancel", handleMemoResizeEnd);
     document.addEventListener("touchend", handleMemoResizeEnd);
@@ -274,18 +274,18 @@ function handleBoardDragStart(e) {
     const rect = board.getBoundingClientRect();
     const x = e.touches ? snapToGrid(e.touches[0].clientX - rect.left, GRID_SIZE) : snapToGrid(e.clientX - rect.left, GRID_SIZE);
     const y = e.touches ? snapToGrid(e.touches[0].clientY - rect.top, GRID_SIZE) : snapToGrid(e.clientY - rect.top, GRID_SIZE);
-  
+
     currentMouse = { x, y };
-  
+
     selection = document.createElement("div");
     selection.setAttribute("id", "selection");
     selection.style.zIndex = dragIndicatorIndex;
-  
+
     board.appendChild(selection);
-  
+
     document.addEventListener("mousemove", handleBoardDragMove);
     document.addEventListener("touchmove", handleBoardDragMove);
-  
+
     document.addEventListener("mouseup", handleBoardDragEnd);
     document.addEventListener("touchcancel", handleBoardDragEnd);
     document.addEventListener("touchend", handleBoardDragEnd);
