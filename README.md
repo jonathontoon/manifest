@@ -21,10 +21,10 @@ Manifest is a grid-based pinboard for note taking. Simply click and drag anywher
 ## FAQ
 
 ### 1. Is this available as some kind of web extension?
-In order to avoid investing too much in a single one eco-system there's no plan to create an extension right now.
+In order to avoid investing too much in a single eco-system there's no plan to create an extension right now.
 
 ### 2. What about a desktop app?
-Given that the easiest way to make a desktop app would use something like [Electron](https://github.com/electron) or most likely [DeskGap](https://github.com/patr0nus/DeskGap), which are just web views themselves, there's not too much unique that a desktop-specific app could offer. For now at least offline/progressive web app support is a goal for this project.
+Given that the easiest way to make a desktop app would use something like [Electron](https://github.com/electron) or most likely [DeskGap](https://github.com/patr0nus/DeskGap), which are just web views themselves, there's nothing really unique that a desktop-specific app could offer. For now at least offline/progressive web app support is a goal for this project.
 
 ### 3. Can Manifest work on mobile?
 Manifest is not a mobile-centric product. This is intentional, as the specific experience and interactions which offer such experience rely on more accurate types of input. If mobile support was made possible though it would most likely require it's own bespoke experience. In saying that, tablet support is definitely a goal for this project.

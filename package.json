@@ -2,7 +2,7 @@
   "name": "manifest",
   "version": "0.0.1",
   "description": "An instant grid-based pinboard for note taking.",
-  "main": "src/index.js",
+  "main": "src/js/index.js",
   "repository": "https://github.com/jonathontoon/manifest",
   "author": "Jonathon Toon",
   "license": "GPL 2.0",

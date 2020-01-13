@@ -89,30 +89,32 @@ function createMemo(id, text, position, size) {
 };
 
 function handleMemoDragStart(e) {
-  e.preventDefault();
+  if (e.which === 1 || e.touches) {
+    e.preventDefault();
 
-  decreaseAllMemoIndexes();
+    decreaseAllMemoIndexes();
 
-  activeMemo = e.target.parentNode;
-  activeMemo.classList.add("active");
-  activeMemo.style.zIndex = maximumMemoIndex;
+    activeMemo = e.target.parentNode;
+    activeMemo.classList.add("active");
+    activeMemo.style.zIndex = maximumMemoIndex;
 
-  e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
-  e.target.style.cursor = "grabbing";
+    e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
+    e.target.style.cursor = "grabbing";
 
-  document.body.style.cursor = "grabbing";
+    document.body.style.cursor = "grabbing";
 
-  const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
-  const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+    const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
+    const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
-  currentMouse = { x, y };
+    currentMouse = { x, y };
 
-  document.addEventListener("mousemove", handleMemoDragMove);
-  document.addEventListener("touchmove", handleMemoDragMove);
+    document.addEventListener("mousemove", handleMemoDragMove);
+    document.addEventListener("touchmove", handleMemoDragMove);
 
-  document.addEventListener("mouseup", handleMemoDragEnd);
-  document.addEventListener("touchcancel", handleMemoDragEnd);
-  document.addEventListener("touchend", handleMemoDragEnd);
+    document.addEventListener("mouseup", handleMemoDragEnd);
+    document.addEventListener("touchcancel", handleMemoDragEnd);
+    document.addEventListener("touchend", handleMemoDragEnd);
+  }
 };
 
 function handleMemoDragMove(e) {
@@ -177,34 +179,36 @@ function handleMemoClose(e) {
 };
 
 function handleMemoResizeStart(e) {
-  e.preventDefault();
+  if (e.which === 1 || e.touches) {
+    e.preventDefault();
 
-  decreaseAllMemoIndexes();
+    decreaseAllMemoIndexes();
 
-  activeMemo = e.target.parentNode;
-  activeMemo.classList.add("active");
-  activeMemo.style.zIndex = maximumMemoIndex;
+    activeMemo = e.target.parentNode;
+    activeMemo.classList.add("active");
+    activeMemo.style.zIndex = maximumMemoIndex;
 
-  document.body.style.cursor = "nw-resize";
+    document.body.style.cursor = "nw-resize";
 
-  e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
+    e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
 
-  const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
-  const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+    const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
+    const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
-  const rect = activeMemo.getBoundingClientRect();
-  const width = parseInt(rect.width, 10);
-  const height = parseInt(rect.height, 10);
+    const rect = activeMemo.getBoundingClientRect();
+    const width = parseInt(rect.width, 10);
+    const height = parseInt(rect.height, 10);
 
-  currentMouse = { x, y };
-  currentSize = { width, height };
+    currentMouse = { x, y };
+    currentSize = { width, height };
 
-  document.addEventListener("mousemove", handleMemoResizeMove);
-  document.addEventListener("touchmove", handleMemoResizeMove);
+    document.addEventListener("mousemove", handleMemoResizeMove);
+    document.addEventListener("touchmove", handleMemoResizeMove);
 
-  document.addEventListener("mouseup", handleMemoResizeEnd);
-  document.addEventListener("touchcancel", handleMemoResizeEnd);
-  document.addEventListener("touchend", handleMemoResizeEnd);
+    document.addEventListener("mouseup", handleMemoResizeEnd);
+    document.addEventListener("touchcancel", handleMemoResizeEnd);
+    document.addEventListener("touchend", handleMemoResizeEnd);
+  }
 };
 
 function handleMemoResizeMove(e) {
@@ -216,8 +220,8 @@ function handleMemoResizeMove(e) {
     const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
     const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
-    const width = (currentSize.width + (x - currentMouse.x)) - 4;
-    const height = (currentSize.height + (y - currentMouse.y)) - 4;
+    const width = (currentSize.width + (x - currentMouse.x)) - 2;
+    const height = (currentSize.height + (y - currentMouse.y)) - 2;
 
     activeMemo.style.width = `${width}px`;
     activeMemo.style.height = `${height}px`;
@@ -230,8 +234,8 @@ function handleMemoResizeEnd(e) {
   const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
   const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
-  const width = (currentSize.width + (x - currentMouse.x)) - 4;
-  const height = (currentSize.height + (y - currentMouse.y)) - 4;
+  const width = (currentSize.width + (x - currentMouse.x)) - 2;
+  const height = (currentSize.height + (y - currentMouse.y)) - 2;
 
   activeMemo.style.width = `${width}px`;
   activeMemo.style.height = `${height}px`;
@@ -264,26 +268,28 @@ function handleMemoResizeEnd(e) {
 */
 
 function handleBoardDragStart(e) {
-  document.body.style.cursor = "crosshair";
+  if (e.which === 1 || e.touches) {
+    document.body.style.cursor = "crosshair";
 
-  const rect = board.getBoundingClientRect();
-  const x = e.touches ? snapToGrid(e.touches[0].clientX - rect.left, GRID_SIZE) : snapToGrid(e.clientX - rect.left, GRID_SIZE);
-  const y = e.touches ? snapToGrid(e.touches[0].clientY - rect.top, GRID_SIZE) : snapToGrid(e.clientY - rect.top, GRID_SIZE);
+    const rect = board.getBoundingClientRect();
+    const x = e.touches ? snapToGrid(e.touches[0].clientX - rect.left, GRID_SIZE) : snapToGrid(e.clientX - rect.left, GRID_SIZE);
+    const y = e.touches ? snapToGrid(e.touches[0].clientY - rect.top, GRID_SIZE) : snapToGrid(e.clientY - rect.top, GRID_SIZE);
 
-  currentMouse = { x, y };
+    currentMouse = { x, y };
 
-  selection = document.createElement("div");
-  selection.setAttribute("id", "selection");
-  selection.style.zIndex = dragIndicatorIndex;
+    selection = document.createElement("div");
+    selection.setAttribute("id", "selection");
+    selection.style.zIndex = dragIndicatorIndex;
 
-  board.appendChild(selection);
+    board.appendChild(selection);
 
-  document.addEventListener("mousemove", handleBoardDragMove);
-  document.addEventListener("touchmove", handleBoardDragMove);
+    document.addEventListener("mousemove", handleBoardDragMove);
+    document.addEventListener("touchmove", handleBoardDragMove);
 
-  document.addEventListener("mouseup", handleBoardDragEnd);
-  document.addEventListener("touchcancel", handleBoardDragEnd);
-  document.addEventListener("touchend", handleBoardDragEnd);
+    document.addEventListener("mouseup", handleBoardDragEnd);
+    document.addEventListener("touchcancel", handleBoardDragEnd);
+    document.addEventListener("touchend", handleBoardDragEnd);
+  }
 };
 
 function handleBoardDragMove(e) {
@@ -391,12 +397,10 @@ function onLoad() {
 
   const memos = getLocalStorageItem("manifest_memos");
   if (!memos || Object.keys(memos).length === 0) {
-    setLocalStorageItem("manifest_memos", {});
-
     const memo = createMemo(DEFAULT_MEMO.id, DEFAULT_MEMO.text, DEFAULT_MEMO.position, DEFAULT_MEMO.size);
     board.appendChild(memo);
 
-    const memos = getLocalStorageItem("manifest_memos");
+    const memos = {};
     memos[DEFAULT_MEMO.id] = { text: DEFAULT_MEMO.text, position: DEFAULT_MEMO.position, size: DEFAULT_MEMO.size };
     setLocalStorageItem("manifest_memos", memos);
   } else {
