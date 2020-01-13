@@ -9,7 +9,7 @@ export const DEFAULT_MEMO = {
     left: 50
   },
   size: {
-    width: 411,
-    height: 312
+    width: 379,
+    height: 339
   }
 };
