@@ -1,5 +1,5 @@
 import { GRID_SIZE, MARGIN, DRAG_INDEX, STATIC_INDEX,  DEFAULT_MEMO } from "./globals";
-import { snapToGrid, confirm, generateUUID, getLocalStorageItem, setLocalStorageItem, decreaseAllMemoIndexes } from "./utils";
+import { snapToGrid, confirm, generateUUID, getLocalStorageItem, setLocalStorageItem, decreaseAllMemoIndexes, checkBounds } from "./utils";
 
 import "../sass/index.scss";
 
@@ -133,11 +133,25 @@ function handleMemoDragMove(e) {
 function handleMemoDragEnd(e) {
   e.preventDefault();
 
-  const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
-  const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+  const bounds = checkBounds(board.getBoundingClientRect(), activeMemo.getBoundingClientRect());
+  console.log(bounds);
+   
+  let x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
+  let y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+  let top = activeMemo.offsetTop - (currentMouse.y - y);
+  let left = activeMemo.offsetLeft - (currentMouse.x - x);
 
-  const top = activeMemo.offsetTop - (currentMouse.y - y);
-  const left = activeMemo.offsetLeft - (currentMouse.x - x);
+  if (bounds) {
+    if (bounds.edge === "top") {
+      top = bounds.offset;
+    } else if (bounds.edge === "bottom") {
+      top = bounds.offset;
+    } else if (bounds.edge === "left") {
+      left = bounds.offset;
+    } else if (bounds.edge === "right") {
+      left = bounds.offset;
+    }
+  }
 
   activeMemo.style.top = `${top}px`;
   activeMemo.style.left = `${left}px`;
@@ -230,6 +244,8 @@ function handleMemoResizeMove(e) {
 
 function handleMemoResizeEnd(e) {
   e.preventDefault();
+
+  // console.log(checkBounds(board.getBoundingClientRect(), activeMemo.getBoundingClientRect()));
 
   const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
   const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
