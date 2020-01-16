@@ -136,8 +136,9 @@ function handleMemoDragEnd(e) {
   const bounds = checkBounds(board.getBoundingClientRect(), activeMemo.getBoundingClientRect());
   console.log(bounds);
    
-  let x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
-  let y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+  const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
+  const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+
   let top = activeMemo.offsetTop - (currentMouse.y - y);
   let left = activeMemo.offsetLeft - (currentMouse.x - x);
 
@@ -245,8 +246,6 @@ function handleMemoResizeMove(e) {
 function handleMemoResizeEnd(e) {
   e.preventDefault();
 
-  // console.log(checkBounds(board.getBoundingClientRect(), activeMemo.getBoundingClientRect()));
-
   const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
   const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
@@ -255,6 +254,27 @@ function handleMemoResizeEnd(e) {
 
   activeMemo.style.width = `${width}px`;
   activeMemo.style.height = `${height}px`;
+
+  const bounds = checkBounds(board.getBoundingClientRect(), activeMemo.getBoundingClientRect());
+
+  if (bounds) {
+
+    let top = activeMemo.offsetTop;
+    let left = activeMemo.offsetLeft;
+  
+    if (bounds.edge === "top") {
+      top = bounds.offset;
+    } else if (bounds.edge === "bottom") {
+      top = bounds.offset;
+    } else if (bounds.edge === "left") {
+      left = bounds.offset;
+    } else if (bounds.edge === "right") {
+      left = bounds.offset;
+    }
+
+    activeMemo.style.top = `${top}px`;
+    activeMemo.style.left = `${left}px`;
+  }
 
   const resize = activeMemo.querySelectorAll(".resize")[0];
   resize.style.cursor = "nw-resize";
