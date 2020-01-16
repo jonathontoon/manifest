@@ -1,4 +1,4 @@
-import { GRID_SIZE, MARGIN, DEFAULT_MEMO } from "./globals";
+import { GRID_SIZE, MARGIN, DRAG_INDEX, STATIC_INDEX,  DEFAULT_MEMO } from "./globals";
 import { snapToGrid, confirm, generateUUID, getLocalStorageItem, setLocalStorageItem, decreaseAllMemoIndexes } from "./utils";
 
 import "../sass/index.scss";
@@ -7,9 +7,6 @@ let activeMemo;
 
 let main, canvas, board, selection;
 let currentMouse, currentSize;
-
-const DRAG_INDEX = "99999";
-const STATIC_INDEX = "99998";
 
 /*
   Generic Event Handlers
