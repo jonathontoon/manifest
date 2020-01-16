@@ -74,8 +74,8 @@
 		</noscript>
 		<script type="text/javascript" src="./js/index.js"></script>
 		<script type="text/javascript">
-			if ("serviceWorker" in window.navigator) {
-				window.navigator.serviceWorker.register("./service-worker.js").then(function (serviceWorker) {
+			if ("serviceWorker" in navigator) {
+				navigator.serviceWorker.register("./service-worker.js").then(function (serviceWorker) {
 					console.log("Service Worker registered.");
 					console.log(serviceWorker);
 				}).catch(function (error) {
