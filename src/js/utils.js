@@ -9,7 +9,7 @@ export function setLocalStorageItem(item, value) {
 };
 
 export function getLocalStorageItem(item) {
-  return JSON.parse(window.localStorage.getItem(item));
+  return JSON.parse(window.localStorage.getItem(item)); 
 };
 
 export function snapToGrid(value, grid) {
