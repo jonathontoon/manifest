@@ -150,6 +150,9 @@ function handleMemoDragEnd(e) {
   drag.style.cursor = "grab";
   drag.style.backgroundColor = "transparent";
 
+  const textarea = activeMemo.querySelectorAll(".input")[0];
+  textarea.focus();
+
   const id = activeMemo.dataset.id;
   const memos = getLocalStorageItem("manifest_memos");
   memos[id] = { ...memos[id], position: { top, left } };
@@ -246,6 +249,9 @@ function handleMemoResizeEnd(e) {
 
   activeMemo.classList.remove("active");
 
+  const textarea = activeMemo.querySelectorAll(".input")[0];
+  textarea.focus();
+
   const id = activeMemo.dataset.id;
   const memos = getLocalStorageItem("manifest_memos");
   memos[id] = { ...memos[id], size: { width, height } };
@@ -323,9 +329,14 @@ function handleBoardDragEnd(e) {
     const memo = createMemo(id, null, { top, left }, { width, height });
     board.appendChild(memo);
 
+    const textarea = memo.querySelectorAll(".input")[0];
+    textarea.focus();
+
     const memos = getLocalStorageItem("manifest_memos");
     memos[id] = { text: null, position: { top, left }, size: { width, height } };
     setLocalStorageItem("manifest_memos", memos);
+
+    activeMemo = memo;
   }
 
   document.body.style.cursor = null;
