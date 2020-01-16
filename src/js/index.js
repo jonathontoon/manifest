@@ -415,10 +415,10 @@ function onLoad() {
     memos[DEFAULT_MEMO.id] = { text: DEFAULT_MEMO.text, position: DEFAULT_MEMO.position, size: DEFAULT_MEMO.size };
     setLocalStorageItem("manifest_memos", memos);
   } else {
-    Object.keys(memos).forEach(function (key) {
+    for (let key of Object.keys(memos)) {
       const memo = createMemo(key, memos[key].text, memos[key].position, memos[key].size);
       board.appendChild(memo);
-    });
+    }
   }
 
   onResize();
