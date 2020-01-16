@@ -76,7 +76,6 @@
 		<script type="text/javascript">
 			if ("serviceWorker" in navigator) {
 				navigator.serviceWorker.register("./service-worker.js").then(function (serviceWorker) {
-					
 					console.log("Service Worker registered.");
 					console.log(serviceWorker);
 				}).catch(function (error) {
