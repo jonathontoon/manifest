@@ -40,7 +40,7 @@
     "lint": "./node_modules/.bin/eslint . --fix",
     "dev": "parcel ./src/index.html --port 3000 --no-cache --open",
     "prebuild": "rm -rf ./dist/",
-    "build": "parcel build ./src/index.html --no-content-hash --no-source-maps --no-cache --public-url ./"
+    "build": "parcel build ./src/index.html --no-content-hash --no-cache --public-url ./"
   },
   "pre-commit": [
     "lint"
