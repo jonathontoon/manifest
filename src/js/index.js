@@ -8,8 +8,8 @@ let activeMemo;
 let main, canvas, board, selection;
 let currentMouse, currentSize;
 
-const dragIndicatorIndex = "99999";
-const maximumMemoIndex = "99998";
+const DRAG_INDEX = "99999";
+const STATIC_INDEX = "99998";
 
 /*
   Generic Event Handlers
@@ -39,7 +39,7 @@ function createMemo(id, text, position, size) {
   memo.style.left = `${position.left}px`;
   memo.style.width = `${size.width}px`;
   memo.style.height = `${size.height}px`;
-  memo.style.zIndex = maximumMemoIndex;
+  memo.style.zIndex = STATIC_INDEX;
 
   const textarea = document.createElement("textarea");
   textarea.classList.add("input");
@@ -55,7 +55,7 @@ function createMemo(id, text, position, size) {
     decreaseAllMemoIndexes();
 
     activeMemo = e.target.parentNode;
-    activeMemo.style.zIndex = maximumMemoIndex;
+    activeMemo.style.zIndex = STATIC_INDEX;
   });
   textarea.addEventListener("blur", function (e) { e.target.classList.remove("active"); });
   textarea.addEventListener("input", function (e) {
@@ -96,7 +96,7 @@ function handleMemoDragStart(e) {
 
     activeMemo = e.target.parentNode;
     activeMemo.classList.add("active");
-    activeMemo.style.zIndex = maximumMemoIndex;
+    activeMemo.style.zIndex = STATIC_INDEX;
 
     e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
     e.target.style.cursor = "grabbing";
@@ -189,7 +189,7 @@ function handleMemoResizeStart(e) {
 
     activeMemo = e.target.parentNode;
     activeMemo.classList.add("active");
-    activeMemo.style.zIndex = maximumMemoIndex;
+    activeMemo.style.zIndex = STATIC_INDEX;
 
     document.body.style.cursor = "nw-resize";
 
@@ -285,7 +285,7 @@ function handleBoardDragStart(e) {
 
     selection = document.createElement("div");
     selection.setAttribute("id", "selection");
-    selection.style.zIndex = dragIndicatorIndex;
+    selection.style.zIndex = DRAG_INDEX;
 
     board.appendChild(selection);
 
