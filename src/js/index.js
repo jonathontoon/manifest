@@ -1,4 +1,4 @@
-import { GRID_SIZE, MARGIN, DRAG_INDEX, STATIC_INDEX,  DEFAULT_MEMO } from "./globals";
+import { GRID_SIZE, MARGIN, DRAG_INDEX, STATIC_INDEX, DEFAULT_MEMO } from "./globals";
 import { snapToGrid, confirm, generateUUID, getLocalStorageItem, setLocalStorageItem, decreaseAllMemoIndexes, checkBounds } from "./utils";
 
 import "../sass/index.scss";
@@ -134,7 +134,7 @@ function handleMemoDragEnd(e) {
   e.preventDefault();
 
   const bounds = checkBounds(board.getBoundingClientRect(), activeMemo.getBoundingClientRect());
-   
+
   const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
   const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
@@ -259,7 +259,7 @@ function handleMemoResizeEnd(e) {
   if (bounds) {
     let top = activeMemo.offsetTop;
     let left = activeMemo.offsetLeft;
-  
+
     if (bounds.edge === "top") {
       top = bounds.offset;
     } else if (bounds.edge === "bottom") {
@@ -446,7 +446,7 @@ function onLoad() {
     memos[DEFAULT_MEMO.id] = { text: DEFAULT_MEMO.text, position: DEFAULT_MEMO.position, size: DEFAULT_MEMO.size };
     setLocalStorageItem("manifest_memos", memos);
   } else {
-    for (let key of Object.keys(memos)) {
+    for (const key of Object.keys(memos)) {
       const memo = createMemo(key, memos[key].text, memos[key].position, memos[key].size);
       board.appendChild(memo);
     }

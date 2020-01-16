@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
 		<meta name="author" content="Manifest">
 		<meta name="description" content="An instant grid-based pinboard for note taking in your browser.">
 		<meta name="keywords" content="notes, memo, ideas, reminder, tab, grid">
@@ -74,9 +74,8 @@
 		</noscript>
 		<script type="text/javascript" src="./js/index.js"></script>
 		<script type="text/javascript">
-			if ("serviceWorker" in navigator) {
-				navigator.serviceWorker.register("./service-worker.js").then(function (serviceWorker) {
-					
+			if ("serviceWorker" in window.navigator) {
+				window.navigator.serviceWorker.register("./service-worker.js").then(function (serviceWorker) {
 					console.log("Service Worker registered.");
 					console.log(serviceWorker);
 				}).catch(function (error) {
