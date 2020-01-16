@@ -2,9 +2,8 @@ const cacheName = "manifest-1.0.0";
 const cacheFiles = [
   "./",
   "./index.html",
-  "./js/index.js",
-  "./sass/reset.css",
-  "./sass/index.css"
+  "./js.00a46daa.js",
+  "./js.00a46daa.css"
 ];
 
 self.addEventListener("install", function (e) {
