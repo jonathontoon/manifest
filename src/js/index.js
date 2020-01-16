@@ -134,7 +134,6 @@ function handleMemoDragEnd(e) {
   e.preventDefault();
 
   const bounds = checkBounds(board.getBoundingClientRect(), activeMemo.getBoundingClientRect());
-  console.log(bounds);
    
   const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
   const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
@@ -258,7 +257,6 @@ function handleMemoResizeEnd(e) {
   const bounds = checkBounds(board.getBoundingClientRect(), activeMemo.getBoundingClientRect());
 
   if (bounds) {
-
     let top = activeMemo.offsetTop;
     let left = activeMemo.offsetLeft;
   
