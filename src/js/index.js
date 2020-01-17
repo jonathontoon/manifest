@@ -87,8 +87,6 @@ function createMemo(id, text, position, size) {
 
 function handleMemoDragStart(e) {
   if (e.which === 1 || e.touches) {
-    e.preventDefault();
-
     decreaseAllMemoIndexes();
 
     activeMemo = e.target.parentNode;
@@ -100,8 +98,8 @@ function handleMemoDragStart(e) {
 
     document.body.style.cursor = "grabbing";
 
-    const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
-    const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+    const x = e.touches.length > 0 ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
+    const y = e.touches.length > 0 ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
     currentMouse = { x, y };
 
@@ -115,13 +113,11 @@ function handleMemoDragStart(e) {
 };
 
 function handleMemoDragMove(e) {
-  e.preventDefault();
-
   const isActive = activeMemo.classList.contains("active");
 
   if (isActive) {
-    const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
-    const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+    const x = e.touches.length > 0 ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
+    const y = e.touches.length > 0 ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
     activeMemo.style.top = `${activeMemo.offsetTop - (currentMouse.y - y)}px`;
     activeMemo.style.left = `${activeMemo.offsetLeft - (currentMouse.x - x)}px`;
@@ -131,12 +127,12 @@ function handleMemoDragMove(e) {
 };
 
 function handleMemoDragEnd(e) {
-  e.preventDefault();
-
   const bounds = checkBounds(board.getBoundingClientRect(), activeMemo.getBoundingClientRect());
 
-  const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
-  const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+  console.log(e.touches);
+
+  const x = e.touches.length > 0 ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
+  const y = e.touches.length > 0 ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
   let top = activeMemo.offsetTop - (currentMouse.y - y);
   let left = activeMemo.offsetLeft - (currentMouse.x - x);
@@ -194,8 +190,6 @@ function handleMemoClose(e) {
 
 function handleMemoResizeStart(e) {
   if (e.which === 1 || e.touches) {
-    e.preventDefault();
-
     decreaseAllMemoIndexes();
 
     activeMemo = e.target.parentNode;
@@ -206,8 +200,8 @@ function handleMemoResizeStart(e) {
 
     e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
 
-    const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
-    const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+    const x = e.touches.length > 0 ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
+    const y = e.touches.length > 0 ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
     const rect = activeMemo.getBoundingClientRect();
     const width = parseInt(rect.width, 10);
@@ -226,13 +220,11 @@ function handleMemoResizeStart(e) {
 };
 
 function handleMemoResizeMove(e) {
-  e.preventDefault();
-
   const isActive = activeMemo.classList.contains("active");
 
   if (isActive) {
-    const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
-    const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+    const x = e.touches.length > 0 ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
+    const y = e.touches.length > 0 ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
     const width = (currentSize.width + (x - currentMouse.x)) - 2;
     const height = (currentSize.height + (y - currentMouse.y)) - 2;
@@ -243,10 +235,8 @@ function handleMemoResizeMove(e) {
 };
 
 function handleMemoResizeEnd(e) {
-  e.preventDefault();
-
-  const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
-  const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+  const x = e.touches.length > 0 ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
+  const y = e.touches.length > 0 ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
   const width = (currentSize.width + (x - currentMouse.x)) - 2;
   const height = (currentSize.height + (y - currentMouse.y)) - 2;
@@ -309,8 +299,8 @@ function handleBoardDragStart(e) {
     document.body.style.cursor = "crosshair";
 
     const rect = board.getBoundingClientRect();
-    const x = e.touches ? snapToGrid(e.touches[0].clientX - rect.left, GRID_SIZE) : snapToGrid(e.clientX - rect.left, GRID_SIZE);
-    const y = e.touches ? snapToGrid(e.touches[0].clientY - rect.top, GRID_SIZE) : snapToGrid(e.clientY - rect.top, GRID_SIZE);
+    const x = e.touches.length > 0 ? snapToGrid(e.touches[0].clientX - rect.left, GRID_SIZE) : snapToGrid(e.clientX - rect.left, GRID_SIZE);
+    const y = e.touches.length > 0 ? snapToGrid(e.touches[0].clientY - rect.top, GRID_SIZE) : snapToGrid(e.clientY - rect.top, GRID_SIZE);
 
     currentMouse = { x, y };
 
@@ -331,8 +321,8 @@ function handleBoardDragStart(e) {
 
 function handleBoardDragMove(e) {
   const rect = board.getBoundingClientRect();
-  const x = e.touches ? snapToGrid(e.touches[0].clientX - rect.left, GRID_SIZE) : snapToGrid(e.clientX - rect.left, GRID_SIZE);
-  const y = e.touches ? snapToGrid(e.touches[0].clientY - rect.top, GRID_SIZE) : snapToGrid(e.clientY - rect.top, GRID_SIZE);
+  const x = e.touches.length > 0 ? snapToGrid(e.touches[0].clientX - rect.left, GRID_SIZE) : snapToGrid(e.clientX - rect.left, GRID_SIZE);
+  const y = e.touches.length > 0 ? snapToGrid(e.touches[0].clientY - rect.top, GRID_SIZE) : snapToGrid(e.clientY - rect.top, GRID_SIZE);
 
   const top = (y - currentMouse.y < 0) ? y : currentMouse.y;
   const left = (x - currentMouse.x < 0) ? x : currentMouse.x;
