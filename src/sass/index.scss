@@ -41,6 +41,8 @@ body {
                 &.active {
                     user-select: auto;
                     box-shadow: 10px 10px rgba(0, 0, 0, 0.25);
+                    user-select: none !important;
+                    -ms-user-select: none !important;
                 }
                 div.close {
                     position: absolute;
