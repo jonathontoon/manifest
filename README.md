@@ -16,7 +16,7 @@
 - [Acknowledgements](#acknowledgements)
 
 ## Introduction
-Manifest is a grid-based pinboard for note taking. Simply click and drag anywhere to create a note and snap it to the grid set by your current window size. All notes can be be moved, resized and deleted. Your browser's local storage is also utilized to save notes between sessions and while offline.
+Manifest is a grid-based pinboard for note taking. Simply click and drag anywhere to create a note and snap it to the grid set by your current window size. All notes can be moved, resized and deleted. Your browser's local storage is also utilized to save notes between sessions and while offline.
 
 ## FAQ
 
