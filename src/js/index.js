@@ -457,7 +457,7 @@ function onResize() {
 
   for (let x = 0; x <= width; x += GRID_SIZE) {
     for (let y = 0; y <= height; y += GRID_SIZE) {
-      context.fillStyle = theme === "light" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.2)";
+      context.fillStyle = theme === "light" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.4)";
       context.beginPath();
       context.rect(x, y, 1, 1);
       context.fill();
