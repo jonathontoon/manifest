@@ -296,6 +296,8 @@ function handleBoardDragStart(e) {
   if (e.which === 1 || e.touches) {
     document.body.style.cursor = "crosshair";
 
+    board.classList.add("active");
+
     const rect = board.getBoundingClientRect();
     const x = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientX - rect.left, GRID_SIZE) : snapToGrid(e.clientX - rect.left, GRID_SIZE);
     const y = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientY - rect.top, GRID_SIZE) : snapToGrid(e.clientY - rect.top, GRID_SIZE);
@@ -373,6 +375,7 @@ function handleBoardDragEnd(e) {
   }
 
   document.body.style.cursor = null;
+  board.classList.remove("active");
   board.removeChild(selection);
 
   document.removeEventListener("mousemove", handleBoardDragMove);
