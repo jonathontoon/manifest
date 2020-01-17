@@ -129,8 +129,6 @@ function handleMemoDragMove(e) {
 function handleMemoDragEnd(e) {
   const bounds = checkBounds(board.getBoundingClientRect(), activeMemo.getBoundingClientRect());
 
-  console.log(e.touches);
-
   const x = e.touches.length > 0 ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
   const y = e.touches.length > 0 ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
