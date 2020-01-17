@@ -10,6 +10,18 @@
 	"scope": ".",
 	"icons":[
 		{
+			"src":"./assets/images/favicon-32.png",
+			"sizes":"32x32",
+			"type":"image/png",
+			"purpose": "maskable any"
+		},
+		{
+			"src":"./assets/images/favicon-48.png",
+			"sizes":"48x48",
+			"type":"image/png",
+			"purpose": "maskable any"
+		},
+		{
 			"src":"./assets/images/favicon-72.png",
 			"sizes":"72x72",
 			"type":"image/png",
