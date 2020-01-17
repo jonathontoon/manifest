@@ -93,6 +93,9 @@ function handleMemoDragStart(e) {
     activeMemo.classList.add("active");
     activeMemo.style.zIndex = STATIC_INDEX;
 
+    const textarea = activeMemo.querySelectorAll(".input")[0];
+    textarea.blur();
+
     e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
     e.target.style.cursor = "grabbing";
 
@@ -193,6 +196,9 @@ function handleMemoResizeStart(e) {
     activeMemo = e.target.parentNode;
     activeMemo.classList.add("active");
     activeMemo.style.zIndex = STATIC_INDEX;
+
+    const textarea = activeMemo.querySelectorAll(".input")[0];
+    textarea.blur();
 
     document.body.style.cursor = "nw-resize";
 
