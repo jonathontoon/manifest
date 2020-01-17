@@ -16,6 +16,15 @@ body {
         section#board {
             position: absolute;
 
+            &.active {
+
+               div.memo {
+                    user-select: none !important;
+                    -ms-user-select: none !important;
+               }
+
+            }
+
             div#selection {
                 position: absolute;
                 background-color: rgba(0, 0, 0, 0.05);
@@ -73,13 +82,16 @@ body {
                     font-size: 13px;
                     cursor: text;
 
+                    scrollbar-color:rgba(0, 0, 0, 1.0) rgba(0, 0, 0, 0.0);
+                    scrollbar-width: thin;
+
                     &::-webkit-scrollbar {
                         width: 1px;
                         height: 6px;
                     }
                     &::-webkit-scrollbar-track {
                         margin-top: 8px;
-                        margin-bottom: 12px;
+                        margin-bottom: 13px;
                         background: rgba(0, 0, 0, 0.0);
                     }
                     &::-webkit-scrollbar-thumb {
@@ -100,6 +112,7 @@ body {
                 div.resize {
                     cursor: nw-resize;
                     position: absolute;
+                    background-color: white;
                     right: 0px;
                     bottom: 0px;
                     width: 6px;

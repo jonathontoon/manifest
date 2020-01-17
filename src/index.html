@@ -1,45 +1,67 @@
 <!doctype html>
 <html lang="en">
 	<head>
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width,initial-scale=1">
-		<title>Manifest</title>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
 		<meta name="author" content="Manifest">
 		<meta name="description" content="An instant grid-based pinboard for note taking in your browser.">
 		<meta name="keywords" content="notes, memo, ideas, reminder, tab, grid">
-		<meta name="application-name" content="Manifest">
+		<title>Manifest</title>
+
+		<!-- Android  -->
+		<meta name="theme-color" content="#000000">
 		<meta name="mobile-web-app-capable" content="yes">
 
+		<!-- iOS -->
+		<meta name="apple-mobile-web-app-title" content="Manifest">
+		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-		<link rel="apple-touch-icon" sizes="57x57" href="./assets/images/apple-icon-57x57.png">
-		<link rel="apple-touch-icon" sizes="60x60" href="./assets/images/apple-icon-60x60.png">
-		<link rel="apple-touch-icon" sizes="72x72" href="./assets/images/apple-icon-72x72.png">
-		<link rel="apple-touch-icon" sizes="76x76" href="./assets/images/apple-icon-76x76.png">
-		<link rel="apple-touch-icon" sizes="114x114" href="./assets/images/apple-icon-114x114.png">
-		<link rel="apple-touch-icon" sizes="120x120" href="./assets/images/apple-icon-120x120.png">
-		<link rel="apple-touch-icon" sizes="144x144" href="./assets/images/apple-icon-144x144.png">
-		<link rel="apple-touch-icon" sizes="152x152" href="./assets/images/apple-icon-152x152.png">
-		<link rel="apple-touch-icon" sizes="180x180" href="./assets/images/apple-icon-180x180.png">
-
-		<link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon-16x16.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="96x96" href="./assets/images/favicon-96x96.png">
-
-		<link rel="icon" type="image/png" sizes="36x36"  href="./assets/images/android-icon-36x36.png">
-		<link rel="icon" type="image/png" sizes="48x48"  href="./assets/images/android-icon-48x48.png">
-		<link rel="icon" type="image/png" sizes="72x72"  href="./assets/images/android-icon-72x72.png">
-		<link rel="icon" type="image/png" sizes="96x96"  href="./assets/images/android-icon-96x96.png">
-		<link rel="icon" type="image/png" sizes="144x144"  href="./assets/images/android-icon-144x144.png">
-		<link rel="icon" type="image/png" sizes="192x192"  href="./assets/images/android-icon-192x192.png">
-		
-		<link rel="manifest" href="manifest.webmanifest">
-		
+		<!-- Windows  -->
+		<meta name="msapplication-navbutton-color" content="#000000">
 		<meta name="msapplication-TileColor" content="#000000">
-		<meta name="msapplication-TileImage" content="./assets/images/ms-icon-144x144.png">
-		<meta name="msapplication-config" content="./assets/images/browserconfig.xml" />
-		<meta name="theme-color" content="#000000">
+
+		<!-- Pinned Sites  -->
+		<meta name="application-name" content="Manifest">
+		<meta name="msapplication-tooltip" content="An instant grid-based pinboard for note taking in your browser.">
+		<meta name="msapplication-starturl" content="/">
+
+		<!-- Tap highlighting  -->
+		<meta name="msapplication-tap-highlight" content="no">
+
+		<!-- UC Mobile Browser  -->
+		<meta name="full-screen" content="yes">
+		<meta name="browsermode" content="application">
+
+		<!-- Main Link Tags  -->
+		<link href="./assets/images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+		<link rel="icon" href="./assets/images/favicon-16.png" type="image/png" sizes="16x16">
+		<link rel="icon" href="./assets/images/favicon-32.png" type="image/png" sizes="32x32">
+		<link rel="icon" href="./assets/images/favicon-48.png" type="image/png" sizes="48x48">
+		<link rel="icon" href="./assets/images/favicon-57.png" type="image/png" sizes="57x57">
+		<link rel="icon" href="./assets/images/favicon-76.png" type="image/png" sizes="76x76">
+		<link rel="icon" href="./assets/images/favicon-96.png" type="image/png" sizes="96x96">
+		<link rel="icon" href="./assets/images/favicon-128.png" type="image/png" sizes="128x128">
+		<link rel="icon" href="./assets/images/favicon-192.png" type="image/png" sizes="192x192">
+		<link rel="icon" href="./assets/images/favicon-228.png" type="image/png" sizes="228x228">
+
+		<!-- Pinned Tab  -->
+		<link rel="mask-icon" href="./assets/images/favicon.svg" size="any" color="#000000">
+    
+		<!-- iOS -->
+		<link rel="apple-touch-icon" href="./assets/images/favicon-120.png" sizes="120x120">
+		<link rel="apple-touch-icon" href="./assets/images/favicon-152.png" sizes="152x152">
+		<link rel="apple-touch-icon" href="./assets/images/favicon-167.png" sizes="167x167">
+		<link rel="apple-touch-icon" href="./assets/images/favicon-180.png" sizes="180x180">
+
+		<!-- Windows -->
+		<meta name="msapplication-TileImage" content="./assets/images/favicon-144.png">
+		<meta name="msapplication-config" content="./assets/images/browserconfig.xml">
+
+		<!-- Web Manifest  -->
+		<link rel="manifest" href="./manifest.webmanifest">
 	</head>
 	<body>
 		<noscript>
@@ -49,48 +71,8 @@
 		</noscript>
 		<script type="text/javascript" src="./js/index.js"></script>
 		<script type="text/javascript">
-
-			const cacheName = "manifest-1.0.0"; 
-			const cacheFiles = [
-				"./",
-				"./index.html",
-				"./js/index.js",
-				"./sass/reset.css",
-				"./sass/style.scss"
-			];
-
-			self.addEventListener("install", function(e) {
-				e.waitUntil(
-					// Open the cache
-					caches.open(cacheName).then(function(cache) {
-
-						// Add all the default files to the cache
-						console.log("[ServiceWorker] Caching cacheFiles");
-						return cache.addAll(cacheFiles);
-					})
-				);
-			});
-
-			self.addEventListener("activate", function(e) {
-				e.waitUntil(
-					// Get all the cache keys (cacheName)
-					caches.keys().then(function(cacheNames) {
-						return Promise.all(cacheNames.map(function(thisCacheName) {
-
-							// If a cached item is saved under a previous cacheName
-							if (thisCacheName !== cacheName) {
-
-								// Delete that cached file
-								console.log("[ServiceWorker] Removing Cached Files from Cache - ", thisCacheName);
-								return caches.delete(thisCacheName);
-							}
-						}));
-					})
-				);
-			});
-
 			if ("serviceWorker" in navigator) {
-				navigator.serviceWorker.register("./service-worker.js").then(function (serviceWorker) {
+				navigator.serviceWorker.register("./service-worker.js", { scope: "/" }).then(function (serviceWorker) {
 					console.log("Service Worker registered.");
 					console.log(serviceWorker);
 				}).catch(function (error) {
@@ -98,7 +80,6 @@
 					console.log(error);
 				});
 			}
-
 		</script>
   	</body>
 </html>

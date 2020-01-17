@@ -1,5 +1,5 @@
-import { GRID_SIZE, MARGIN, DEFAULT_MEMO } from "./globals";
-import { snapToGrid, confirm, generateUUID, getLocalStorageItem, setLocalStorageItem, decreaseAllMemoIndexes } from "./utils";
+import { GRID_SIZE, MARGIN, DRAG_INDEX, STATIC_INDEX, DEFAULT_MEMO } from "./globals";
+import { snapToGrid, confirm, generateUUID, getLocalStorageItem, setLocalStorageItem, decreaseAllMemoIndexes, checkBounds } from "./utils";
 
 import "../sass/index.scss";
 
@@ -7,9 +7,6 @@ let activeMemo;
 
 let main, canvas, board, selection;
 let currentMouse, currentSize;
-
-const dragIndicatorIndex = "99999";
-const maximumMemoIndex = "99998";
 
 /*
   Generic Event Handlers
@@ -39,7 +36,7 @@ function createMemo(id, text, position, size) {
   memo.style.left = `${position.left}px`;
   memo.style.width = `${size.width}px`;
   memo.style.height = `${size.height}px`;
-  memo.style.zIndex = maximumMemoIndex;
+  memo.style.zIndex = STATIC_INDEX;
 
   const textarea = document.createElement("textarea");
   textarea.classList.add("input");
@@ -47,7 +44,7 @@ function createMemo(id, text, position, size) {
   textarea.setAttribute("autocomplete", true);
   textarea.setAttribute("spellcheck", false);
 
-  if (text) { textarea.value = text; ; }
+  if (text) { textarea.value = text; }
 
   textarea.addEventListener("focus", function (e) {
     e.target.classList.add("active");
@@ -55,7 +52,7 @@ function createMemo(id, text, position, size) {
     decreaseAllMemoIndexes();
 
     activeMemo = e.target.parentNode;
-    activeMemo.style.zIndex = maximumMemoIndex;
+    activeMemo.style.zIndex = STATIC_INDEX;
   });
   textarea.addEventListener("blur", function (e) { e.target.classList.remove("active"); });
   textarea.addEventListener("input", function (e) {
@@ -90,21 +87,19 @@ function createMemo(id, text, position, size) {
 
 function handleMemoDragStart(e) {
   if (e.which === 1 || e.touches) {
-    e.preventDefault();
-
     decreaseAllMemoIndexes();
 
     activeMemo = e.target.parentNode;
     activeMemo.classList.add("active");
-    activeMemo.style.zIndex = maximumMemoIndex;
+    activeMemo.style.zIndex = STATIC_INDEX;
 
     e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
     e.target.style.cursor = "grabbing";
 
     document.body.style.cursor = "grabbing";
 
-    const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
-    const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+    const x = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
+    const y = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
     currentMouse = { x, y };
 
@@ -118,13 +113,11 @@ function handleMemoDragStart(e) {
 };
 
 function handleMemoDragMove(e) {
-  e.preventDefault();
-
   const isActive = activeMemo.classList.contains("active");
 
   if (isActive) {
-    const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
-    const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+    const x = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
+    const y = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
     activeMemo.style.top = `${activeMemo.offsetTop - (currentMouse.y - y)}px`;
     activeMemo.style.left = `${activeMemo.offsetLeft - (currentMouse.x - x)}px`;
@@ -134,13 +127,25 @@ function handleMemoDragMove(e) {
 };
 
 function handleMemoDragEnd(e) {
-  e.preventDefault();
+  const bounds = checkBounds(board.getBoundingClientRect(), activeMemo.getBoundingClientRect());
 
-  const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
-  const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+  const x = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
+  const y = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
-  const top = activeMemo.offsetTop - (currentMouse.y - y);
-  const left = activeMemo.offsetLeft - (currentMouse.x - x);
+  let top = activeMemo.offsetTop - (currentMouse.y - y);
+  let left = activeMemo.offsetLeft - (currentMouse.x - x);
+
+  if (bounds) {
+    if (bounds.edge === "top") {
+      top = bounds.offset;
+    } else if (bounds.edge === "bottom") {
+      top = bounds.offset;
+    } else if (bounds.edge === "left") {
+      left = bounds.offset;
+    } else if (bounds.edge === "right") {
+      left = bounds.offset;
+    }
+  }
 
   activeMemo.style.top = `${top}px`;
   activeMemo.style.left = `${left}px`;
@@ -149,6 +154,9 @@ function handleMemoDragEnd(e) {
   const drag = activeMemo.querySelectorAll(".drag")[0];
   drag.style.cursor = "grab";
   drag.style.backgroundColor = "transparent";
+
+  const textarea = activeMemo.querySelectorAll(".input")[0];
+  textarea.focus();
 
   const id = activeMemo.dataset.id;
   const memos = getLocalStorageItem("manifest_memos");
@@ -180,20 +188,18 @@ function handleMemoClose(e) {
 
 function handleMemoResizeStart(e) {
   if (e.which === 1 || e.touches) {
-    e.preventDefault();
-
     decreaseAllMemoIndexes();
 
     activeMemo = e.target.parentNode;
     activeMemo.classList.add("active");
-    activeMemo.style.zIndex = maximumMemoIndex;
+    activeMemo.style.zIndex = STATIC_INDEX;
 
     document.body.style.cursor = "nw-resize";
 
     e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
 
-    const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
-    const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+    const x = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
+    const y = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
     const rect = activeMemo.getBoundingClientRect();
     const width = parseInt(rect.width, 10);
@@ -212,13 +218,11 @@ function handleMemoResizeStart(e) {
 };
 
 function handleMemoResizeMove(e) {
-  e.preventDefault();
-
   const isActive = activeMemo.classList.contains("active");
 
   if (isActive) {
-    const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
-    const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+    const x = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
+    const y = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
     const width = (currentSize.width + (x - currentMouse.x)) - 2;
     const height = (currentSize.height + (y - currentMouse.y)) - 2;
@@ -229,10 +233,8 @@ function handleMemoResizeMove(e) {
 };
 
 function handleMemoResizeEnd(e) {
-  e.preventDefault();
-
-  const x = e.touches ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
-  const y = e.touches ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
+  const x = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
+  const y = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
 
   const width = (currentSize.width + (x - currentMouse.x)) - 2;
   const height = (currentSize.height + (y - currentMouse.y)) - 2;
@@ -240,11 +242,34 @@ function handleMemoResizeEnd(e) {
   activeMemo.style.width = `${width}px`;
   activeMemo.style.height = `${height}px`;
 
+  const bounds = checkBounds(board.getBoundingClientRect(), activeMemo.getBoundingClientRect());
+
+  if (bounds) {
+    let top = activeMemo.offsetTop;
+    let left = activeMemo.offsetLeft;
+
+    if (bounds.edge === "top") {
+      top = bounds.offset;
+    } else if (bounds.edge === "bottom") {
+      top = bounds.offset;
+    } else if (bounds.edge === "left") {
+      left = bounds.offset;
+    } else if (bounds.edge === "right") {
+      left = bounds.offset;
+    }
+
+    activeMemo.style.top = `${top}px`;
+    activeMemo.style.left = `${left}px`;
+  }
+
   const resize = activeMemo.querySelectorAll(".resize")[0];
   resize.style.cursor = "nw-resize";
   resize.style.backgroundColor = "transparent";
 
   activeMemo.classList.remove("active");
+
+  const textarea = activeMemo.querySelectorAll(".input")[0];
+  textarea.focus();
 
   const id = activeMemo.dataset.id;
   const memos = getLocalStorageItem("manifest_memos");
@@ -271,15 +296,17 @@ function handleBoardDragStart(e) {
   if (e.which === 1 || e.touches) {
     document.body.style.cursor = "crosshair";
 
+    board.classList.add("active");
+
     const rect = board.getBoundingClientRect();
-    const x = e.touches ? snapToGrid(e.touches[0].clientX - rect.left, GRID_SIZE) : snapToGrid(e.clientX - rect.left, GRID_SIZE);
-    const y = e.touches ? snapToGrid(e.touches[0].clientY - rect.top, GRID_SIZE) : snapToGrid(e.clientY - rect.top, GRID_SIZE);
+    const x = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientX - rect.left, GRID_SIZE) : snapToGrid(e.clientX - rect.left, GRID_SIZE);
+    const y = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientY - rect.top, GRID_SIZE) : snapToGrid(e.clientY - rect.top, GRID_SIZE);
 
     currentMouse = { x, y };
 
     selection = document.createElement("div");
     selection.setAttribute("id", "selection");
-    selection.style.zIndex = dragIndicatorIndex;
+    selection.style.zIndex = DRAG_INDEX;
 
     board.appendChild(selection);
 
@@ -294,8 +321,8 @@ function handleBoardDragStart(e) {
 
 function handleBoardDragMove(e) {
   const rect = board.getBoundingClientRect();
-  const x = e.touches ? snapToGrid(e.touches[0].clientX - rect.left, GRID_SIZE) : snapToGrid(e.clientX - rect.left, GRID_SIZE);
-  const y = e.touches ? snapToGrid(e.touches[0].clientY - rect.top, GRID_SIZE) : snapToGrid(e.clientY - rect.top, GRID_SIZE);
+  const x = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientX - rect.left, GRID_SIZE) : snapToGrid(e.clientX - rect.left, GRID_SIZE);
+  const y = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientY - rect.top, GRID_SIZE) : snapToGrid(e.clientY - rect.top, GRID_SIZE);
 
   const top = (y - currentMouse.y < 0) ? y : currentMouse.y;
   const left = (x - currentMouse.x < 0) ? x : currentMouse.x;
@@ -312,23 +339,43 @@ function handleBoardDragEnd(e) {
   const boardRect = board.getBoundingClientRect();
   const selectionRect = selection.getBoundingClientRect();
 
-  const top = selectionRect.top - boardRect.top;
-  const left = selectionRect.left - boardRect.left;
-
   const width = selectionRect.width - 2;
   const height = selectionRect.height - 2;
+
+  let top = selectionRect.top - boardRect.top;
+  let left = selectionRect.left - boardRect.left;
+
+  const bounds = checkBounds(boardRect, selectionRect);
+
+  if (bounds) {
+    if (bounds.edge === "top") {
+      top = bounds.offset;
+    } else if (bounds.edge === "bottom") {
+      top = bounds.offset;
+    } else if (bounds.edge === "left") {
+      left = bounds.offset;
+    } else if (bounds.edge === "right") {
+      left = bounds.offset;
+    }
+  }
 
   if (width >= 80 && height >= 80) {
     const id = generateUUID();
     const memo = createMemo(id, null, { top, left }, { width, height });
     board.appendChild(memo);
 
+    const textarea = memo.querySelectorAll(".input")[0];
+    textarea.focus();
+
     const memos = getLocalStorageItem("manifest_memos");
     memos[id] = { text: null, position: { top, left }, size: { width, height } };
     setLocalStorageItem("manifest_memos", memos);
+
+    activeMemo = memo;
   }
 
   document.body.style.cursor = null;
+  board.classList.remove("active");
   board.removeChild(selection);
 
   document.removeEventListener("mousemove", handleBoardDragMove);
@@ -404,10 +451,10 @@ function onLoad() {
     memos[DEFAULT_MEMO.id] = { text: DEFAULT_MEMO.text, position: DEFAULT_MEMO.position, size: DEFAULT_MEMO.size };
     setLocalStorageItem("manifest_memos", memos);
   } else {
-    Object.keys(memos).forEach(function (key) {
+    for (const key of Object.keys(memos)) {
       const memo = createMemo(key, memos[key].text, memos[key].position, memos[key].size);
       board.appendChild(memo);
-    });
+    }
   }
 
   onResize();
