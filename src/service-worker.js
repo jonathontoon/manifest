@@ -8,8 +8,7 @@ self.addEventListener('install', function (e) {
         "./index.html",
         "./js.00a46daa.js",
         "./js.00a46daa.css"
-      ])
-          .then(function () { self.skipWaiting(); });
+      ]).then(function () { self.skipWaiting(); });
     })
   );
 });
@@ -21,7 +20,7 @@ self.addEventListener("activate", function (event) {
 self.addEventListener("fetch", function (event) {
   event.respondWith(
     caches.open(cacheName)
-      .then(function (cache) { cache.match(event.request, {ignoreSearch: true}) })
+      .then(function (cache) { cache.match(event.request, { ignoreSearch: true }) })
       .then(function (response) { return response || fetch(event.request); })
   );
 });
