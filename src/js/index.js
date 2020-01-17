@@ -44,7 +44,7 @@ function createMemo(id, text, position, size) {
   textarea.setAttribute("autocomplete", true);
   textarea.setAttribute("spellcheck", false);
 
-  if (text) { textarea.value = text; ; }
+  if (text) { textarea.value = text; }
 
   textarea.addEventListener("focus", function (e) {
     e.target.classList.add("active");
@@ -337,11 +337,25 @@ function handleBoardDragEnd(e) {
   const boardRect = board.getBoundingClientRect();
   const selectionRect = selection.getBoundingClientRect();
 
-  const top = selectionRect.top - boardRect.top;
-  const left = selectionRect.left - boardRect.left;
-
   const width = selectionRect.width - 2;
   const height = selectionRect.height - 2;
+
+  let top = selectionRect.top - boardRect.top;
+  let left = selectionRect.left - boardRect.left;
+
+  const bounds = checkBounds(boardRect, selectionRect);
+
+  if (bounds) {
+    if (bounds.edge === "top") {
+      top = bounds.offset;
+    } else if (bounds.edge === "bottom") {
+      top = bounds.offset;
+    } else if (bounds.edge === "left") {
+      left = bounds.offset;
+    } else if (bounds.edge === "right") {
+      left = bounds.offset;
+    }
+  }
 
   if (width >= 80 && height >= 80) {
     const id = generateUUID();
