@@ -16,7 +16,7 @@
 - [Acknowledgements](#acknowledgements)
 
 ## Introduction
-Manifest is a grid-based pinboard for note taking. Simply click and drag anywhere to create a note and snap it to the grid set by your current window size. All notes can be be moved, resized and deleted. Your browser's local storage is also utilized to save notes between sessions.
+Manifest is a grid-based pinboard for note taking. Simply click and drag anywhere to create a note and snap it to the grid set by your current window size. All notes can be be moved, resized and deleted. Your browser's local storage is also utilized to save notes between sessions and while offline.
 
 ## FAQ
 
@@ -24,7 +24,7 @@ Manifest is a grid-based pinboard for note taking. Simply click and drag anywher
 In order to avoid investing too much in a single eco-system there's no plan to create an extension right now.
 
 ### 2. What about a desktop app?
-Given that the easiest way to make a desktop app would use something like [Electron](https://github.com/electron) or most likely [DeskGap](https://github.com/patr0nus/DeskGap), which are just web views themselves, there's nothing really unique that a desktop-specific app could offer. For now at least offline/progressive web app support is a goal for this project.
+Given that the easiest way to make a desktop app would use something like [Electron](https://github.com/electron) or most likely [DeskGap](https://github.com/patr0nus/DeskGap), which are just web views themselves, there's nothing really unique that a desktop-specific app could offer. Manifest is however a [progressive web app](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps), so using most popular web browsers you can save it as a stand alone application.
 
 ### 3. Can Manifest work on mobile?
 Manifest is not a mobile-centric product. This is intentional, as the specific experience and interactions which offer such experience rely on more accurate types of input. If mobile support was made possible though it would most likely require it's own bespoke experience. In saying that, tablet support is definitely a goal for this project.
