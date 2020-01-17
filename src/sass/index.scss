@@ -16,6 +16,15 @@ body {
         section#board {
             position: absolute;
 
+            &.active {
+
+               div.memo {
+                    user-select: none !important;
+                    -ms-user-select: none !important;
+               }
+
+            }
+
             div#selection {
                 position: absolute;
                 background-color: rgba(0, 0, 0, 0.05);
