@@ -398,12 +398,13 @@ function handleBoardDragEnd(e) {
 */
 
 function toggleTheme() {
+  const body = document.querySelector("body");
   if (theme === "light") {
-    document.body.className.add("dark");
+    body.className.add("dark");
     theme = "dark";
     setLocalStorageItem("manifest_theme", "dark");
   } else {
-    document.body.className.remove("dark");
+    body.className.remove("dark");
     theme = "light";
     setLocalStorageItem("manifest_theme", "light");
   }
@@ -413,16 +414,17 @@ function toggleTheme() {
 }
 
 function handleTheme() {
+  const body = document.querySelector("body");
   const savedPreference = getLocalStorageItem("theme");
 
   // Prefer saved preference over OS preference
   if (savedPreference) {
     if (savedPreference === "dark") {
-      document.body.className.add("dark");
+      body.className.add("dark");
       theme = "dark";
       setLocalStorageItem("manifest_theme", "dark");
     } else {
-      document.body.className.remove("dark");
+      body.className.remove("dark");
       theme = "light";
       setLocalStorageItem("manifest_theme", "light");
     }
@@ -430,7 +432,7 @@ function handleTheme() {
   }
 
   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-    document.body.className.add("dark");
+    body.className.add("dark");
     theme = "dark";
   }
 }
