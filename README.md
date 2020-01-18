@@ -29,10 +29,14 @@ Given that the easiest way to make a desktop app would use something like [Elect
 ### 3. Can Manifest work on mobile?
 Manifest is not a mobile-centric product. This is intentional, as the specific experience and interactions which offer such experience rely on more accurate types of input. If mobile support was made possible though it would most likely require it's own bespoke experience. In saying that, tablet support is definitely a goal for this project.
 
-### 4. What is Manifest built with?
+### 4. Does Manifest have a dark mode?
+
+Yes. By default, it reads from your OS preference. You can toggle between light and dark mode with <kbd>alt</kbd><kbd>t</kbd>, and your preference will be saved.
+
+### 5. What is Manifest built with?
 Simply vanilla JS and SASS, bundled with Parcel.
 
-### 5. Does Manifest use any analytics?
+### 6. Does Manifest use any analytics?
 Zero. Manifest provides no connection to a server, and no data is ever sent outside of the browser. All data is stored locally.
 
 ## Report Bugs
