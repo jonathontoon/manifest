@@ -41,7 +41,3 @@ export function decreaseAllMemoIndexes() {
     memo.style.zIndex = --index;
   }
 };
-
-export function setTheme(preference) {
-
-}
