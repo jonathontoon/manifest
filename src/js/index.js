@@ -400,11 +400,11 @@ function handleBoardDragEnd(e) {
 function toggleTheme() {
   const body = document.querySelector("body");
   if (theme === "light") {
-    body.className.add("dark");
+    body.classList.add("dark");
     theme = "dark";
     setLocalStorageItem("manifest_theme", "dark");
   } else {
-    body.className.remove("dark");
+    body.classList.remove("dark");
     theme = "light";
     setLocalStorageItem("manifest_theme", "light");
   }
@@ -420,11 +420,11 @@ function handleTheme() {
   // Prefer saved preference over OS preference
   if (savedPreference) {
     if (savedPreference === "dark") {
-      body.className.add("dark");
+      body.classList.add("dark");
       theme = "dark";
       setLocalStorageItem("manifest_theme", "dark");
     } else {
-      body.className.remove("dark");
+      body.classList.remove("dark");
       theme = "light";
       setLocalStorageItem("manifest_theme", "light");
     }
@@ -432,7 +432,7 @@ function handleTheme() {
   }
 
   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-    body.className.add("dark");
+    body.classList.add("dark");
     theme = "dark";
   }
 }
