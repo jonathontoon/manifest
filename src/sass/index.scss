@@ -1,10 +1,26 @@
 @use "reset";
 
+:root {
+    --foreground: black;
+    --background: white;
+    --gray: rgba(0, 0, 0, 0.05);
+    --dark-gray: rgba(0, 0, 0, 0.25);
+}
+
 body {
     min-width: 100%;
     min-height: 100%;
     overflow: hidden;
     cursor: pointer;
+    background: var(--background);
+    color: var(--foreground);
+
+    &.dark {
+        --foreground: white;
+        --background: black;
+        --gray: rgba(255, 255, 255, 0.1);
+        --dark-gray: rgba(255, 255, 255, 0.1);
+    }
 
     main {
         position: absolute;
@@ -27,20 +43,20 @@ body {
 
             div#selection {
                 position: absolute;
-                background-color: rgba(0, 0, 0, 0.05);
+                background-color: var(--gray);
             }
 
             div.memo {
-                background-color: white;
+                background-color: var(--background);
                 position: absolute;
                 min-width: 80px;
                 min-height: 80px;
-                border: 1px solid black;
+                border: 1px solid var(--foreground);
                 user-select: none;
 
                 &.active {
                     user-select: auto;
-                    box-shadow: 10px 10px rgba(0, 0, 0, 0.25);
+                    box-shadow: 10px 10px var(--dark-gray);
                     user-select: none !important;
                     -ms-user-select: none !important;
                 }
@@ -48,14 +64,14 @@ body {
                     position: absolute;
                     top: 0px;
                     left: 0px;
-                    color: black;
+                    color: var(--foreground);
                     font-size: 10px;
                     font-weight: normal;
                     text-align: center;
                     line-height: 15px;
                     width: 16px;
                     height: 16px;
-                    border-bottom: 1px solid black;
+                    border-bottom: 1px solid var(--foreground);
                 }
 
                 div.drag {
@@ -65,7 +81,7 @@ body {
                     right: 0px;
                     width: 100%;
                     height: 16px;
-                    border-bottom: 1px solid black;
+                    border-bottom: 1px solid var(--foreground);
                 }
 
                 textarea.input {
@@ -83,8 +99,10 @@ body {
                     font-family: monospace;
                     font-size: 13px;
                     cursor: text;
+                    background: var(--background);
+                    color: var(--foreground);
 
-                    scrollbar-color:rgba(0, 0, 0, 1.0) rgba(0, 0, 0, 0.0);
+                    scrollbar-color:var(--foreground) transparent;
                     scrollbar-width: thin;
 
                     &::-webkit-scrollbar {
@@ -94,16 +112,16 @@ body {
                     &::-webkit-scrollbar-track {
                         margin-top: 8px;
                         margin-bottom: 13px;
-                        background: rgba(0, 0, 0, 0.0);
+                        background: transparent;
                     }
                     &::-webkit-scrollbar-thumb {
-                        background: rgba(0, 0, 0, 1.0);
+                        background: var(--foreground);
                     }
                     &::-webkit-scrollbar-thumb:hover{
-                        background: rgba(0, 0, 0, 1.0);
+                        background: var(--foreground);
                     }
                     &::-webkit-scrollbar-thumb:active{
-                        background: rgba(0, 0, 0, 1.0);
+                        background: var(--foreground);
                     }
 
                     &::placeholder {
@@ -114,13 +132,13 @@ body {
                 div.resize {
                     cursor: nw-resize;
                     position: absolute;
-                    background-color: white;
+                    background-color: transparent;
                     right: 0px;
                     bottom: 0px;
                     width: 6px;
                     height: 6px;
-                    border-top: 1px solid black;
-                    border-left: 1px solid black;
+                    border-top: 1px solid var(--foreground);
+                    border-left: 1px solid var(--foreground);
                 }
             }
         }
