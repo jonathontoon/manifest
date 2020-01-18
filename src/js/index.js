@@ -399,12 +399,13 @@ function handleBoardDragEnd(e) {
 
 function toggleTheme() {
   if (theme === "light") {
-    document.body.className = theme = "dark";
-    setLocalStorageItem("theme", "dark");
+    document.body.className.add("dark");
+    theme = "dark";
+    setLocalStorageItem("manifest_theme", "dark");
   } else {
-    document.body.className = "";
+    document.body.className.remove("dark");
     theme = "light";
-    setLocalStorageItem("theme", "light");
+    setLocalStorageItem("manifest_theme", "light");
   }
 
   // Redraw the canvas
@@ -417,18 +418,20 @@ function handleTheme() {
   // Prefer saved preference over OS preference
   if (savedPreference) {
     if (savedPreference === "dark") {
-      document.body.className = theme = "dark";
-      setLocalStorageItem("theme", "dark");
+      document.body.className.add("dark");
+      theme = "dark";
+      setLocalStorageItem("manifest_theme", "dark");
     } else {
-      document.body.className = "";
+      document.body.className.remove("dark");
       theme = "light";
-      setLocalStorageItem("theme", "light");
+      setLocalStorageItem("manifest_theme", "light");
     }
     return;
   }
 
   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-    document.body.className = theme = "dark";
+    document.body.className.add("dark");
+    theme = "dark";
   }
 }
 
