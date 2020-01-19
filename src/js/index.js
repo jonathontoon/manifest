@@ -3,6 +3,7 @@ import { snapToGrid, confirm, generateUUID, getLocalStorageItem, setLocalStorage
 
 import "../sass/index.scss";
 
+let theme = "light";
 let activeMemo;
 
 let main, canvas, board, selection;
@@ -96,7 +97,7 @@ function handleMemoDragStart(e) {
     const textarea = activeMemo.querySelectorAll(".input")[0];
     textarea.blur();
 
-    e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
+    e.target.style.backgroundColor = "var(--gray)";
     e.target.style.cursor = "grabbing";
 
     document.body.style.cursor = "grabbing";
@@ -202,7 +203,7 @@ function handleMemoResizeStart(e) {
 
     document.body.style.cursor = "nw-resize";
 
-    e.target.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
+    e.target.style.backgroundColor = "var(--gray)";
 
     const x = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientX, GRID_SIZE) : snapToGrid(e.clientX, GRID_SIZE);
     const y = (e.touches && e.touches.length > 0) ? snapToGrid(e.touches[0].clientY, GRID_SIZE) : snapToGrid(e.clientY, GRID_SIZE);
@@ -253,7 +254,7 @@ function handleMemoResizeEnd(e) {
   if (bounds) {
     let top = activeMemo.offsetTop;
     let left = activeMemo.offsetLeft;
-
+    
     if (bounds.edge === "top") {
       top = bounds.offset;
     } else if (bounds.edge === "bottom") {
@@ -396,6 +397,52 @@ function handleBoardDragEnd(e) {
   App Functions
 */
 
+function toggleTheme() {
+  const body = document.querySelector("body");
+  if (theme === "light") {
+    body.classList.add("dark");
+    theme = "dark";
+    setLocalStorageItem("manifest_theme", "dark");
+  } else {
+    body.classList.remove("dark");
+    theme = "light";
+    setLocalStorageItem("manifest_theme", "light");
+  }
+
+  // Redraw the canvas
+  onResize();
+}
+
+function handleTheme() {
+  const body = document.querySelector("body");
+  const savedPreference = getLocalStorageItem("theme");
+
+  // Prefer saved preference over OS preference
+  if (savedPreference) {
+    if (savedPreference === "dark") {
+      body.classList.add("dark");
+      theme = "dark";
+      setLocalStorageItem("manifest_theme", "dark");
+    } else {
+      body.classList.remove("dark");
+      theme = "light";
+      setLocalStorageItem("manifest_theme", "light");
+    }
+    return;
+  }
+
+  if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    body.classList.add("dark");
+    theme = "dark";
+  }
+}
+
+function onKeydown(e) {
+  if (e.code === "KeyT" && e.altKey) {
+    toggleTheme();
+  }
+}
+
 function onResize() {
   main.style.width = `${window.innerWidth}px`;
   main.style.height = `${window.innerHeight}px`;
@@ -415,7 +462,7 @@ function onResize() {
 
   for (let x = 0; x <= width; x += GRID_SIZE) {
     for (let y = 0; y <= height; y += GRID_SIZE) {
-      context.fillStyle = "rgba(0, 0, 0, 0.5)";
+      context.fillStyle = theme === "light" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.4)";
       context.beginPath();
       context.rect(x, y, 1, 1);
       context.fill();
@@ -432,6 +479,8 @@ function onResize() {
 };
 
 function onLoad() {
+  handleTheme();
+
   main = document.createElement("main");
   main.setAttribute("id", "app");
 
@@ -468,3 +517,4 @@ function onLoad() {
 
 window.addEventListener("resize", onResize);
 window.addEventListener("load", onLoad);
+window.addEventListener("keydown", onKeydown);
