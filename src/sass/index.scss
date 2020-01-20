@@ -33,12 +33,10 @@ body {
             position: absolute;
 
             &.active {
-
-               div.memo {
-                    user-select: none !important;
-                    -ms-user-select: none !important;
-               }
-
+                user-select: none !important;
+                -moz-user-select: none !important;
+                -webkit-user-select: none !important;
+                -ms-user-select: none !important;
             }
 
             div#selection {
@@ -58,7 +56,16 @@ body {
                     user-select: auto;
                     box-shadow: 10px 10px var(--dark-gray);
                     user-select: none !important;
+                    -moz-user-select: none !important;
+                    -webkit-user-select: none !important;
                     -ms-user-select: none !important;
+
+                    div.close, textarea.input {
+                        user-select: none !important;
+                        -moz-user-select: none !important;
+                        -webkit-user-select: none !important;
+                        -ms-user-select: none !important;
+                    }
                 }
                 div.close {
                     position: absolute;
