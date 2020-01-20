@@ -33,7 +33,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "parcel-bundler": "^1.12.4",
     "pre-commit": "^1.2.2",
-    "sass": "^1.24.0"
+    "sass": "^1.25.0"
   },
   "dependencies": {},
   "scripts": {
