@@ -438,7 +438,8 @@ function handleTheme() {
 }
 
 function onKeydown(e) {
-  if (e.code === "KeyT" && e.altKey) {
+  console.log(e);
+  if ((e.code === "KeyT" || e.keyCode === 84) && e.altKey) {
     toggleTheme();
   }
 }
