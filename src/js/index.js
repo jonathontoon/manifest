@@ -254,7 +254,7 @@ function handleMemoResizeEnd(e) {
   if (bounds) {
     let top = activeMemo.offsetTop;
     let left = activeMemo.offsetLeft;
-
+    
     if (bounds.edge === "top") {
       top = bounds.offset;
     } else if (bounds.edge === "bottom") {
