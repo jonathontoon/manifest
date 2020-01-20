@@ -220,7 +220,7 @@ function handleMemoResizeStart(e) {
 
     document.addEventListener("mouseup", handleMemoResizeEnd, { passive: false, useCapture: false });
     document.addEventListener("touchcancel", handleMemoResizeEnd, { passive: false, useCapture: false });
-    document.addEventListener("touchend", handleMemoResizeEnd, { passive: false, useCapture: false });;
+    document.addEventListener("touchend", handleMemoResizeEnd, { passive: false, useCapture: false }); ;
   }
 };
 
@@ -497,7 +497,7 @@ function onLoad() {
   main.appendChild(board);
   document.body.appendChild(main);
 
-  document.body.addEventListener('touchmove', function(event) {
+  document.body.addEventListener("touchmove", function (event) {
     event.preventDefault();
   }, { passive: false, useCapture: false });
 
