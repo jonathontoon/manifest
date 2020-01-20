@@ -1,6 +1,6 @@
 const cacheName = "manifest-1.0.0";
 
-self.addEventListener('install', function (e) {
+self.addEventListener("install", function (e) {
   e.waitUntil(
     caches.open(cacheName).then(function (cache) {
       return cache.addAll([
