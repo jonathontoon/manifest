@@ -72,7 +72,7 @@ body {
                         -ms-user-select: none !important;
                     }
                 }
-                div.mdToggle,
+                div.modeToggle,
                 div.close {
                     position: absolute;
                     top: 0px;
@@ -87,7 +87,7 @@ body {
                     border-bottom: 1px solid var(--foreground);
                 }
 
-                div.mdToggle {
+                div.modeToggle {
                     left: auto;
                     right:0px;
                     width: auto;

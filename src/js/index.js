@@ -83,21 +83,22 @@ function createMemo(id, text, position, size) {
   close.addEventListener("touchend", handleMemoClose);
   memo.appendChild(close);
 
-  /** toggle between markdown and text **/
-  const mdToggle = document.createElement("div");
-  mdToggle.classList.add("mdToggle");
-  mdToggle.innerText = "preview";
-  mdToggle.addEventListener("mouseup", function () {
+  /** toggle between edit and preview mode **/
+  const modeToggle = document.createElement("div");
+  modeToggle.classList.add("modeToggle");
+  modeToggle.innerText = "preview";
+  var toggleFn = function () {
     if (textarea.classList.contains("hide")) {
       textarea.classList.remove("hide");
-      mdToggle.innerText = "preview";
+      modeToggle.innerText = "preview";
     } else {
       textarea.classList.add("hide");
-      mdToggle.innerText = "edit";
+      modeToggle.innerText = "edit";
     }
-  });
-  mdToggle.addEventListener("touchend", handleMdToggle);
-  memo.appendChild(mdToggle);
+  };
+  modeToggle.addEventListener("mouseup", toggleFn);
+  modeToggle.addEventListener("touchend", toggleFn);
+  memo.appendChild(modeToggle);
 
   const resize = document.createElement("div");
   resize.classList.add("resize");
@@ -210,14 +211,6 @@ function handleMemoClose(e) {
 
     board.removeChild(e.target.parentNode);
   }
-};
-
-function handleMdToggle(e) {
-  /* const id = e.target.parentNode.dataset.id;
-  const memos = getLocalStorageItem("manifest_memos");
-  delete memos[id];
-  setLocalStorageItem("manifest_memos", memos);
-  board.removeChild(e.target.parentNode); */
 };
 
 function handleMemoResizeStart(e) {
