@@ -2,7 +2,7 @@
 	"name": "Manifest",
 	"short_name": "Manifest",
 	"description": "Instant and organized memos in your browser.",
-	"theme_color": "#ffffff",
+	"theme_color": "#000000",
 	"background_color": "#ffffff",
 	"display": "standalone",
 	"orientation": "portrait",
