@@ -1,4 +1,5 @@
 @use "reset";
+@use "markdown";
 
 :root {
     --foreground: black;
@@ -14,6 +15,10 @@ body {
     cursor: pointer;
     background: var(--background);
     color: var(--foreground);
+    
+    .hide {
+        display:none;
+    }
 
     &.dark {
         --foreground: white;
@@ -67,6 +72,7 @@ body {
                         -ms-user-select: none !important;
                     }
                 }
+                div.mdToggle,
                 div.close {
                     position: absolute;
                     top: 0px;
@@ -81,6 +87,13 @@ body {
                     border-bottom: 1px solid var(--foreground);
                 }
 
+                div.mdToggle {
+                    left: auto;
+                    right:0px;
+                    width: auto;
+                    margin-right: 10px;
+                }
+
                 div.drag {
                     cursor: grab;
                     position: absolute;
@@ -90,7 +103,7 @@ body {
                     height: 16px;
                     border-bottom: 1px solid var(--foreground);
                 }
-
+                div.mdViewer,
                 textarea.input {
                     position: absolute;
                     top: 17px;

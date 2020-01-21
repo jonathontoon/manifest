@@ -1,6 +1,6 @@
 import { GRID_SIZE, MARGIN, DRAG_INDEX, STATIC_INDEX, DEFAULT_MEMO } from "./globals";
 import { snapToGrid, confirm, generateUUID, getLocalStorageItem, setLocalStorageItem, decreaseAllMemoIndexes, checkBounds } from "./utils";
-
+import marked from "marked";
 import "../sass/index.scss";
 
 let theme = "light";
@@ -45,7 +45,12 @@ function createMemo(id, text, position, size) {
   textarea.setAttribute("autocomplete", true);
   textarea.setAttribute("spellcheck", false);
 
-  if (text) { textarea.value = text; }
+  const mdViewer = document.createElement("div");
+  mdViewer.classList.add("mdViewer");
+  mdViewer.classList.add("markdown-body");
+  memo.appendChild(mdViewer);
+
+  if (text) { textarea.value = text; mdViewer.innerHTML = marked(text); }
 
   textarea.addEventListener("focus", function (e) {
     e.target.classList.add("active");
@@ -59,6 +64,7 @@ function createMemo(id, text, position, size) {
   textarea.addEventListener("input", function (e) {
     const memos = getLocalStorageItem("manifest_memos");
     memos[id] = { ...memos[id], text: e.target.value };
+    mdViewer.innerHTML = marked(e.target.value);
     setLocalStorageItem("manifest_memos", memos);
   }, { passive: false, useCapture: false });
 
@@ -76,6 +82,22 @@ function createMemo(id, text, position, size) {
   close.addEventListener("mouseup", handleMemoClose);
   close.addEventListener("touchend", handleMemoClose);
   memo.appendChild(close);
+
+  /** toggle between markdown and text **/
+  const mdToggle = document.createElement("div");
+  mdToggle.classList.add("mdToggle");
+  mdToggle.innerText = "preview";
+  mdToggle.addEventListener("mouseup", function () {
+    if (textarea.classList.contains("hide")) {
+      textarea.classList.remove("hide");
+      mdToggle.innerText = "preview";
+    } else {
+      textarea.classList.add("hide");
+      mdToggle.innerText = "edit";
+    }
+  });
+  mdToggle.addEventListener("touchend", handleMdToggle);
+  memo.appendChild(mdToggle);
 
   const resize = document.createElement("div");
   resize.classList.add("resize");
@@ -190,6 +212,14 @@ function handleMemoClose(e) {
   }
 };
 
+function handleMdToggle(e) {
+  /* const id = e.target.parentNode.dataset.id;
+  const memos = getLocalStorageItem("manifest_memos");
+  delete memos[id];
+  setLocalStorageItem("manifest_memos", memos);
+  board.removeChild(e.target.parentNode); */
+};
+
 function handleMemoResizeStart(e) {
   if (e.which === 1 || e.touches) {
     decreaseAllMemoIndexes();
@@ -254,7 +284,7 @@ function handleMemoResizeEnd(e) {
   if (bounds) {
     let top = activeMemo.offsetTop;
     let left = activeMemo.offsetLeft;
-    
+
     if (bounds.edge === "top") {
       top = bounds.offset;
     } else if (bounds.edge === "bottom") {
