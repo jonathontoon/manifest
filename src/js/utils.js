@@ -41,3 +41,8 @@ export function decreaseAllMemoIndexes() {
     memo.style.zIndex = --index;
   }
 };
+
+export function getCurrentWorkspace() {
+  const hash = window.location.hash.substr(1).replace(/\//ig, "/");
+  return hash || "manifest_memos";
+};

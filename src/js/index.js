@@ -1,5 +1,5 @@
 import { GRID_SIZE, MARGIN, DRAG_INDEX, STATIC_INDEX, DEFAULT_MEMO } from "./globals";
-import { snapToGrid, confirm, generateUUID, getLocalStorageItem, setLocalStorageItem, decreaseAllMemoIndexes, checkBounds } from "./utils";
+import { snapToGrid, confirm, generateUUID, getLocalStorageItem, setLocalStorageItem, decreaseAllMemoIndexes, checkBounds, getCurrentWorkspace } from "./utils";
 
 import "../sass/index.scss";
 
@@ -57,9 +57,9 @@ function createMemo(id, text, position, size) {
   });
   textarea.addEventListener("blur", function (e) { e.target.classList.remove("active"); }, { passive: false, useCapture: false });
   textarea.addEventListener("input", function (e) {
-    const memos = getLocalStorageItem("manifest_memos");
+    const memos = getLocalStorageItem(getCurrentWorkspace());
     memos[id] = { ...memos[id], text: e.target.value };
-    setLocalStorageItem("manifest_memos", memos);
+    setLocalStorageItem(getCurrentWorkspace(), memos);
   }, { passive: false, useCapture: false });
 
   memo.appendChild(textarea);
@@ -163,9 +163,9 @@ function handleMemoDragEnd(e) {
   textarea.focus();
 
   const id = activeMemo.dataset.id;
-  const memos = getLocalStorageItem("manifest_memos");
+  const memos = getLocalStorageItem(getCurrentWorkspace());
   memos[id] = { ...memos[id], position: { top, left } };
-  setLocalStorageItem("manifest_memos", memos);
+  setLocalStorageItem(getCurrentWorkspace(), memos);
 
   document.body.style.cursor = null;
   activeMemo = null;
@@ -182,9 +182,9 @@ function handleMemoDragEnd(e) {
 function handleMemoClose(e) {
   if (confirm("Are you sure you want to remove this memo?")) {
     const id = e.target.parentNode.dataset.id;
-    const memos = getLocalStorageItem("manifest_memos");
+    const memos = getLocalStorageItem(getCurrentWorkspace());
     delete memos[id];
-    setLocalStorageItem("manifest_memos", memos);
+    setLocalStorageItem(getCurrentWorkspace(), memos);
 
     board.removeChild(e.target.parentNode);
   }
@@ -220,7 +220,7 @@ function handleMemoResizeStart(e) {
 
     document.addEventListener("mouseup", handleMemoResizeEnd, { passive: false, useCapture: false });
     document.addEventListener("touchcancel", handleMemoResizeEnd, { passive: false, useCapture: false });
-    document.addEventListener("touchend", handleMemoResizeEnd, { passive: false, useCapture: false }); ;
+    document.addEventListener("touchend", handleMemoResizeEnd, { passive: false, useCapture: false });
   }
 };
 
@@ -279,9 +279,9 @@ function handleMemoResizeEnd(e) {
   textarea.focus();
 
   const id = activeMemo.dataset.id;
-  const memos = getLocalStorageItem("manifest_memos");
+  const memos = getLocalStorageItem(getCurrentWorkspace());
   memos[id] = { ...memos[id], size: { width, height } };
-  setLocalStorageItem("manifest_memos", memos);
+  setLocalStorageItem(getCurrentWorkspace(), memos);
 
   document.body.style.cursor = null;
   activeMemo = null;
@@ -374,9 +374,9 @@ function handleBoardDragEnd(e) {
     const textarea = memo.querySelectorAll(".input")[0];
     textarea.focus();
 
-    const memos = getLocalStorageItem("manifest_memos");
+    const memos = getLocalStorageItem(getCurrentWorkspace());
     memos[id] = { text: null, position: { top, left }, size: { width, height } };
-    setLocalStorageItem("manifest_memos", memos);
+    setLocalStorageItem(getCurrentWorkspace(), memos);
 
     activeMemo = memo;
   }
@@ -501,14 +501,14 @@ function onLoad() {
     event.preventDefault();
   }, { passive: false, useCapture: false });
 
-  const memos = getLocalStorageItem("manifest_memos");
+  const memos = getLocalStorageItem(getCurrentWorkspace());
   if (!memos || Object.keys(memos).length === 0) {
     const memo = createMemo(DEFAULT_MEMO.id, DEFAULT_MEMO.text, DEFAULT_MEMO.position, DEFAULT_MEMO.size);
     board.appendChild(memo);
 
     const memos = {};
     memos[DEFAULT_MEMO.id] = { text: DEFAULT_MEMO.text, position: DEFAULT_MEMO.position, size: DEFAULT_MEMO.size };
-    setLocalStorageItem("manifest_memos", memos);
+    setLocalStorageItem(getCurrentWorkspace(), memos);
   } else {
     for (const key of Object.keys(memos)) {
       const memo = createMemo(key, memos[key].text, memos[key].position, memos[key].size);
@@ -519,6 +519,11 @@ function onLoad() {
   onResize();
 };
 
+function onHashChange() {
+  location.reload();
+};
+
 window.addEventListener("resize", onResize);
 window.addEventListener("load", onLoad);
 window.addEventListener("keydown", onKeydown);
+window.addEventListener("hashchange", onHashChange);
