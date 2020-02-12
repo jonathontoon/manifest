@@ -43,7 +43,6 @@ function createMemo(id, text, position, size) {
   textarea.classList.add("input");
   textarea.setAttribute("placeholder", "Add a short memo...");
   textarea.setAttribute("autocomplete", true);
-  textarea.setAttribute("spellcheck", false);
 
   if (text) { textarea.value = text; }
 
