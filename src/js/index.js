@@ -414,7 +414,7 @@ function toggleTheme() {
 
 function handleTheme() {
   const body = document.querySelector("body");
-  const savedPreference = getLocalStorageItem("theme");
+  const savedPreference = getLocalStorageItem("manifest_theme");
 
   // Prefer saved preference over OS preference
   if (savedPreference) {
