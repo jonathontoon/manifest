@@ -22,6 +22,7 @@
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
+    "acorn": "^7.1.1",
     "babel-eslint": "^10.1.0",
     "babel-plugin-jsx-pragmatic": "^1.0.2",
     "babel-preset-minify": "^0.5.1",
@@ -31,6 +32,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "kind-of": "^6.0.3",
     "parcel-bundler": "^1.12.4",
     "pre-commit": "^1.2.2",
     "sass": "^1.26.3"
