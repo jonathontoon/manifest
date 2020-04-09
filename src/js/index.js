@@ -43,7 +43,6 @@ function createMemo(id, text, position, size) {
   textarea.classList.add("input");
   textarea.setAttribute("placeholder", "Add a short memo...");
   textarea.setAttribute("autocomplete", true);
-  textarea.setAttribute("spellcheck", false);
 
   if (text) { textarea.value = text; }
 
@@ -415,7 +414,7 @@ function toggleTheme() {
 
 function handleTheme() {
   const body = document.querySelector("body");
-  const savedPreference = getLocalStorageItem("theme");
+  const savedPreference = getLocalStorageItem("manifest_theme");
 
   // Prefer saved preference over OS preference
   if (savedPreference) {
