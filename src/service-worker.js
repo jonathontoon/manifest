@@ -34,13 +34,13 @@ self.addEventListener("install", function (e) {
 });
 
 self.addEventListener("activate", function (e) {
-  encodeURIComponent.waitUntil(self.clients.claim());
+  e.waitUntil(self.clients.claim());
 });
 
 self.addEventListener("fetch", function (e) {
   e.respondWith(
     caches.open(cacheName)
-      .then(function (cache) { cache.match(e.request, { ignoreSearch: true }); })
+      .then(function (cache) { return cache.match(e.request, { ignoreSearch: true }); })
       .then(function (response) { return response || fetch(e.request); })
   );
 });
