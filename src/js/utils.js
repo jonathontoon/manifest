@@ -41,3 +41,7 @@ export function decreaseAllMemoIndexes() {
     memo.style.zIndex = --index;
   }
 };
+
+export function getCurrentWorkspace() {
+  return getLocalStorageItem("manifest_workspace") || setLocalStorageItem("manifest_workspace", "0");
+};
