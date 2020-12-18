@@ -24,6 +24,7 @@
     "@babel/preset-env": "^7.10.3",
     "acorn": "^8.0.1",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^25.1.0",
     "babel-plugin-jsx-pragmatic": "^1.0.2",
     "babel-preset-minify": "^0.5.1",
     "eslint": "^6.8.0",
@@ -33,6 +34,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "kind-of": "^6.0.3",
+    "jest": "^25.1.0",
     "parcel-bundler": "^1.12.4",
     "pre-commit": "^1.2.2",
     "sass": "^1.26.9"
@@ -42,7 +44,8 @@
     "lint": "./node_modules/.bin/eslint . --fix",
     "dev": "parcel ./src/index.html --port 3000 --no-cache --open",
     "prebuild": "rm -rf ./dist/",
-    "build": "parcel build ./src/index.html --no-content-hash --no-cache --public-url ./"
+    "build": "parcel build ./src/index.html --no-content-hash --no-cache --public-url ./",
+    "test": "jest"
   },
   "pre-commit": [
     "lint"

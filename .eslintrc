@@ -2,7 +2,8 @@
 	"extends": "standard",
 	"parser": "babel-eslint",
 	"env": {
-        "browser": true
+        "browser": true,
+        "jest": true
     },
 	"rules": {
 		"no-underscore-dangle": ["error", { "enforceInMethodNames": false, "allowAfterThis": true }],

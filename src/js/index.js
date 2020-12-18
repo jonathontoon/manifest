@@ -1,5 +1,6 @@
 import { GRID_SIZE, MARGIN, DRAG_INDEX, STATIC_INDEX, DEFAULT_MEMO } from "./globals";
 import { snapToGrid, confirm, generateUUID, getLocalStorageItem, setLocalStorageItem, decreaseAllMemoIndexes, checkBounds } from "./utils";
+import { compileNote, updateNote } from "./todo-list";
 
 import "../sass/index.scss";
 
@@ -44,7 +45,9 @@ function createMemo(id, text, position, size) {
   textarea.setAttribute("placeholder", "Add a short memo...");
   textarea.setAttribute("autocomplete", true);
 
-  if (text) { textarea.value = text; }
+  if (text) {
+    textarea.value = text;
+  }
 
   textarea.addEventListener("focus", function (e) {
     e.target.classList.add("active");
@@ -54,14 +57,35 @@ function createMemo(id, text, position, size) {
     activeMemo = e.target.parentNode;
     activeMemo.style.zIndex = STATIC_INDEX;
   });
-  textarea.addEventListener("blur", function (e) { e.target.classList.remove("active"); }, { passive: false, useCapture: false });
+  textarea.addEventListener("blur", function (e) {
+    e.target.classList.remove("active");
+    e.target.parentNode.querySelector(".rendered-output").classList.remove("hidden");
+    e.target.parentNode.querySelector(".rendered-output").innerHTML = compileNote(e.target.value);
+  }, { passive: false, useCapture: false });
   textarea.addEventListener("input", function (e) {
     const memos = getLocalStorageItem("manifest_memos");
     memos[id] = { ...memos[id], text: e.target.value };
     setLocalStorageItem("manifest_memos", memos);
+    document.querySelector(`[data-id='${id}'] .rendered-output`).innerHTML = compileNote(e.target.value);
   }, { passive: false, useCapture: false });
 
   memo.appendChild(textarea);
+
+  const renderedOutput = document.createElement("div");
+  renderedOutput.classList.add("rendered-output");
+  renderedOutput.addEventListener("click", function (e) {
+    var targettype = e.target.getAttribute("type");
+    if (targettype != null && targettype === "checkbox") {
+      const checkboxId = e.target.dataset.checkboxId;
+      const textarea = document.querySelector(`[data-id='${id}'] textarea`);
+      textarea.value = updateNote(textarea.value, parseInt(checkboxId));
+    } else {
+      renderedOutput.classList.add("hidden");
+      document.querySelector(`[data-id='${id}'] textarea`).focus();
+    }
+  });
+  renderedOutput.innerHTML = compileNote(text);
+  memo.appendChild(renderedOutput);
 
   const drag = document.createElement("div");
   drag.classList.add("drag");
@@ -219,7 +243,7 @@ function handleMemoResizeStart(e) {
 
     document.addEventListener("mouseup", handleMemoResizeEnd, { passive: false, useCapture: false });
     document.addEventListener("touchcancel", handleMemoResizeEnd, { passive: false, useCapture: false });
-    document.addEventListener("touchend", handleMemoResizeEnd, { passive: false, useCapture: false }); ;
+    document.addEventListener("touchend", handleMemoResizeEnd, { passive: false, useCapture: false });
   }
 };
 

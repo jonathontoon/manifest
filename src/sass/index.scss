@@ -91,7 +91,21 @@ body {
                     border-bottom: 1px solid var(--foreground);
                 }
 
+                .hidden {
+                    display: none;
+                }
+
+                .rendered-output {
+                    cursor: pointer;
+                }
                 textarea.input {
+                    cursor: text;
+                }
+
+                textarea.input,
+                .rendered-output {
+                    line-height: normal;
+                    white-space: pre-wrap;
                     position: absolute;
                     top: 17px;
                     left: 0px;
@@ -105,7 +119,6 @@ body {
                     overflow: auto;
                     font-family: monospace;
                     font-size: 13px;
-                    cursor: text;
                     background: var(--background);
                     color: var(--foreground);
 
