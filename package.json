@@ -21,7 +21,7 @@
   "devDependencies": {
     "@babel/cli": "^7.10.3",
     "@babel/core": "^7.11.1",
-    "@babel/preset-env": "^7.10.3",
+    "@babel/preset-env": "^7.14.8",
     "acorn": "^8.0.1",
     "babel-eslint": "^10.1.0",
     "babel-plugin-jsx-pragmatic": "^1.0.2",
