@@ -19,7 +19,7 @@
     "last 2 Edge version"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.10.3",
+    "@babel/cli": "^7.14.8",
     "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.10.3",
     "acorn": "^8.0.1",
