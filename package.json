@@ -19,23 +19,23 @@
     "last 2 Edge version"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.6",
-    "@babel/preset-env": "^7.9.6",
-    "acorn": "^7.2.0",
+    "@babel/cli": "^7.10.3",
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.10.3",
+    "acorn": "^8.0.1",
     "babel-eslint": "^10.1.0",
     "babel-plugin-jsx-pragmatic": "^1.0.2",
     "babel-preset-minify": "^0.5.1",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "kind-of": "^6.0.3",
     "parcel-bundler": "^1.12.4",
     "pre-commit": "^1.2.2",
-    "sass": "^1.26.5"
+    "sass": "^1.26.9"
   },
   "dependencies": {},
   "scripts": {
