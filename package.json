@@ -2,7 +2,6 @@
   "name": "manifest",
   "version": "1.1.1",
   "description": "An instant grid-based pinboard for note taking.",
-  "main": "src/js/index.js",
   "repository": "https://github.com/jonathontoon/manifest",
   "author": "Jonathon Toon",
   "license": "GPL 2.0",
@@ -21,7 +20,12 @@
   "devDependencies": {
     "@babel/cli": "^7.10.3",
     "@babel/core": "^7.11.1",
-    "@babel/preset-env": "^7.10.3",
+    "@parcel/babel-preset-env": "^2.12.0",
+    "@parcel/packager-raw-url": "2.12.0",
+    "@parcel/packager-xml": "2.12.0",
+    "@parcel/transformer-sass": "2.12.0",
+    "@parcel/transformer-webmanifest": "2.12.0",
+    "@parcel/transformer-xml": "2.12.0",
     "acorn": "^8.0.1",
     "babel-eslint": "^10.1.0",
     "babel-plugin-jsx-pragmatic": "^1.0.2",
@@ -33,14 +37,16 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "kind-of": "^6.0.3",
-    "parcel-bundler": "^1.12.4",
+    "parcel": "^2.12.0",
     "pre-commit": "^1.2.2",
     "sass": "^1.26.9"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@parcel/service-worker": "^2.12.0"
+  },
   "scripts": {
     "lint": "./node_modules/.bin/eslint . --fix",
-    "dev": "parcel ./src/index.html --port 3000 --no-cache --open",
+    "dev": "parcel ./src/index.html --port 3000 --no-cache",
     "prebuild": "rm -rf ./dist/",
     "build": "parcel build ./src/index.html --no-content-hash --no-cache --public-url ./"
   },

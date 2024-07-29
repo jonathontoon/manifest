@@ -69,10 +69,10 @@
 				<p>Please enable Javascript in order to use all functions of Manifest.</p>
 			</main>
 		</noscript>
-		<script type="text/javascript" src="./js/index.js"></script>
-		<script type="text/javascript">
+		<script type="module" src="./js/index.js"></script>
+		<script type="module">
 			if ("serviceWorker" in navigator) {
-				navigator.serviceWorker.register("./service-worker.js", { scope: "/" }).then(function (serviceWorker) {
+				navigator.serviceWorker.register(new URL("service-worker.js", import.meta.url), { type: "module" }).then(function (serviceWorker) {
 					console.log("Service Worker registered.");
 					console.log(serviceWorker);
 				}).catch(function (error) {
